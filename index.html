@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Emberfall: Reignition — v2.2 CRAFTING</title>
+<style>
+:root{--bg:#080b14;--panel:#111827;--panel2:#182235;--line:#293653;--text:#eef3ff;--muted:#91a0bd;--good:#54d98a;--bad:#ff6478;--gold:#ffd166;--mana:#65a7ff;--xp:#bd82ff;--rare:#65b8ff;--epic:#c77dff;--legend:#ffb347}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#1c2948 0,#080b14 48%);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}button{border:1px solid var(--line);background:#18233b;color:#eef3ff;border-radius:9px;padding:9px 11px;cursor:pointer;font-weight:650}button:hover{filter:brightness(1.15)}button:disabled{opacity:.4;cursor:not-allowed}.wrap{max-width:1200px;margin:auto;padding:14px}.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.brand{font-size:22px;font-weight:900;letter-spacing:.4px}.tag{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:280px 1fr;gap:12px}.panel{background:linear-gradient(180deg,#131b2d,#0f1626);border:1px solid var(--line);border-radius:14px;padding:13px;box-shadow:0 12px 30px #0003;margin-bottom:12px}.panel h3{margin:0 0 10px;font-size:14px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{background:#0c1220;border:1px solid #202c46;border-radius:9px;padding:8px}.stat b{display:block;font-size:15px}.sub{font-size:12px;color:var(--muted)}.bar{height:9px;background:#070a11;border-radius:20px;overflow:hidden;margin:4px 0 8px}.fill{height:100%;transition:width .25s}.hp{background:#ef5d70}.mp{background:#5796ff}.st{background:#56d995}.xp{background:#bf78ff}.gold{color:var(--gold)}.good{color:var(--good)}.bad{color:var(--bad)}.rare{color:var(--rare)}.epic{color:var(--epic)}.legend{color:var(--legend)}.row{display:flex;gap:7px;flex-wrap:wrap}.row>*{flex:1}.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:10px}.tabs button{white-space:nowrap}.tabs button.on{background:#273b64;border-color:#5376b8}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.enemy{min-height:260px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 50% 28%,#263653 0,#101827 50%,#0c111c 100%);border-radius:12px;padding:16px;border:1px solid #2b3a5c}.enemyIcon{font-size:76px;text-align:center;filter:drop-shadow(0 12px 15px #0008)}.enemyName{text-align:center;font-size:21px;font-weight:900}.enemyMeta{text-align:center;color:var(--muted);font-size:12px}.combatLog{height:185px;overflow:auto;background:#080d17;border:1px solid #202b43;border-radius:10px;padding:9px;font-size:12px;line-height:1.5}.logLine{padding:2px 0;border-bottom:1px solid #ffffff08}.skillGrid,.lootGrid,.shopGrid,.equipGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.card{background:#0c1321;border:1px solid #24314d;border-radius:10px;padding:9px}.card strong{font-size:13px}.card small{display:block;color:var(--muted);margin-top:4px;line-height:1.35}.card button{margin-top:7px;width:100%}.list{display:grid;gap:7px}.item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0c1321;border:1px solid #24314d;border-radius:10px;padding:8px}.item .grow{min-width:0}.rarity{font-size:10px;text-transform:uppercase;font-weight:900;letter-spacing:.6px}.progress{height:7px;background:#070a11;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:var(--xp)}.toast{position:fixed;right:14px;bottom:14px;max-width:340px;background:#17233a;border:1px solid #42567e;border-radius:12px;padding:11px;box-shadow:0 18px 40px #0008;display:none;z-index:5}.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}.modalBox{max-width:650px;width:100%;max-height:90vh;overflow:auto;background:#101827;border:1px solid #3b4e76;border-radius:15px;padding:15px}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.choice button{min-height:90px;text-align:left}.smallBtn{padding:6px 8px;font-size:11px}.danger{border-color:#7d3040}.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.muted{color:var(--muted)}.center{text-align:center}.hide{display:none}.pulse{animation:pulse .35s}.shake{animation:shake .25s}@keyframes pulse{50%{transform:scale(1.03)}}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.enemy{min-height:230px}.skillGrid,.lootGrid,.shopGrid,.equipGrid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.brand{font-size:19px}}
+@media(max-width:500px){.wrap{padding:9px}.skillGrid,.lootGrid,.shopGrid,.equipGrid,.choice{grid-template-columns:1fr}.panel{padding:10px}.combatLog{height:155px}.enemyIcon{font-size:62px}}
+
+.craft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.craft-card{border:1px solid #30384a;background:#111722;border-radius:12px;padding:12px}
+.craft-card h4{margin:0 0 5px}.craft-card p{margin:5px 0;color:#aeb8ca;font-size:13px}
+.mat-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.mat-pill{padding:5px 8px;border:1px solid #30384a;border-radius:999px;background:#0d121b;font-size:12px}
+.req{font-size:12px;color:#cbd4e4;margin:7px 0}.locked{opacity:.55}
+</style></head><body><div class="wrap">
+<div class="top"><div><div class="brand">🔥 EMBERFALL: REIGNITION</div><div class="tag">v2.2 • a single-file action RPG experiment</div></div><div class="row"><button onclick="saveGame()">💾 Save</button><button onclick="loadGame()">↩ Load</button><button onclick="resetGame()" class="danger">Reset</button></div></div>
+<div class="grid"><aside>
+<div class="panel"><h3>Adventurer</h3><div id="playerCard"></div></div>
+<div class="panel"><h3>Equipment</h3><div id="equipCard"></div></div>
+<div class="panel"><h3>Build</h3><div id="buildCard"></div></div>
+<div class="panel"><h3>Run</h3><div id="runCard"></div></div>
+</aside><main>
+<div class="tabs"><button id="tabCombat" class="on" onclick="tab('combat')">⚔️ Combat</button><button id="tabWorld" onclick="tab('world')">🗺️ World</button><button id="tabInventory" onclick="tab('inventory')">🎒 Inventory</button><button id="tabTown" onclick="tab('town')">🏘️ Emberhold</button><button id="tabQuests" onclick="tab('quests')">📜 Quests</button></div>
+<section id="combatTab"><div class="hero"><div class="panel"><div id="enemyBox"></div></div><div class="panel"><div class="sectionTitle"><h3>Battle</h3><span id="battleState" class="sub"></span></div><div id="skillBox"></div><div class="combatLog" id="combatLog"></div></div></div><div class="panel"><div class="sectionTitle"><h3>Combat Tools</h3><span class="sub">Stamina regenerates between turns</span></div><div class="row"><button onclick="basicAttack()">⚔️ Basic Attack</button><button onclick="defend()">🛡️ Guard</button><button onclick="usePotion()">🧪 Potion</button><button onclick="flee()">🏃 Flee</button></div></div></section>
+<section id="worldTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>World Map</h3><span class="sub">Threat rises with distance</span></div><div id="worldBox"></div></div></section>
+<section id="inventoryTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Inventory</h3><span id="invCount" class="sub"></span></div><div id="inventoryBox"></div></div></section>
+<section id="townTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Emberhold</h3><span class="sub">Prepare before your next expedition</span></div><div id="townBox"></div></div></section>
+<section id="questsTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Quest Board</h3><span class="sub">Complete goals while exploring</span></div><div id="questBox"></div></div></section>
+</main></div></div><div id="toast" class="toast"></div><div id="modal" class="modal"><div class="modalBox" id="modalBox"></div></div>
+<script>
+'use strict';
+const KEY='emberfall_reignition_v2';
+const CLASS={Vanguard:{icon:'🛡️',desc:'Durable bruiser. High HP and defense.',atk:1.0,def:1.25,hp:1.22,mp:.9,crit:.9},Striker:{icon:'⚔️',desc:'Fast damage dealer. Critical hits and stamina.',atk:1.18,def:.9,hp:.95,mp:1,crit:1.35},Arcanist:{icon:'🔮',desc:'Skill-heavy caster. Huge MP and spell power.',atk:1.08,def:.8,hp:.9,mp:1.45,crit:1.1},Warden:{icon:'🌿',desc:'Sustain specialist. Healing and resource efficiency.',atk:.94,def:1.12,hp:1.1,mp:1.2,crit:.95}};
+const REGIONS={
+  Emberfield:{level:1,icon:'🌾',desc:'The safe outskirts. Slimes and wolves roam here.',scale:1.00,loot:'common'},
+  MoonlitGrove:{level:3,icon:'🌲',desc:'A moonlit forest filled with strange beasts.',scale:1.18,loot:'uncommon'},
+  AshenHollow:{level:6,icon:'🌑',desc:'Charred ruins where elites gather.',scale:1.38,loot:'rare'},
+  EmberSanctum:{level:10,icon:'🔥',desc:'A sealed volcanic sanctum. Boss territory.',scale:1.62,loot:'epic'}
+};
+const ENEMIES={
+Slime:{icon:'🟢',base:1,hp:38,atk:7,def:2,xp:20,gold:8},Wolf:{icon:'🐺',base:2,hp:52,atk:11,def:3,xp:28,gold:11},Wisp:{icon:'✨',base:3,hp:62,atk:15,def:4,xp:34,gold:14},Treant:{icon:'🌳',base:4,hp:105,atk:19,def:8,xp:55,gold:24},Ashfang:{icon:'🐗',base:6,hp:150,atk:25,def:11,xp:82,gold:36},CinderWraith:{icon:'👻',base:8,hp:190,atk:32,def:13,xp:110,gold:48},EmberTitan:{icon:'🔥',base:10,hp:360,atk:45,def:18,xp:260,gold:120,boss:true},AshenKing:{icon:'👑',base:14,hp:650,atk:64,def:25,xp:700,gold:350,boss:true}};
+const SKILLS={slash:{name:'Cleave',icon:'⚔️',cost:5,st:8,mult:1.55,desc:'Heavy physical strike.'},fire:{name:'Ember Bolt',icon:'🔥',cost:12,st:0,mult:2.0,desc:'Magic damage; ignores some armor.'},guard:{name:'Bulwark',icon:'🛡️',cost:8,st:4,mult:0,desc:'Gain Guard for one enemy turn and recover stamina.'},drain:{name:'Soul Mend',icon:'💠',cost:14,st:0,mult:0,desc:'Deal damage and restore HP.'}};
+let S=defaultState(), E=null, turn=0, currentTab='combat', guard=false, autosaveTimer=null;
+function defaultState(){return {name:'Ashborn',level:1,xp:0,gold:80,hp:100,maxHp:100,mp:45,maxMp:45,st:30,maxSt:30,atk:13,def:5,crit:8,baseStats:{hp:100,mp:45,atk:13,def:5,crit:8},points:0,skillPoints:0,class:'Vanguard',region:'Emberfield',distance:0,inv:[{id:'potion',name:'Small Potion',type:'potion',qty:3,rarity:'common',heal:45},{id:'ether',name:'Mana Tonic',type:'mana',qty:2,rarity:'uncommon',heal:25}],eq:{weapon:{name:'Emberblade',type:'weapon',atk:3,rarity:'common',value:25},armor:{name:'Traveler Coat',type:'armor',def:2,rarity:'common',value:20}},materials:{herb:2,essence:1,ore:0},crafting:{crafted:0},upgrades:{weapon:0,armor:0},talents:{might:0,arcana:0,vitality:0,fortune:0},quests:{slay:0,elite:0,explore:0},bosses:{EmberTitan:false,AshenKing:false},story:0,runKills:0,runGold:0,runBest:0,started:Date.now()};}
+function cls(){return CLASS[S.class]||CLASS.Vanguard}function need(){return Math.floor(70*Math.pow(S.level,1.38))}function log(m,c=''){const el=document.getElementById('combatLog');el.innerHTML='<div class="logLine '+c+'">'+m+'</div>'+el.innerHTML;el.innerHTML=el.innerHTML.slice(0,9000)}function toast(m){const t=document.getElementById('toast');t.innerHTML=m;t.style.display='block';clearTimeout(window._toast);window._toast=setTimeout(()=>t.style.display='none',2300)}
+function levelBase(){return {hp:100+(S.level-1)*14,mp:45+(S.level-1)*5,atk:13+(S.level-1)*2,def:5+(S.level-1),crit:8}}
+function effective(){
+  const b=S.baseStats||levelBase(), w=Number(S.eq.weapon?.atk)||0, a=Number(S.eq.armor?.def)||0, c=cls(), t=S.talents||{};
+  return {
+    atk:Math.max(1,Math.floor((b.atk+w)*(c.atk+(Number(t.might)||0)*.04))),
+    def:Math.max(0,Math.floor((b.def+a)*(c.def+(Number(t.vitality)||0)*.04))),
+    hp:Math.max(1,Math.floor(b.hp*c.hp*(1+(Number(t.vitality)||0)*.06))),
+    mp:Math.max(1,Math.floor(b.mp*c.mp*(1+(Number(t.arcana)||0)*.07))),
+    crit:Math.max(0,b.crit*c.crit+(Number(t.fortune)||0)*2),
+    st:S.maxSt
+  };
+}
+function syncVitals(){
+  const e=effective();
+  S.maxHp=e.hp; S.maxMp=e.mp;
+  if(!Number.isFinite(S.hp)||S.hp<0)S.hp=e.hp;
+  if(!Number.isFinite(S.mp)||S.mp<0)S.mp=e.mp;
+  S.hp=Math.min(S.hp,e.hp); S.mp=Math.min(S.mp,e.mp);
+  S.gold=Math.max(0,Number.isFinite(S.gold)?Math.floor(S.gold):0);
+  S.materials.herb=Math.max(0,Number.isFinite(S.materials.herb)?Math.floor(S.materials.herb):0);
+  S.materials.essence=Math.max(0,Number.isFinite(S.materials.essence)?Math.floor(S.materials.essence):0);
+  S.materials.ore=Math.max(0,Number.isFinite(S.materials.ore)?Math.floor(S.materials.ore):0);
+}
+function render(){syncVitals();const ef=effective();document.getElementById('playerCard').innerHTML=`<div class="between"><b>Lv.${S.level} ${cls().icon} ${S.class}</b><span class="gold">${S.gold}g</span></div><div class="sub">${S.name}</div><div class="stat"><span>❤️ ${S.hp}/${S.maxHp}</span><div class="bar"><div class="fill hp" style="width:${100*S.hp/S.maxHp}%"></div></div><span>💧 ${S.mp}/${S.maxMp}</span><div class="bar"><div class="fill mp" style="width:${100*S.mp/S.maxMp}%"></div></div><span>⚡ ${S.st}/${S.maxSt}</span><div class="bar"><div class="fill st" style="width:${100*S.st/S.maxSt}%"></div></div><span>⭐ ${S.xp}/${need()}</span><div class="bar"><div class="fill xp" style="width:${100*S.xp/need()}%"></div></div></div><div class="stats"><div class="stat"><span class="sub">Attack</span><b>${ef.atk}</b></div><div class="stat"><span class="sub">Defense</span><b>${ef.def}</b></div><div class="stat"><span class="sub">Crit</span><b>${ef.crit.toFixed(1)}%</b></div><div class="stat"><span class="sub">Skill pts</span><b>${S.skillPoints}</b></div></div>`;
+const w=S.eq.weapon,a=S.eq.armor;document.getElementById('equipCard').innerHTML=`<div class="item"><div class="grow"><b class="${w.rarity}">⚔️ ${w.name}</b><div class="sub">+${w.atk} ATK • Lv.${Number.isFinite(Number(w.level))?Math.max(0,Math.floor(Number(w.level))):0}</div></div></div><div class="item"><div class="grow"><b class="${a.rarity}">🛡️ ${a.name}</b><div class="sub">+${a.def} DEF • Lv.${Number.isFinite(Number(a.level))?Math.max(0,Math.floor(Number(a.level))):0}</div></div></div>`;
+document.getElementById('buildCard').innerHTML=`<div class="sub">Talent points: <b>${S.points}</b></div>`+['might','arcana','vitality','fortune'].map(x=>`<div class="item"><span>${x==='might'?'⚔️':x==='arcana'?'🔮':x==='vitality'?'❤️':'🍀'} ${x} <b>${S.talents[x]}</b></span><button class="smallBtn" onclick="talent('${x}')" ${S.points?'':'disabled'}>+</button></div>`).join('');
+document.getElementById('runCard').innerHTML=`<div class="sub">Region</div><b>${REGIONS[S.region].icon} ${S.region}</b><div class="sub" style="margin-top:7px">Run kills ${S.runKills} • run gold ${S.runGold}g</div><div class="sub">Best ${S.runBest} kills</div>`;
+renderEnemy();renderSkills();renderWorld();renderInventory();renderTown();renderQuests();
+}
+function renderEnemy(){const b=document.getElementById('enemyBox');if(!E){b.innerHTML=`<div class="center"><div class="enemyIcon">🗺️</div><div class="enemyName">No enemy</div><p class="sub">Explore a region to start a fight.</p><button onclick="explore()">🌲 Explore</button></div>`;document.getElementById('battleState').textContent='Idle';return}b.innerHTML=`<div class="enemy"><div><div class="enemyIcon" id="enemyIcon">${E.icon}</div><div class="enemyName">${E.name}${E.boss?' 👑':''}</div><div class="enemyMeta">Lv.${E.level} • ${E.boss?'BOSS':'Enemy'}</div></div><div><div class="between"><span>HP</span><span>${E.hp}/${E.maxHp}</span></div><div class="bar"><div class="fill hp" style="width:${100*E.hp/E.maxHp}%"></div></div><div class="sub center">${E.def} DEF • ${E.atk} ATK</div></div></div>`;document.getElementById('battleState').textContent='Your turn'}
+function renderSkills(){const disabled=!E?'disabled':'';document.getElementById('skillBox').innerHTML='<div class="skillGrid">'+Object.entries(SKILLS).map(([id,s])=>`<div class="card"><strong>${s.icon} ${s.name}</strong><small>${s.desc}<br>Cost: ${s.cost} MP ${s.st?'• '+s.st+' ST':''}</small><button onclick="skill('${id}')" ${disabled}>Use</button></div>`).join('')+'</div>'}
+function renderWorld(){document.getElementById('worldBox').innerHTML='<div class="lootGrid">'+Object.entries(REGIONS).map(([r,v])=>`<div class="card"><strong>${v.icon} ${r}</strong><small>Recommended Lv.${v.level}<br>Power ×${v.scale.toFixed(2)} • ${v.desc}</small><button onclick="travel('${r}')" ${S.level<v.level?'disabled':''}>${S.region===r?'Current':'Travel'}</button></div>`).join('')+'</div><div class="panel" style="margin-top:10px;background:#0c1321"><b>Exploration</b><p class="sub">Each exploration can start combat, reveal materials, find treasure, or trigger an elite. Deeper regions improve rewards.</p><button onclick="explore()">🌲 Explore ${REGIONS[S.region].icon}</button></div>'}
+function renderInventory(){
+  S.inv.forEach(normalizeGear);
+  let total=S.inv.reduce((a,x)=>a+x.qty,0);
+  document.getElementById('invCount').textContent=total+' items';
+  const materials='<div class="panel" style="margin-bottom:10px"><h3>🧰 Materials</h3><div class="mat-row"><span class="mat-pill">🌿 Herb: <b>'+(S.materials.herb||0)+'</b></span><span class="mat-pill">✨ Essence: <b>'+(S.materials.essence||0)+'</b></span><span class="mat-pill">⛏️ Ore: <b>'+(S.materials.ore||0)+'</b></span></div><div class="sub">Use them at Town → Crafting & Alchemy.</div></div>';
+  const items=S.inv.length?
+    '<div class="list">'+S.inv.map((it,i)=>{
+      const gear=it.type==='weapon'||it.type==='armor';
+      const action=gear?'Equip':(it.type==='potion'||it.type==='mana'?'Use':'Locked');
+      const detail=gear?` • ${it.type==='weapon'?'+'+(it.atk||0)+' ATK':'+'+(it.def||0)+' DEF'}`:(it.type==='potion'?' • heals '+it.heal+' HP':it.type==='mana'?' • restores '+it.heal+' MP':'');
+      return `<div class="item"><div class="grow"><b class="${it.rarity}">${it.type==='weapon'?'⚔️ ':it.type==='armor'?'🛡️ ':''}${it.name}</b><div class="sub">${it.type} • x${it.qty}${detail}</div></div><button class="smallBtn" onclick="${gear?'equipItem':'useItem'}(${i})" ${gear||it.type==='potion'||it.type==='mana'?'':'disabled'}>${action}</button></div>`;
+    }).join('')+'</div>':'<div class="sub">Inventory empty.</div>';
+  document.getElementById('inventoryBox').innerHTML=materials+items;
+}
+
+const RECIPES={
+  potion:{name:'Small Health Potion',icon:'🧪',req:{herb:2,essence:1},out:{id:'potion',name:'Small Potion',type:'potion',qty:1,rarity:'common',heal:45},qty:2,level:1,desc:'Restores 45 HP in combat.'},
+  ether:{name:'Mana Tonic',icon:'💧',req:{herb:2,essence:2},out:{id:'ether',name:'Mana Tonic',type:'mana',qty:1,rarity:'uncommon',heal:30},qty:1,level:1,desc:'Restores 30 MP in combat.'},
+  greater:{name:'Greater Health Potion',icon:'❤️‍🩹',req:{herb:4,essence:2,ore:1},out:{id:'greater_potion',name:'Greater Health Potion',type:'potion',qty:1,rarity:'rare',heal:100},qty:1,level:5,desc:'Restores 100 HP in combat.'}
+};
+function matName(k){return k==='herb'?'Herb':k==='essence'?'Essence':'Ore'}
+function canCraft(r){
+  if(S.level<r.level)return false;
+  return Object.entries(r.req).every(([k,v])=>(S.materials[k]||0)>=v);
+}
+function craft(id){
+  const r=RECIPES[id]; if(!r)return;
+  if(S.level<r.level){toast('Recipe locked. Reach Lv '+r.level+'.');return}
+  if(!canCraft(r)){toast('Not enough materials.');return}
+  Object.entries(r.req).forEach(([k,v])=>S.materials[k]-=v);
+  for(let i=0;i<r.qty;i++)addItem({...r.out});
+  S.crafting.crafted+=r.qty;
+  log('⚒️ Crafted '+r.qty+'x <b>'+r.name+'</b>.','good');
+  saveGame(true); render();
+}
+function renderCrafting(){
+  const mats=Object.entries(S.materials).map(([k,v])=>'<span class="mat-pill">'+matName(k)+': <b>'+v+'</b></span>').join('');
+  const cards=Object.entries(RECIPES).map(([id,r])=>{
+    const locked=S.level<r.level, enough=canCraft(r);
+    const req=Object.entries(r.req).map(([k,v])=>matName(k)+' '+(S.materials[k]||0)+'/'+v).join(' · ');
+    const button=locked?'🔒 Locked':enough?'Craft':'Need Materials';
+    return '<div class="craft-card '+(locked?'locked':'')+'"><h4>'+r.icon+' '+r.name+'</h4><p>'+r.desc+'</p><div class="req">Materials: '+req+'</div><div class="req">'+(locked?'Unlocks at Lv '+r.level:'Output: '+r.qty)+'</div><button '+((locked||!enough)?'disabled':'')+' onclick="craft(\''+id+'\')">'+button+'</button></div>';
+  }).join('');
+  return '<div class="panel" style="margin-top:10px"><h3>⚒️ Crafting & Alchemy</h3><p class="muted">Turn gathered materials into useful items. Better recipes unlock as you level up.</p><div class="mat-row">'+mats+'<span class="mat-pill">🛠️ Crafted: <b>'+S.crafting.crafted+'</b></span></div><div class="craft-grid">'+cards+'</div></div>';
+}
+
+function renderTown(){document.getElementById('townBox').innerHTML=`<div class="shopGrid"><div class="card"><strong>🧪 Potion</strong><small>Restores 45 HP.</small><button onclick="buy('potion')">Buy • 22g</button></div><div class="card"><strong>💧 Mana Tonic</strong><small>Restores 25 MP.</small><button onclick="buy('ether')">Buy • 28g</button></div><div class="card"><strong>🔨 Weapon Forge</strong><small>${S.eq.weapon.name} • Lv.${S.eq.weapon.level} → Lv.${S.eq.weapon.level+1}<br>Cost is based on this weapon's level.</small><button onclick="upgrade('weapon')">Upgrade • ${getUpgradeCost(S.eq.weapon)}g</button></div><div class="card"><strong>🛡️ Armor Forge</strong><small>${S.eq.armor.name} • Lv.${S.eq.armor.level} → Lv.${S.eq.armor.level+1}<br>Cost is based on this armor's level.</small><button onclick="upgrade('armor')">Upgrade • ${getUpgradeCost(S.eq.armor)}g</button></div><div class="card"><strong>🌿 Herb</strong><small>Alchemy ingredient.</small><button onclick="buy('herb')">Buy • 14g</button></div><div class="card"><strong>✨ Essence</strong><small>Rare crafting ingredient.</small><button onclick="buy('essence')">Buy • 30g</button></div></div>${renderCrafting()}<div class="panel" style="margin-top:10px;background:#0c1321"><b>Class Hall</b><p class="sub">Changing class is free outside combat. Your talent build remains intact.</p><div class="choice">${Object.entries(CLASS).map(([n,c])=>`<button onclick="chooseClass('${n}')"><b>${c.icon} ${n}</b><br><small>${c.desc}</small></button>`).join('')}</div></div>`}
+function renderQuests(){const qs=[['slay','Monster Hunter',10,60,90],['elite','Elite Breaker',3,120,160],['explore','Pathfinder',12,100,130]];document.getElementById('questBox').innerHTML=qs.map(q=>{let p=S.quests[q[0]],done=p>=q[2];return `<div class="card" style="margin-bottom:8px"><div class="between"><b>${q[0]==='slay'?'⚔️':q[0]==='elite'?'👑':'🗺️'} ${q[1]}</b><span class="gold">${q[3]}g</span></div><small>${p}/${q[2]} • reward ${q[4]} XP</small><div class="progress" style="margin:7px 0"><div style="width:${Math.min(100,p/q[2]*100)}%"></div></div><button onclick="claimQuest('${q[0]}',${q[2]},${q[3]},${q[4]})" ${done?'':'disabled'}>${done?'🎁 Claim':'In progress'}</button></div>`}).join('')}
+function tab(t){currentTab=t;['combat','world','inventory','town','quests'].forEach(x=>{document.getElementById(x+'Tab').classList.toggle('hide',x!==t);document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('on',x===t)})}
+function rollEnemy(){
+  const r=REGIONS[S.region]||REGIONS.Emberfield;
+  const pool=S.region==='Emberfield'?['Slime','Wolf']:S.region==='MoonlitGrove'?['Wolf','Wisp','Treant']:S.region==='AshenHollow'?['Wisp','Ashfang','CinderWraith']:['Ashfang','CinderWraith'];
+  if(S.region==='EmberSanctum'&&S.level>=10&&Math.random()<.10&&!S.bosses.EmberTitan)return makeEnemy('EmberTitan',Math.max(S.level,r.level));
+  if(S.region==='EmberSanctum'&&S.level>=14&&Math.random()<.05&&!S.bosses.AshenKing)return makeEnemy('AshenKing',Math.max(S.level,r.level+2));
+  const n=pool[Math.floor(Math.random()*pool.length)];
+  return makeEnemy(n,Math.max(r.level,S.level+Math.floor(Math.random()*3)-1));
+}
+function makeEnemy(type,lvl){
+  const d=ENEMIES[type],r=REGIONS[S.region]||REGIONS.Emberfield,lv=Math.max(d.base,lvl);
+  const levelScale=1+(lv-d.base)*.16;
+  const worldScale=r.scale||1;
+  const boss=!!d.boss;
+  const elite=!boss&&Math.random()<0.18;
+  const eliteScale=elite?1.32:1;
+  const bossScale=boss?1.35:1;
+  const scale=levelScale*worldScale*eliteScale*bossScale;
+  return {type,name:type,icon:d.icon,level:lv,maxHp:Math.max(1,Math.floor(d.hp*scale)),hp:Math.max(1,Math.floor(d.hp*scale)),atk:Math.max(1,Math.floor(d.atk*scale)),def:Math.max(0,Math.floor(d.def*scale)),xp:Math.max(1,Math.floor(d.xp*levelScale*worldScale)),gold:Math.max(1,Math.floor(d.gold*levelScale*worldScale)),boss,elite,world:S.region};
+}
+function explore(){
+  if(E){toast('Finish the current fight first.');return}
+  S.quests.explore++; S.distance++;
+  const roll=Math.random();
+  if(roll<.14){let g=18+S.level*7;S.gold+=g;S.runGold+=g;log('✨ You discover a hidden cache: +'+g+' gold.','gold');toast('Treasure found!')}
+  else if(roll<.25){const n=1+(Math.random()<.25?1:0);S.materials.herb+=n;log('🌿 You gather '+n+' medicinal herb'+(n>1?'s':'')+'.','good')}
+  else if(roll<.32){S.materials.essence++;log('✨ You find an essence shard.','rare')}
+  else {E=rollEnemy();turn=0;log(`⚔️ ${E.name} appears${E.elite?' — ELITE!':''}.`,'bad');renderEnemy()}
+  render();
+}
+function damage(raw,def,ignore=0){return Math.max(1,Math.floor(raw-Math.max(0,def*(1-ignore))))}
+function basicAttack(){if(!E)return;let ef=effective(),d=damage(ef.atk+Math.floor(Math.random()*7),E.def);let crit=Math.random()<ef.crit/100;if(crit)d=Math.floor(d*1.8);E.hp-=d;S.st=Math.max(0,S.st-3);log(`⚔️ You strike for <b>${d}</b>${crit?' CRITICAL!':''}.`,crit?'legend':'');afterPlayerAction()}
+function skill(id){if(!E)return;let s=SKILLS[id];if(S.mp<s.cost||S.st<s.st){toast('Not enough resources.');return}S.mp-=s.cost;S.st-=s.st;let ef=effective(),d=0;if(id==='slash')d=damage(ef.atk*s.mult,E.def);if(id==='fire')d=damage(ef.atk*s.mult+S.level*5,E.def,.45);if(id==='guard'){guard=true;S.st=Math.min(S.maxSt,S.st+8);log('🛡️ Bulwark raised. Incoming damage reduced.','good');afterPlayerAction();return}if(id==='drain'){d=damage(ef.atk*1.35,E.def,.15);let heal=Math.floor(d*.55);S.hp=Math.min(effective().hp,S.hp+heal);log(`💠 Soul Mend deals <b>${d}</b> and restores <b>${heal} HP</b>.`,'good');afterPlayerAction();return}log(`${s.icon} ${s.name} deals <b>${d}</b> damage.`,'rare');E.hp-=d;afterPlayerAction()}
+function defend(){if(!E)return;let ef=effective();guard=true;S.st=Math.min(S.maxSt,S.st+12);S.mp=Math.min(ef.mp,S.mp+4);log('🛡️ You guard and recover resources.','good');enemyTurn();regen();render()}
+function afterPlayerAction(){if(E.hp<=0){win();return}enemyTurn();regen();render()}
+function enemyTurn(){if(!E)return;let d=damage(E.atk+Math.floor(Math.random()*6),effective().def);if(guard)d=Math.max(1,Math.floor(d*.35));guard=false;if(Math.random()<.10&&!E.boss){log(`✨ ${E.name} hesitates and misses its attack.`);return}S.hp-=d;log(`💥 ${E.name} hits you for <b>${d}</b>.`,d>20?'bad':'');if(S.hp<=0)lose()}
+function regen(){let ef=effective();S.st=Math.min(S.maxSt,S.st+7);S.mp=Math.min(ef.mp,S.mp+2)}
+function xpLevelUp(){while(S.xp>=need()){S.xp-=need();S.level++;S.points+=3;S.skillPoints++;S.baseStats.hp+=14;S.baseStats.mp+=5;S.baseStats.atk+=2;S.baseStats.def+=1;S.hp=effective().hp;S.mp=effective().mp;log(`🎉 LEVEL ${S.level}! +3 talent points • +1 skill point.`,'legend')}}
+function win(){
+  let e=E;E=null;S.runKills++;S.runGold+=e.gold;S.gold+=e.gold;S.xp+=e.xp;S.quests.slay++;if(e.elite)S.quests.elite++;
+  if(e.boss){S.bosses[e.type]=true;S.story++;S.gold+=e.gold;S.xp+=e.xp;log(`👑 BOSS DEFEATED: ${e.name}! Bonus rewards secured.`,'legend');toast('🏆 Boss defeated!')}
+  else log(`✅ ${e.name} defeated. +${e.xp} XP • +${e.gold}g.`,'good');
+  drop(e); xpLevelUp(); S.runBest=Math.max(S.runBest,S.runKills); saveGame(true); render();
+}
+function lose(){log('💀 You collapse and retreat to Emberhold. No progress is lost, but your run ends.','bad');let ef=effective();S.hp=Math.ceil(ef.hp*.65);S.mp=Math.ceil(ef.mp*.65);S.st=S.maxSt;S.gold=Math.max(0,S.gold-Math.floor(S.gold*.05));S.runKills=0;S.runGold=0;E=null;toast('You were defeated. Back to town.');tab('town');render()}
+function flee(){if(!E)return;let chance=.58+(S.class==='Striker'?.12:0);if(Math.random()<chance){log('🏃 You escaped safely.');E=null;render()}else{log('🏃 Escape failed!','bad');enemyTurn();render()}}
+function normalizeGear(it){
+  if(!it)return it;
+  if(it.type==='gear'){
+    const isArmor=Number(it.def)>0 && Number(it.atk||0)<=Number(it.def||0)+2;
+    it.type=isArmor?'armor':'weapon';
+    if(!it.slot)it.slot=it.type;
+  }
+  if(it.type==='weapon'||it.type==='armor'){
+    const n=Number(it.level);
+    it.level=Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
+    if(!it.slot)it.slot=it.type;
+  }
+  return it;
+}
+function drop(e){
+  const r=REGIONS[e.world]||REGIONS.Emberfield;
+  const materialRoll=Math.random();
+  const key=materialRoll<.55?'herb':materialRoll<.88?'essence':'ore';
+  const amount=key==='ore'?1+(e.elite||e.boss?1:0):1+(Math.random()<.25?1:0);
+  S.materials[key]=(S.materials[key]||0)+amount;
+  log(`📦 Material: ${amount} ${matName(key)}.`,'good');
+
+  const equipmentChance=e.boss?1:e.elite?.60:.34;
+  const rolls=e.boss?2:1;
+  for(let n=0;n<rolls;n++){
+    if(Math.random()>equipmentChance)continue;
+    let rarity;
+    if(e.boss)rarity=Math.random()<.35?'legend':'epic';
+    else if(r.loot==='epic')rarity=Math.random()<.15?'legend':Math.random()<.55?'epic':'rare';
+    else if(r.loot==='rare')rarity=Math.random()<.10?'epic':Math.random()<.65?'rare':'uncommon';
+    else if(r.loot==='uncommon')rarity=Math.random()<.18?'rare':'uncommon';
+    else rarity=Math.random()<.20?'uncommon':'common';
+    const blade=Math.random()<.5;
+    const base={common:2,uncommon:4,rare:7,epic:10,legend:14}[rarity];
+    const name=e.boss?(e.type==='EmberTitan'?'Titan '+(blade?'Blade':'Plate'):'King '+(blade?'Blade':'Mail')):(rarity==='legend'?'Starforged '+(blade?'Blade':'Mail'):(r.loot==='epic'?'Ember '+(blade?'Blade':'Mail'):r.loot==='rare'?'Ashen '+(blade?'Blade':'Mail'):r.loot==='uncommon'?'Grove '+(blade?'Blade':'Mail'):'Iron '+(blade?'Blade':'Mail')));
+    const it=blade?{name,type:'weapon',slot:'weapon',qty:1,rarity,value:base*14,atk:base+Math.floor(Math.random()*4)}:{name,type:'armor',slot:'armor',qty:1,rarity,value:base*14,def:Math.max(1,Math.floor(base*.7)+Math.floor(Math.random()*3))};
+    addItem(it);log(`🎁 Loot: <b class="${it.rarity}">${it.name}</b>`,'rare');
+  }
+}
+function addItem(it){
+  normalizeGear(it);
+  let old=S.inv.find(x=>x.name===it.name&&x.type===it.type);
+  if(old&&it.type!=='weapon'&&it.type!=='armor')old.qty+=it.qty;
+  else S.inv.push(it);
+}
+function equipItem(i){
+  const it=S.inv[i];
+  if(!it||it.qty<1)return;
+  normalizeGear(it);
+  if(it.type!=='weapon'&&it.type!=='armor'){
+    toast('That item cannot be equipped.');
+    return;
+  }
+  const slot=it.type;
+  const previous=S.eq[slot];
+  S.eq[slot]={...it,qty:1,slot};
+  S.inv.splice(i,1);
+  if(previous)addItem({...previous,qty:1});
+  log(`⚔️ Equipped <b>${it.name}</b>.`,'good');
+  render();
+}
+function usePotion(){let i=S.inv.findIndex(x=>x.type==='potion'&&x.qty>0);if(i<0){toast('No potions.');return}useItem(i)}
+function useItem(i){
+  let it=S.inv[i];
+  if(!it||it.qty<1)return;
+  normalizeGear(it);
+  if(it.type==='weapon'||it.type==='armor'){equipItem(i);return}
+  if(it.type==='potion'){S.hp=Math.min(S.maxHp,S.hp+it.heal);log(`🧪 Potion restores ${it.heal} HP.`,'good')}
+  else if(it.type==='mana'){S.mp=Math.min(S.maxMp,S.mp+it.heal);log(`💧 Mana tonic restores ${it.heal} MP.`,'good')}
+  else return;
+  it.qty--;
+  if(!it.qty)S.inv.splice(i,1);
+  render();
+}
+function buy(type){let cost={potion:22,ether:28,herb:14,essence:30}[type];if(S.gold<cost){toast('Not enough gold.');return}S.gold-=cost;if(type==='potion')addItem({id:'potion',name:'Small Potion',type:'potion',qty:1,rarity:'common',heal:45});if(type==='ether')addItem({id:'ether',name:'Mana Tonic',type:'mana',qty:1,rarity:'uncommon',heal:25});if(type==='herb')S.materials.herb++;if(type==='essence')S.materials.essence++;render();toast('Purchase complete.')}
+function getUpgradeCost(item){
+  if(!item)return Infinity;
+  normalizeGear(item);
+  const level=item.level;
+  return 35+level*35;
+}
+function upgrade(type){
+  const item=type==='weapon'?S.eq.weapon:type==='armor'?S.eq.armor:null;
+  if(!item){toast('No '+type+' equipped.');return}
+  normalizeGear(item);
+  const cost=getUpgradeCost(item);
+  if(!Number.isFinite(cost)){toast('Invalid equipment upgrade data.');return}
+  if(S.gold<cost){toast('Not enough gold.');return}
+  S.gold-=cost;
+  item.level++;
+  if(type==='weapon')item.atk=(Number(item.atk)||0)+2;
+  else item.def=(Number(item.def)||0)+2;
+  // Keep the legacy field synchronized for old saves/UI compatibility, but never use it as the source of truth.
+  S.upgrades[type]=item.level;
+  log(`🔨 ${item.name} upgraded to Lv.${item.level}! -${cost}g`,'good');
+  saveGame(true);
+  render();
+}
+function talent(x){if(!S.points)return;S.points--;S.talents[x]++;render();toast(x+' increased.')}
+function chooseClass(n){if(E){toast('Finish combat before changing class.');return}S.class=n;render();toast('Class changed to '+n+'.')}
+function travel(r){if(E){toast('Finish combat first.');return}if(S.level<REGIONS[r].level){toast('Reach level '+REGIONS[r].level+' first.');return}S.region=r;S.distance=0;log('🗺️ You travel to '+r+'. Recommended Lv '+REGIONS[r].level+'.','rare');tab('world');render()}
+function claimQuest(id,goal,gold,xp){if(S.quests[id]<goal)return;S.quests[id]-=goal;S.gold+=gold;S.xp+=xp;log(`📜 Quest claimed: +${gold}g +${xp} XP.`,'good');xpLevelUp();render()}
+function saveGame(silent=false){localStorage.setItem(KEY,JSON.stringify(S));if(!silent)toast('Game saved.')}
+
+function migrateState(){
+  const safeNum=(v,f)=>Number.isFinite(Number(v))?Number(v):f;
+  // v2.2 originally stored upgrade levels globally in S.upgrades. Migrate that legacy progress
+  // to the actual equipped item once, then use each gear item's own level thereafter.
+  const legacyUpgrades=S.upgrades||{};
+  const legacyWeaponLevel=Math.max(0,Math.floor(safeNum(legacyUpgrades.weapon,0)));
+  const legacyArmorLevel=Math.max(0,Math.floor(safeNum(legacyUpgrades.armor,0)));
+  S.level=Math.max(1,Math.floor(safeNum(S.level,1)));
+  S.xp=Math.max(0,Math.floor(safeNum(S.xp,0)));
+  S.gold=Math.max(0,Math.floor(safeNum(S.gold,80)));
+  S.maxSt=Math.max(1,Math.floor(safeNum(S.maxSt,30)));
+  S.st=Math.max(0,Math.min(S.maxSt,Math.floor(safeNum(S.st,S.maxSt))));
+  S.talents ||= {might:0,arcana:0,vitality:0,fortune:0};
+  for(const k of ['might','arcana','vitality','fortune']) S.talents[k]=Math.max(0,Math.floor(safeNum(S.talents[k],0)));
+  S.materials ||= {herb:0,essence:0,ore:0};
+  for(const k of ['herb','essence','ore']) S.materials[k]=Math.max(0,Math.floor(safeNum(S.materials[k],0)));
+  S.crafting ||= {crafted:0}; S.crafting.crafted=Math.max(0,Math.floor(safeNum(S.crafting.crafted,0)));
+  S.inv ||= [];
+  S.inv.forEach(normalizeGear);
+  S.eq ||= {};
+  S.eq.weapon ||= {name:'Emberblade',type:'weapon',atk:3,rarity:'common',value:25};
+  S.eq.armor ||= {name:'Traveler Coat',type:'armor',def:2,rarity:'common',value:20};
+  // Existing saves: if an equipped item has no individual level yet, inherit the old global level.
+  // Inventory gear is intentionally kept at its own stored level (or Lv.0 if it predates this model).
+  if(S.eq.weapon.level===undefined || !Number.isFinite(Number(S.eq.weapon.level))) S.eq.weapon.level=legacyWeaponLevel;
+  if(S.eq.armor.level===undefined || !Number.isFinite(Number(S.eq.armor.level))) S.eq.armor.level=legacyArmorLevel;
+  normalizeGear(S.eq.weapon);
+  normalizeGear(S.eq.armor);
+  S.upgrades={weapon:S.eq.weapon.level,armor:S.eq.armor.level};
+  S.quests ||= {slay:0,elite:0,explore:0};
+  S.bosses ||= {EmberTitan:false,AshenKing:false};
+  S.baseStats={hp:100+(S.level-1)*14,mp:45+(S.level-1)*5,atk:13+(S.level-1)*2,def:5+(S.level-1),crit:8};
+  const e=effective();
+  if(!Number.isFinite(S.hp)||S.hp<0||S.hp>e.hp*1.25) S.hp=e.hp;
+  else S.hp=Math.min(e.hp,S.hp);
+  if(!Number.isFinite(S.mp)||S.mp<0||S.mp>e.mp*1.25) S.mp=e.mp;
+  else S.mp=Math.min(e.mp,S.mp);
+  S.maxHp=e.hp; S.maxMp=e.mp;
+  S.atk=S.baseStats.atk; S.def=S.baseStats.def; S.crit=S.baseStats.crit;
+}
+
+function loadGame(){let raw=localStorage.getItem(KEY);if(!raw){toast('No save found.');return}try{S=JSON.parse(raw);migrateState();E=null;guard=false;render();toast('Save loaded.')}catch{toast('Save data is corrupted.')}}
+function resetGame(){if(confirm('Reset Emberfall? This deletes your local save.')){localStorage.removeItem(KEY);S=defaultState();migrateState();E=null;log('🔥 A new journey begins.');render()}}
+window.addEventListener('beforeunload',()=>saveGame(true));
+migrateState();render();log('🔥 Welcome to Emberfall. Explore, build your class, hunt elites, and reach the Sanctum.','rare');
+autosaveTimer=setInterval(()=>saveGame(true),30000);
+</script></body></html>
