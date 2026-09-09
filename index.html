@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Emberfall: Reignition — v2.6.2 Inventory, Class Skills & Achievements</title>
+<style>
+:root{--bg:#080b14;--panel:#111827;--panel2:#182235;--line:#293653;--text:#eef3ff;--muted:#91a0bd;--good:#54d98a;--bad:#ff6478;--gold:#ffd166;--mana:#65a7ff;--xp:#bd82ff;--rare:#65b8ff;--epic:#c77dff;--legend:#ffb347}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#1c2948 0,#080b14 48%);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}button{border:1px solid var(--line);background:#18233b;color:#eef3ff;border-radius:9px;padding:9px 11px;cursor:pointer;font-weight:650}button:hover{filter:brightness(1.15)}button:disabled{opacity:.4;cursor:not-allowed}.wrap{max-width:1200px;margin:auto;padding:14px}.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.brand{font-size:22px;font-weight:900;letter-spacing:.4px}.tag{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:280px 1fr;gap:12px}.panel{background:linear-gradient(180deg,#131b2d,#0f1626);border:1px solid var(--line);border-radius:14px;padding:13px;box-shadow:0 12px 30px #0003;margin-bottom:12px}.panel h3{margin:0 0 10px;font-size:14px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{background:#0c1220;border:1px solid #202c46;border-radius:9px;padding:8px}.stat b{display:block;font-size:15px}.sub{font-size:12px;color:var(--muted)}.bar{height:9px;background:#070a11;border-radius:20px;overflow:hidden;margin:4px 0 8px}.fill{height:100%;transition:width .25s}.hp{background:#ef5d70}.mp{background:#5796ff}.st{background:#56d995}.xp{background:#bf78ff}.gold{color:var(--gold)}.good{color:var(--good)}.bad{color:var(--bad)}.rare{color:var(--rare)}.epic{color:var(--epic)}.legend{color:var(--legend)}.row{display:flex;gap:7px;flex-wrap:wrap}.row>*{flex:1}.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:10px}.tabs button{white-space:nowrap}.tabs button.on{background:#273b64;border-color:#5376b8}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.enemy{min-height:260px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 50% 28%,#263653 0,#101827 50%,#0c111c 100%);border-radius:12px;padding:16px;border:1px solid #2b3a5c}.enemyIcon{font-size:76px;text-align:center;filter:drop-shadow(0 12px 15px #0008)}.enemyName{text-align:center;font-size:21px;font-weight:900}.enemyMeta{text-align:center;color:var(--muted);font-size:12px}.combatLog{height:185px;overflow:auto;background:#080d17;border:1px solid #202b43;border-radius:10px;padding:9px;font-size:12px;line-height:1.5}.logLine{padding:2px 0;border-bottom:1px solid #ffffff08}.skillGrid,.lootGrid,.shopGrid,.equipGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.card{background:#0c1321;border:1px solid #24314d;border-radius:10px;padding:9px}.card strong{font-size:13px}.card small{display:block;color:var(--muted);margin-top:4px;line-height:1.35}.card button{margin-top:7px;width:100%}.list{display:grid;gap:7px}.item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0c1321;border:1px solid #24314d;border-radius:10px;padding:8px}.item .grow{min-width:0}.rarity{font-size:10px;text-transform:uppercase;font-weight:900;letter-spacing:.6px}.progress{height:7px;background:#070a11;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:var(--xp)}.toast{position:fixed;right:14px;bottom:14px;max-width:340px;background:#17233a;border:1px solid #42567e;border-radius:12px;padding:11px;box-shadow:0 18px 40px #0008;display:none;z-index:5}.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}.modalBox{max-width:650px;width:100%;max-height:90vh;overflow:auto;background:#101827;border:1px solid #3b4e76;border-radius:15px;padding:15px}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.choice button{min-height:90px;text-align:left}.smallBtn{padding:6px 8px;font-size:11px}.danger{border-color:#7d3040}.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.muted{color:var(--muted)}.center{text-align:center}.hide{display:none}.pulse{animation:pulse .35s}.shake{animation:shake .25s}@keyframes pulse{50%{transform:scale(1.03)}}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.enemy{min-height:230px}.skillGrid,.lootGrid,.shopGrid,.equipGrid{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.brand{font-size:19px}}
+@media(max-width:500px){.wrap{padding:9px}.skillGrid,.lootGrid,.shopGrid,.equipGrid,.choice{grid-template-columns:1fr}.panel{padding:10px}.combatLog{height:155px}.enemyIcon{font-size:62px}}
+
+.craft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.craft-card{border:1px solid #30384a;background:#111722;border-radius:12px;padding:12px}
+.craft-card h4{margin:0 0 5px}.craft-card p{margin:5px 0;color:#aeb8ca;font-size:13px}
+.mat-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.mat-pill{padding:5px 8px;border:1px solid #30384a;border-radius:999px;background:#0d121b;font-size:12px}
+.req{font-size:12px;color:#cbd4e4;margin:7px 0}.locked{opacity:.55}.combatHud{position:sticky;top:8px;z-index:4;background:#0c1321;border:1px solid #30405f;border-radius:12px;padding:9px;margin-bottom:10px;box-shadow:0 8px 20px #0005}.combatHud .hudStats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.hudStat{font-size:12px;text-align:center;background:#101a2c;border-radius:8px;padding:6px}.combatActions{position:sticky;bottom:8px;z-index:4;background:#0c1321;border:1px solid #30405f;border-radius:12px;padding:8px;margin-top:10px;box-shadow:0 8px 20px #0005}.combatActions .row{display:grid;grid-template-columns:repeat(4,1fr)}.guideGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.guideCard{background:#0c1321;border:1px solid #24314d;border-radius:10px;padding:11px}.guideCard h4{margin:0 0 5px}.guideCard p{margin:0;color:#aeb8ca;font-size:12px;line-height:1.45}.filterRow{display:flex;gap:6px;overflow:auto;margin-bottom:9px}.filterRow button{white-space:nowrap}.filterRow button.on{background:#273b64;border-color:#5376b8}.sellBox{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}.sellBox button{flex:1}.junk{border-color:#6b4b38}
+.sellMode{background:#5b3f18!important;border-color:#d09a3a!important}.sellValue{color:var(--gold);font-weight:800}.questTabs{display:flex;gap:7px;overflow:auto;margin-bottom:10px}.questTabs button.on{background:#273b64;border-color:#5376b8}.classSkillGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.classSkillGrid .card{min-height:130px}.achProgress{font-size:11px;color:var(--muted)}@media(max-width:700px){.classSkillGrid{grid-template-columns:1fr 1fr}}@media(max-width:500px){.classSkillGrid{grid-template-columns:1fr}.questTabs button{flex:1;min-width:110px}}
+@media(max-width:500px){.combatHud{top:4px}.combatActions{position:sticky;bottom:4px}.combatActions .row{grid-template-columns:repeat(2,1fr)}.guideGrid{grid-template-columns:1fr}}
+
+/* ===== EMBERFALL v2.3 PIXEL-FANTASY UI PASS =====
+   Inspired by classic fantasy game interfaces; all layout/styling is implemented in CSS. */
+:root{
+  --bg:#0d1717;--bg2:#13201f;--panel:#172321;--panel2:#1b2926;
+  --line:#6f6850;--line2:#9a8b62;--gold:#f4d47a;--cream:#f3ead0;
+  --muted:#a9a48f;--ink:#14201d;--accent:#7db7d9;--good:#72d69a;--bad:#e76f74;
+  --mana:#72aee8;--xp:#b68ce2;--rare:#78b9e7;--epic:#c894df;--legend:#f0bd62;
+}
+html{background:var(--bg)}
+body{
+  min-height:100vh;background:
+  radial-gradient(circle at 50% -20%,#2a3b35 0,#172623 28%,#0d1717 66%),
+  repeating-linear-gradient(0deg,#0d1717 0,#0d1717 3px,#0e1818 3px,#0e1818 6px);
+  color:var(--cream);font-family:"Trebuchet MS",Verdana,monospace;letter-spacing:.15px;
+}
+button{font-family:inherit;font-weight:900;color:var(--cream);background:#263631;border:2px solid #0b1110;border-radius:5px;padding:10px 12px;box-shadow:inset 0 0 0 1px #756d53,0 2px 0 #070b0a;transition:transform .08s,filter .08s,background .08s}
+button:hover{filter:brightness(1.12)}button:active{transform:translateY(1px);box-shadow:inset 0 0 0 1px #756d53}
+button:disabled{opacity:.42;filter:grayscale(.3)}
+.wrap{max-width:1180px;padding:12px 12px 28px}
+.top{padding:10px 10px 12px;margin-bottom:10px;border:2px solid #101715;background:linear-gradient(#20302c,#172522);box-shadow:inset 0 0 0 1px #8d805e,0 4px 0 #080c0b;position:sticky;top:0;z-index:20}
+.brand{font-family:Impact,"Arial Black",monospace;font-size:25px;letter-spacing:1px;text-shadow:2px 2px #07100e;color:#f5e9c8}
+.tag{color:#b9b39e;font-size:11px;margin-top:2px}
+.grid{grid-template-columns:270px 1fr;gap:12px}
+.panel{position:relative;background:linear-gradient(180deg,#1a2926,#14201f);border:2px solid #0a1110;border-radius:7px;padding:12px;box-shadow:inset 0 0 0 1px #766d53,0 4px 0 #080c0b;margin-bottom:12px}
+.panel:before,.panel:after{content:"";position:absolute;width:9px;height:9px;border:1px solid #a6966a;opacity:.75;pointer-events:none}
+.panel:before{left:3px;top:3px;border-right:0;border-bottom:0}.panel:after{right:3px;bottom:3px;border-left:0;border-top:0}
+.panel h3{font-size:14px;color:#f0dfb4;text-transform:uppercase;letter-spacing:1px}
+.stat,.card,.item,.guideCard,.craft-card,.hudStat{background:#101a19;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #4f594d,0 2px 0 #080c0b;border-radius:5px}
+.stat{padding:8px}.stat b{font-size:15px}.sub,.muted{color:#aaa58f}
+.bar,.progress{height:10px;background:#070c0b;border:1px solid #536056;border-radius:2px;padding:1px;box-shadow:inset 0 1px 2px #000}
+.fill,.progress>div{border-radius:1px;box-shadow:inset 0 1px 0 #ffffff44}
+.hp{background:#d85f69}.mp{background:#679ed8}.st{background:#62c992}.xp{background:#ad7dd4}
+.gold{color:var(--gold)}.good{color:var(--good)}.bad{color:var(--bad)}.rare{color:var(--rare)}.epic{color:var(--epic)}.legend{color:var(--legend)}
+.tabs{gap:5px;margin-bottom:10px;scrollbar-width:none;position:sticky;top:75px;z-index:15;padding:5px;background:#101a19;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #6d6650,0 3px 0 #080c0b}
+.tabs::-webkit-scrollbar{display:none}.tabs button{border-radius:4px;padding:9px 10px;font-size:11px}.tabs button.on{background:#7b6640;border-color:#17120c;color:#fff4d5;box-shadow:inset 0 0 0 1px #d1b46e,0 2px 0 #070b0a}
+.enemy{min-height:260px;background:radial-gradient(circle at 50% 25%,#31433e,#172421 55%,#101918);border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #7c7257,0 3px 0 #080c0b;border-radius:6px;padding:15px}
+.enemyIcon{font-size:72px;text-shadow:3px 3px 0 #08100e}.enemyName{font-size:21px;color:#f4e8c9}.enemyMeta{color:#b1aa92}
+.combatLog{background:#0c1413;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #4f594d;border-radius:4px}
+.skillGrid,.lootGrid,.shopGrid,.equipGrid{gap:8px}.card,.item{padding:10px}.card strong{color:#f1e4c2}.card small{color:#aaa58f}
+.combatHud{top:78px;background:#121d1b;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #847858,0 4px 0 #080c0b;border-radius:6px}
+.combatHud .hudStats{gap:5px}.hudStat{padding:6px;color:#ece2c7}
+.combatActions{background:#111b19;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #8a7d5c,0 4px 0 #080c0b;border-radius:6px}
+.combatActions button{min-height:44px;background:#31433d}.combatActions button:first-child{background:#735936;border-color:#1b130a}
+.choice button{background:#1d2c28}.choice button:hover{background:#31463f}
+.craft-grid{gap:8px}.craft-card{background:#101a19;padding:11px}.craft-card h4{color:#f0dfb4}.mat-pill{background:#0d1615;border:2px solid #465047;color:#d7cfb7;border-radius:4px}
+.guideCard{padding:11px}.guideCard h4{color:#f0dfb4}.guideCard p{color:#b6b09b}
+.filterRow button.on{background:#7b6640;border-color:#d0ae65;color:#fff1cf}
+.sellBox button.junk{background:#503d32;border-color:#1b100b}
+.toast{right:12px;bottom:12px;background:#172522;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #8d805e,0 5px 0 #080c0b;border-radius:5px;color:#f2e7c8}
+.modalBox{background:#172522;border:2px solid #0a1110;box-shadow:inset 0 0 0 1px #8d805e,0 6px 0 #080c0b;border-radius:6px}
+.danger{border-color:#7e403f;background:#392323}
+.smallBtn{padding:7px 8px}
+/* Make the main navigation behave like a game HUD on phones. */
+@media(max-width:700px){
+  .wrap{padding:7px 7px 78px}.top{position:relative;top:auto;padding:8px}.brand{font-size:20px}.grid{display:block}
+  aside{display:block}.panel{margin-bottom:9px}
+  .tabs{position:fixed;left:6px;right:6px;bottom:6px;top:auto;margin:0;z-index:50;overflow-x:auto;padding:5px;border-radius:7px;box-shadow:inset 0 0 0 1px #8d805f,0 5px 0 #080c0b}
+  .tabs button{flex:0 0 auto;min-width:62px;font-size:10px;padding:8px 7px}.combatHud{top:4px}
+  .hero{gap:8px}.enemy{min-height:205px;padding:11px}.enemyIcon{font-size:58px}.enemyName{font-size:18px}
+  .combatActions{bottom:72px;margin-top:8px}.combatActions .row{grid-template-columns:repeat(2,1fr);gap:6px}.combatActions button{min-height:46px;font-size:12px}
+  #combatTab>.panel:last-child{padding-bottom:6px}.skillGrid{grid-template-columns:1fr 1fr}
+  .skillGrid .card{padding:8px}.skillGrid .card small{font-size:10px}.skillGrid .card button{padding:8px}
+  .stats{grid-template-columns:1fr 1fr}.guideGrid{grid-template-columns:1fr}
+}
+@media(max-width:380px){.tabs button{min-width:55px;font-size:9px}.brand{font-size:18px}.hudStat{font-size:10px}.combatActions button{font-size:11px}.skillGrid{grid-template-columns:1fr}}
+
+
+/* ===== v2.4 COMBAT-FIRST MOBILE RPG LAYOUT ===== */
+.encounterPanel{margin-bottom:10px}
+.encounterPanel .sectionTitle h3,.combatToolsPanel .sectionTitle h3,.skillsPanel .sectionTitle h3{font-size:18px;letter-spacing:1.2px}
+.combatMessagePanel{margin-bottom:10px;padding:8px}
+.combatMessagePanel .combatLog{height:auto;min-height:58px;max-height:110px}
+.combatToolsPanel{margin-bottom:10px}
+.combatToolsPanel .combatActions{position:static;margin:0;padding:6px;background:#111b19}
+.combatToolsPanel .combatActions .row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.combatToolsPanel .combatActions button{min-height:58px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:4px}
+.combatToolsPanel .combatActions button:first-child{background:#735936}
+.skillsPanel{margin-bottom:14px}
+.skillsPanel .skillGrid{grid-template-columns:repeat(4,1fr);gap:7px}
+.skillsPanel .skillGrid .card{padding:8px;text-align:center;min-width:0}
+.skillsPanel .skillGrid .card strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skillsPanel .skillGrid .card small{font-size:9px;line-height:1.25;min-height:23px}
+.skillsPanel .skillGrid .card button{padding:7px 5px;font-size:10px;margin-top:5px}
+.encounterPanel .enemy{min-height:205px}
+@media(max-width:700px){
+  .top{margin-bottom:8px}
+  .combatHud{position:static;margin-bottom:9px}
+  .combatHud .hudStats{grid-template-columns:repeat(3,1fr)}
+  .encounterPanel{padding:9px}
+  .encounterPanel .sectionTitle h3{font-size:17px}
+  .combatMessagePanel{padding:7px}
+  .combatToolsPanel{padding:9px}
+  .combatToolsPanel .combatActions{box-shadow:none;border:0;padding:0;background:transparent}
+  .combatToolsPanel .combatActions .row{grid-template-columns:repeat(4,1fr);gap:5px}
+  .combatToolsPanel .combatActions button{min-height:58px;padding:7px 4px;font-size:11px}
+  .skillsPanel{padding:9px}
+  .skillsPanel .skillGrid{grid-template-columns:repeat(4,1fr);gap:5px}
+  .skillsPanel .skillGrid .card{padding:6px 4px}
+  .skillsPanel .skillGrid .card strong{font-size:10px}
+  .skillsPanel .skillGrid .card small{font-size:8px;min-height:22px}
+  .skillsPanel .skillGrid .card button{font-size:9px;padding:6px 3px}
+  .skillsPanel .sectionTitle h3{font-size:16px}
+}
+@media(max-width:390px){
+  .combatToolsPanel .combatActions button{font-size:10px;min-height:54px}
+  .skillsPanel .skillGrid .card strong{font-size:9px}
+  .skillsPanel .skillGrid .card small{font-size:7.5px}
+  .skillsPanel .skillGrid .card button{font-size:8px}
+}
+
+/* v2.5 build + loot presentation */
+.buildFocus{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0}.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid #3b4a65;background:#101a2a;border-radius:7px;font-size:11px}.affixList{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}.affix{font-size:10px;padding:3px 6px;border:1px solid #4a5b77;border-radius:6px;background:#111b2c;color:#e7d9b7}.affix.weaponAffix{border-color:#744b39}.affix.armorAffix{border-color:#3d6070}.powerScore{font-size:12px;color:var(--gold);font-weight:800}.lootReveal{border:1px solid #5a4c2e;background:#16160f;border-radius:9px;padding:9px;margin-top:7px}.lootReveal .affix{display:inline-block;margin:2px 2px 0 0}.classPassive{border-left:3px solid var(--gold);padding-left:8px;margin-top:7px}.compare{font-size:11px;color:var(--muted);margin-top:4px}.evolutionGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.setBadge{display:inline-flex;gap:5px;align-items:center;padding:3px 7px;border:1px solid #6b5934;background:#17150f;border-radius:7px;font-size:10px;font-weight:800}.uniqueBadge{display:inline-flex;gap:5px;align-items:center;padding:3px 7px;border:1px solid #6d4f83;background:#17101f;border-radius:7px;font-size:10px;font-weight:800}.buildEffect{font-size:11px;color:var(--muted);line-height:1.35}@media(max-width:700px){.evolutionGrid{grid-template-columns:1fr 1fr}}@media(max-width:500px){.evolutionGrid{grid-template-columns:1fr}}
+
+/* v2.6 Dungeon Trials */
+.dungeonPanel{border:1px solid #5c4b2c;background:linear-gradient(180deg,#151b25,#0e141d);border-radius:10px;padding:10px;margin-top:10px}.dungeonHeader{display:flex;justify-content:space-between;gap:8px;align-items:center}.dungeonRooms{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:9px 0}.dungeonRoom{height:8px;border:1px solid #39485e;background:#0a0f17;border-radius:3px}.dungeonRoom.done{background:#8d6b2c;border-color:#c59a4b}.dungeonRoom.current{background:#4d7e75;border-color:#8cc8ad}.dungeonReward{border:1px solid #4d5c78;background:#101a2a;padding:8px;border-radius:8px;margin-top:8px}.trialBadge{font-size:10px;padding:3px 6px;border:1px solid #765f34;border-radius:6px;color:#e7d9b7;background:#1b1810}
+@media(max-width:600px){.dungeonRooms{gap:4px}.dungeonPanel{padding:8px}}
+.dungeonCard{border:1px solid #5c4b2c;background:linear-gradient(180deg,#151b25,#0d131c);border-radius:10px;padding:10px}.dungeonGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.dungeonRun{border:1px solid #765f34;background:#15130d;padding:9px;border-radius:8px;margin-bottom:10px}.dungeonRewardGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}.dungeonStat{border:1px solid #39485e;background:#101827;border-radius:7px;padding:6px;text-align:center;font-size:11px}.dungeonMod{border-left:3px solid #8d6b2c;padding-left:7px;margin-top:7px}@media(max-width:700px){.dungeonGrid{grid-template-columns:1fr}.dungeonRewardGrid{grid-template-columns:1fr 1fr}}
+</style></head><body><div class="wrap">
+<div class="top"><div><div class="brand">🔥 EMBERFALL: REIGNITION</div><div class="tag">v2.9 • Build Evolution, Dungeons & Trials</div></div><div class="row"><button onclick="saveGame()">💾 Save</button><button onclick="loadGame()">↩ Load</button><button onclick="resetGame()" class="danger">Reset</button></div></div>
+<div class="grid"><aside>
+<div class="panel"><h3>Adventurer</h3><div id="playerCard"></div></div>
+<div class="panel"><h3>Equipment</h3><div id="equipCard"></div></div>
+<div class="panel"><h3>Build</h3><div id="buildCard"></div></div>
+<div class="panel"><h3>Run</h3><div id="runCard"></div></div>
+</aside><main>
+<div class="tabs"><button id="tabCombat" class="on" onclick="tab('combat')">⚔️ Combat</button><button id="tabWorld" onclick="tab('world')">🗺️ World</button><button id="tabInventory" onclick="tab('inventory')">🎒 Inventory</button><button id="tabTown" onclick="tab('town')">🏘️ Emberhold</button><button id="tabDungeons" onclick="tab('dungeons')">🏰 Dungeons</button><button id="tabQuests" onclick="tab('quests')">📜 Quests</button><button id="tabGuide" onclick="tab('guide')">📖 Guide</button></div>
+<section id="combatTab">
+  <div class="combatHud" id="combatHud"></div>
+  <div class="panel encounterPanel">
+    <div class="sectionTitle"><h3>🌲 Exploration</h3><span id="battleState" class="sub"></span></div>
+    <div id="enemyBox"></div>
+  </div>
+  <div class="panel combatMessagePanel">
+    <div class="combatLog" id="combatLog"></div>
+  </div>
+  <div class="panel combatToolsPanel">
+    <div class="sectionTitle"><h3>⚔️ Combat Tools</h3><span class="sub">No energy cost • Always available</span></div>
+    <div class="combatActions"><div class="row"><button onclick="basicAttack()">⚔️ Attack</button><button onclick="defend()">🛡️ Guard</button><button onclick="usePotion()">🧪 Potion</button><button onclick="flee()">🏃 Flee</button></div></div>
+  </div>
+  <div class="panel skillsPanel">
+    <div class="sectionTitle"><h3>✨ Skills</h3><span class="sub">Consumes MP / Stamina</span></div>
+    <div id="skillBox"></div>
+  </div>
+</section>
+<section id="worldTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>World Map</h3><span class="sub">Threat rises with distance</span></div><div id="worldBox"></div></div></section>
+<section id="inventoryTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Inventory</h3><span id="invCount" class="sub"></span></div><div id="inventoryBox"></div></div></section>
+<section id="townTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Emberhold</h3><span class="sub">Prepare before your next expedition</span></div><div id="townBox"></div></div></section><section id="dungeonsTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>🏰 Dungeons</h3><span class="sub">Multi-room challenges with unique rewards</span></div><div id="dungeonBox"></div></div></section>
+<section id="questsTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>Quest Board</h3><span class="sub">Complete goals while exploring</span></div><div id="questBox"></div></div></section><section id="guideTab" class="hide"><div class="panel"><div class="sectionTitle"><h3>📖 Emberfall Guide</h3><span class="sub">Learn the rules without guessing</span></div><div id="guideBox"></div></div></section>
+</main></div></div><div id="toast" class="toast"></div><div id="modal" class="modal"><div class="modalBox" id="modalBox"></div></div>
+<script>
+'use strict';
+const KEY='emberfall_reignition_v2';
+const CLASS={Vanguard:{icon:'🛡️',desc:'Durable bruiser. High HP and defense.',atk:1.0,def:1.25,hp:1.22,mp:.9,crit:.9},Striker:{icon:'⚔️',desc:'Fast damage dealer. Critical hits and stamina.',atk:1.18,def:.9,hp:.95,mp:1,crit:1.35},Arcanist:{icon:'🔮',desc:'Skill-heavy caster. Huge MP and spell power.',atk:1.08,def:.8,hp:.9,mp:1.45,crit:1.1},Warden:{icon:'🌿',desc:'Sustain specialist. Healing and resource efficiency.',atk:.94,def:1.12,hp:1.1,mp:1.2,crit:.95}};
+const MAX_LEVEL=20;
+const REGIONS={
+  Emberfield:{level:1,trialLevel:5,icon:'🌾',desc:'The safe outskirts. Slimes and wolves roam here.',scale:1.00,loot:'common',feature:'Balanced',event:'A quiet breeze passes through the fields.',trial:'Trial of the Wild',trialBoss:'Treant'},
+  MoonlitGrove:{level:6,trialLevel:10,icon:'🌲',desc:'A moonlit forest filled with strange beasts.',scale:1.18,loot:'uncommon',feature:'Moonlit',event:'The moonlight sharpens the senses of creatures here.',trial:'Trial of Shadows',trialBoss:'CinderWraith'},
+  AshenHollow:{level:11,trialLevel:15,icon:'🌑',desc:'Charred ruins where elites gather.',scale:1.38,loot:'rare',feature:'Scorched',event:'Ash swirls through the ruins. Enemies strike harder here.',trial:'Trial of Ash',trialBoss:'EmberTitan'},
+  EmberSanctum:{level:16,trialLevel:20,icon:'🔥',desc:'A sealed volcanic sanctum. Boss territory.',scale:1.62,loot:'epic',feature:'Inferno',event:'Heat surges from the stone. Bosses awaken within.',trial:'Trial of Embers',trialBoss:'AshenKing'}
+};
+const DUNGEONS={
+  ForgottenMine:{level:5,world:'Emberfield',icon:'⛏️',name:'Forgotten Mine',desc:'A collapsed mine haunted by slimes, wolves and an ancient guardian.',rooms:5,boss:'Treant',cost:15,rewardGold:180,rewardXp:260,loot:'uncommon',mod:'Ore Surge',modDesc:'+25% Ore chance from dungeon rewards.'},
+  MoonlitRuins:{level:10,world:'MoonlitGrove',icon:'🏚️',name:'Moonlit Ruins',desc:'Broken temples where wisps and shadow beasts guard lost relics.',rooms:6,boss:'CinderWraith',cost:18,rewardGold:300,rewardXp:420,loot:'rare',mod:'Moon Echo',modDesc:'The final boss gains a stronger Arcane pulse.'},
+  AshenFortress:{level:15,world:'AshenHollow',icon:'🏰',name:'Ashen Fortress',desc:'A scorched stronghold packed with elites and cursed defenders.',rooms:7,boss:'EmberTitan',cost:22,rewardGold:500,rewardXp:700,loot:'epic',mod:'Ashen Fury',modDesc:'Elite rooms appear more often and hit harder.'},
+  SanctumDepths:{level:20,world:'EmberSanctum',icon:'🌋',name:'Sanctum Depths',desc:'The sealed depths beneath the Sanctum. Only finished builds survive.',rooms:8,boss:'AshenKing',cost:28,rewardGold:850,rewardXp:1100,loot:'epic',mod:'Inferno',modDesc:'All dungeon enemies gain extra power.'}
+};
+const ENEMIES={
+Slime:{icon:'🟢',base:1,hp:38,atk:7,def:2,xp:20,gold:8,ability:'split'},Wolf:{icon:'🐺',base:2,hp:52,atk:11,def:3,xp:28,gold:11,ability:'howl'},Wisp:{icon:'✨',base:3,hp:62,atk:15,def:4,xp:34,gold:14,ability:'spark'},Treant:{icon:'🌳',base:4,hp:105,atk:19,def:8,xp:55,gold:24,ability:'fortify'},Ashfang:{icon:'🐗',base:6,hp:150,atk:25,def:11,xp:82,gold:36,ability:'rend'},CinderWraith:{icon:'👻',base:8,hp:190,atk:32,def:13,xp:110,gold:48,ability:'curse'},EmberTitan:{icon:'🔥',base:10,hp:360,atk:45,def:18,xp:260,gold:120,boss:true,ability:'inferno'},AshenKing:{icon:'👑',base:14,hp:650,atk:64,def:25,xp:700,gold:350,boss:true,ability:'royal'}};
+const SKILLS={slash:{name:'Cleave',icon:'⚔️',cost:5,st:8,mult:1.55,desc:'Heavy physical strike.'},fire:{name:'Ember Bolt',icon:'🔥',cost:12,st:0,mult:2.0,desc:'Magic damage; ignores some armor.'},guard:{name:'Bulwark',icon:'🛡️',cost:8,st:4,mult:0,desc:'Gain Guard for one enemy turn and recover stamina.'},drain:{name:'Soul Mend',icon:'💠',cost:14,st:0,mult:0,desc:'Deal damage and restore HP.'}};
+
+const AFFIXES={
+  weapon:[
+    {id:'keen',name:'Keen',icon:'🎯',desc:'+3% Crit',crit:3},
+    {id:'brutal',name:'Brutal',icon:'⚔️',desc:'+3 ATK',atk:3},
+    {id:'ember',name:'Ember',icon:'🔥',desc:'+8% skill damage',skill:8},
+    {id:'swift',name:'Swift',icon:'💨',desc:'+4 Max Stamina',st:4},
+    {id:'fortune',name:'Fortune',icon:'🍀',desc:'+2% Crit, +4% gold',crit:2,gold:4}
+  ],
+  armor:[
+    {id:'sturdy',name:'Sturdy',icon:'🛡️',desc:'+3 DEF',def:3},
+    {id:'vital',name:'Vital',icon:'❤️',desc:'+18 Max HP',hp:18},
+    {id:'arcane',name:'Arcane',icon:'🔮',desc:'+10 Max MP',mp:10},
+    {id:'enduring',name:'Enduring',icon:'⚡',desc:'+4 Max Stamina',st:4},
+    {id:'warded',name:'Warded',icon:'✨',desc:'+4% skill resistance',resist:4}
+  ]
+};
+const GEAR_SETS={
+  Ironbound:{name:'Ironbound',icon:'🛡️',world:'Emberfield',bonus:'2-piece: +5 DEF and +12 HP.',def:5,hp:12},
+  Moonveil:{name:'Moonveil',icon:'🌙',world:'MoonlitGrove',bonus:'2-piece: +5% Crit and +8 Max MP.',crit:5,mp:8},
+  Ashforged:{name:'Ashforged',icon:'🔥',world:'AshenHollow',bonus:'2-piece: +6 ATK and +8% skill damage.',atk:6,skill:8},
+  Emberheart:{name:'Emberheart',icon:'❤️‍🔥',world:'EmberSanctum',bonus:'2-piece: +10 ATK, +10 DEF, +10% victory recovery.',atk:10,def:10,recovery:10}
+};
+const UNIQUE_EFFECTS={
+  titanBlade:{name:'Titanbreaker',desc:'+10% damage against bosses.',effect:'bossDamage',value:10},
+  titanPlate:{name:'Titan Ward',desc:'+8% Guard damage reduction.',effect:'guard',value:8},
+  kingBlade:{name:'Royal Execution',desc:'+12% damage against enemies below 50% HP.',effect:'lowHpDamage',value:12},
+  kingMail:{name:'Royal Aegis',desc:'Take 8% less incoming damage.',effect:'damageReduction',value:8}
+};
+function setIdForWorld(world){return world==='Emberfield'?'Ironbound':world==='MoonlitGrove'?'Moonveil':world==='AshenHollow'?'Ashforged':'Emberheart'}
+function setFor(it){return it&&it.setId?GEAR_SETS[it.setId]:null}
+function uniqueFor(it){return it&&it.uniqueId?UNIQUE_EFFECTS[it.uniqueId]:null}
+
+const CLASS_PASSIVE={
+  Vanguard:{name:'Ironheart',desc:'+2 DEF and stronger Guard.'},
+  Striker:{name:'Killer Instinct',desc:'+5% Crit chance.'},
+  Arcanist:{name:'Ember Scholar',desc:'+10% skill damage.'},
+  Warden:{name:'Kindled Renewal',desc:'+15% victory recovery.'}
+};
+const CLASS_SKILLS={
+  Vanguard:[
+    {id:'ironWill',name:'Iron Will',icon:'🛡️',max:5,cost:1,desc:'+2 DEF per rank.',stat:'def',value:2},
+    {id:'heavyGuard',name:'Heavy Guard',icon:'🧱',max:3,cost:1,desc:'Guard damage reduction improves by 5% per rank.',effect:'guard'},
+    {id:'retaliation',name:'Retaliation',icon:'⚔️',max:3,cost:2,desc:'After guarding, gain +4% next attack damage per rank.',effect:'retaliation',req:'heavyGuard',reqRank:2}
+  ],
+  Striker:[
+    {id:'killerInstinct',name:'Killer Instinct',icon:'🎯',max:5,cost:1,desc:'+2% Crit chance per rank.',stat:'crit',value:2},
+    {id:'quickstep',name:'Quickstep',icon:'💨',max:3,cost:1,desc:'+2 Max Stamina per rank.',stat:'st',value:2},
+    {id:'executioner',name:'Executioner',icon:'☠️',max:3,cost:2,desc:'+8% damage against enemies below 30% HP per rank.',effect:'execute',req:'killerInstinct',reqRank:3}
+  ],
+  Arcanist:[
+    {id:'emberScholar',name:'Ember Scholar',icon:'🔥',max:5,cost:1,desc:'+2% skill damage per rank.',stat:'skill',value:2},
+    {id:'arcaneSurge',name:'Arcane Surge',icon:'🔮',max:3,cost:1,desc:'+3 Max MP per rank.',stat:'mp',value:3},
+    {id:'manaEfficiency',name:'Mana Efficiency',icon:'💧',max:3,cost:2,desc:'Skills cost 5% less MP per rank.',effect:'mana',req:'emberScholar',reqRank:3}
+  ],
+  Warden:[
+    {id:'kindledRenewal',name:'Kindled Renewal',icon:'🌿',max:5,cost:1,desc:'+3% victory recovery per rank.',stat:'recovery',value:3},
+    {id:'spiritBond',name:'Spirit Bond',icon:'✨',max:3,cost:1,desc:'+2 Max HP per level of rank.',stat:'hp',value:6},
+    {id:'vitalBloom',name:'Vital Bloom',icon:'💚',max:3,cost:2,desc:'Soul Mend healing improves by 10% per rank.',effect:'heal',req:'kindledRenewal',reqRank:3}
+  ]
+};
+const SPECIALIZATIONS={
+  Vanguard:[
+    {id:'guardian',name:'Guardian',icon:'🛡️',desc:'+10 DEF and +8% Guard recovery.',def:10,recovery:8},
+    {id:'juggernaut',name:'Juggernaut',icon:'🧱',desc:'+12% Max HP and +4 ATK.',hpPct:12,atk:4},
+    {id:'warlord',name:'Warlord',icon:'⚔️',desc:'+8 ATK and +4% Crit.',atk:8,crit:4}
+  ],
+  Striker:[
+    {id:'assassin',name:'Assassin',icon:'☠️',desc:'+8% Crit and +10% damage below 50% enemy HP.',crit:8,lowHpDamage:10},
+    {id:'duelist',name:'Duelist',icon:'⚔️',desc:'+7 ATK and +5 Max Stamina.',atk:7,st:5},
+    {id:'raider',name:'Raider',icon:'💨',desc:'+10 Max Stamina and +5% gold from victories.',st:10,gold:5}
+  ],
+  Arcanist:[
+    {id:'pyromancer',name:'Pyromancer',icon:'🔥',desc:'+12% skill damage and +4 ATK.',skill:12,atk:4},
+    {id:'archmage',name:'Archmage',icon:'🔮',desc:'+15 Max MP and +5% skill damage.',mp:15,skill:5},
+    {id:'spellweaver',name:'Spellweaver',icon:'✨',desc:'+5% Crit and +8 Max MP.',crit:5,mp:8}
+  ],
+  Warden:[
+    {id:'lifebinder',name:'Lifebinder',icon:'💚',desc:'+12% victory recovery and +8 Max HP.',recovery:12,hp:8},
+    {id:'spiritkeeper',name:'Spiritkeeper',icon:'🌿',desc:'+14 Max HP and +10 Max MP.',hp:14,mp:10},
+    {id:'verdant',name:'Verdant',icon:'🌱',desc:'+8 Max Stamina and +8% skill healing.',st:8,heal:8}
+  ]
+};
+function specializationDef(){return (SPECIALIZATIONS[S.class]||[]).find(x=>x.id===S.specialization)}
+function chooseSpecialization(id){
+  if(E){toast('Finish combat before choosing a specialization.');return}
+  if(S.level<10){toast('Reach Lv.10 to unlock specialization.');return}
+  if(S.specialization){toast('Specialization already chosen.');return}
+  const sp=(SPECIALIZATIONS[S.class]||[]).find(x=>x.id===id); if(!sp){toast('Unknown specialization.');return}
+  S.specialization=id; log(`🧬 Specialization unlocked: <b>${sp.icon} ${sp.name}</b>.`,'legend'); saveGame(true); render();
+}
+
+function classSkillRank(id){return Math.max(0,Math.floor(Number((S.classSkills||{})[id])||0))}
+function classSkillDef(id){return (CLASS_SKILLS[S.class]||[]).find(x=>x.id===id)}
+function canBuyClassSkill(sk){const rank=classSkillRank(sk.id);if(rank>=sk.max)return false;if(S.skillPoints<sk.cost)return false;if(sk.req&&classSkillRank(sk.req)<sk.reqRank)return false;return true}
+function buyClassSkill(id){const sk=classSkillDef(id);if(!sk){toast('Unknown class skill.');return}if(!canBuyClassSkill(sk)){toast('Skill locked, maxed, or not enough class points.');return}S.skillPoints-=sk.cost;S.classSkills[id]=classSkillRank(id)+1;log(`✨ ${sk.name} advanced to Rank ${S.classSkills[id]}.`,'rare');saveGame(true);render();}
+const RARITY_AFFIX_COUNT={common:0,uncommon:1,rare:2,epic:3,legend:4};
+function affixDef(id,type){return (AFFIXES[type]||[]).find(a=>a.id===id)}
+function rollAffixes(type,rarity){
+  const count=RARITY_AFFIX_COUNT[rarity]||0, pool=[...(AFFIXES[type]||[])], out=[];
+  while(out.length<count&&pool.length){const i=Math.floor(Math.random()*pool.length);out.push(pool.splice(i,1)[0].id)}
+  return out;
+}
+function ensureAffixes(it){
+  if(!it || (it.type!=='weapon'&&it.type!=='armor')) return it;
+  if(!Array.isArray(it.affixes)) it.affixes=[];
+  it.affixes=it.affixes.filter(id=>!!affixDef(id,it.type));
+  return it;
+}
+function affixText(it){
+  ensureAffixes(it);
+  return (it.affixes||[]).map(id=>affixDef(id,it.type)).filter(Boolean);
+}
+function affixMarkup(it){
+  const list=affixText(it); if(!list.length)return '';
+  return '<div class="affixList">'+list.map(a=>`<span class="affix ${it.type}Affix">${a.icon} ${a.name}</span>`).join('')+'</div>';
+}
+function affixSummary(it){
+  const list=affixText(it); return list.map(a=>a.desc).join(' • ');
+}
+function itemPower(it){
+  if(!it)return 0;
+  ensureAffixes(it);
+  const base=(Number(it.atk)||0)*2+(Number(it.def)||0)*2+(Number(it.level)||0)*3;
+  const bonus=affixText(it).reduce((n,a)=>n+(a.atk||0)*2+(a.def||0)*2+(a.hp||0)/6+(a.mp||0)/4+(a.st||0)*2+(a.crit||0)*1.5+(a.skill||0)*1.2,0);
+  const set=setFor(it), unique=uniqueFor(it);
+  const setScore=set?((set.atk||0)*2+(set.def||0)*2+(set.hp||0)/6+(set.mp||0)/4+(set.crit||0)*1.5+(set.skill||0)*1.2):0;
+  const uniqueScore=unique?8:0;
+  return Math.max(0,Math.round(base+bonus+setScore+uniqueScore));
+}
+function buildPower(){return itemPower(S.eq.weapon)+itemPower(S.eq.armor)+S.level*5+S.talents.might*3+S.talents.arcana*3+S.talents.vitality*3+S.talents.fortune*3}
+function buildFocus(){const t=S.talents||{}, entries=[['⚔️ Might',t.might||0],['🔮 Arcana',t.arcana||0],['❤️ Vitality',t.vitality||0],['🍀 Fortune',t.fortune||0]].sort((a,b)=>b[1]-a[1]);return entries[0][1]>0?entries[0][0]+' '+entries[0][1]:'Balanced'}
+
+let S=defaultState(), E=null, turn=0, currentTab='combat', guard=false, autosaveTimer=null;
+function defaultState(){return {name:'Ashborn',level:1,xp:0,gold:80,hp:100,maxHp:100,mp:45,maxMp:45,st:30,maxSt:30,atk:13,def:5,crit:8,baseStats:{hp:100,mp:45,st:30,atk:13,def:5,crit:8},points:0,skillPoints:0,class:'Vanguard',region:'Emberfield',distance:0,inv:[{id:'potion',name:'Small Potion',type:'potion',qty:3,rarity:'common',heal:45},{id:'ether',name:'Mana Tonic',type:'mana',qty:2,rarity:'uncommon',heal:25}],eq:{weapon:{name:'Emberblade',type:'weapon',atk:3,rarity:'common',value:25},armor:{name:'Traveler Coat',type:'armor',def:2,rarity:'common',value:20}},materials:{herb:2,essence:1,ore:0},crafting:{crafted:0},upgrades:{weapon:0,armor:0},talents:{might:0,arcana:0,vitality:0,fortune:0},classSkills:{},specialization:'',quests:{slay:0,elite:0,explore:0,firstVictory:false,firstUpgrade:false,firstCraft:false,rareGear:false,epicGear:false,legendGear:false,trialEnter:false,trialClear:false,worlds:{}},achievements:{kills:0,elites:0,bosses:0,explores:0,crafts:0,upgrades:0,trials:0,legendary:0,worlds:{},claimed:{}},inventorySellMode:false,questsView:'quests',retaliationReady:0,bosses:{EmberTitan:false,AshenKing:false},story:0,runKills:0,runGold:0,runBest:0,started:Date.now(),statuses:{burn:0,bleed:0,curse:0},dungeon:{active:false,room:0,maxRooms:5,best:0,attempts:0,clears:0},dungeonRun:{active:false,id:null,room:0,maxRooms:0,attempts:0,clears:0,best:0}};}
+function cls(){return CLASS[S.class]||CLASS.Vanguard}function need(){return S.level>=MAX_LEVEL?1:Math.floor(70*Math.pow(S.level,1.38))}function log(m,c=''){const el=document.getElementById('combatLog');el.innerHTML='<div class="logLine '+c+'">'+m+'</div>'+el.innerHTML;el.innerHTML=el.innerHTML.slice(0,9000)}function toast(m){const t=document.getElementById('toast');t.innerHTML=m;t.style.display='block';clearTimeout(window._toast);window._toast=setTimeout(()=>t.style.display='none',2300)}
+function levelBase(){return {hp:100+(S.level-1)*14,mp:45+(S.level-1)*5,st:30,atk:13+(S.level-1)*2,def:5+(S.level-1),crit:8}}
+function effective(){
+  const b=Object.assign(levelBase(),S.baseStats||{}), w=S.eq.weapon||{}, a=S.eq.armor||{}, c=cls(), t=S.talents||{};
+  ensureAffixes(w); ensureAffixes(a);
+  const wa=affixText(w), aa=affixText(a), all=[...wa,...aa];
+  const add=(key)=>all.reduce((n,x)=>n+(Number(x[key])||0),0);
+  const critAdd=add('crit'), skillAdd=add('skill'), hpAdd=add('hp'), mpAdd=add('mp'), stAdd=add('st'); const cs=S.classSkills||{}; const rank=id=>Math.max(0,Number(cs[id])||0); const cDefs=CLASS_SKILLS[S.class]||[]; const csum=k=>cDefs.reduce((n,x)=>n+(x.stat===k?rank(x.id)*(x.value||0):0),0);
+  const sp=specializationDef()||{}; const ws=setFor(w), as=setFor(a); const sameSet=!!(ws&&as&&w.setId===a.setId); const setBonus=sameSet?ws:{}; const wu=uniqueFor(w), au=uniqueFor(a); const allU=[wu,au].filter(Boolean);
+  const uniqueSum=k=>allU.reduce((n,x)=>n+(x.effect===k?Number(x.value)||0:0),0);
+  return {
+    atk:Math.max(1,Math.floor(((Number(b.atk)||0)+(Number(w.atk)||0)+add('atk')+(setBonus.atk||0)+(sp.atk||0))*(c.atk+(Number(t.might)||0)*.04))),
+    def:Math.max(0,Math.floor(((Number(b.def)||0)+(Number(a.def)||0)+add('def')+(setBonus.def||0)+(sp.def||0))*(c.def+(Number(t.vitality)||0)*.04)+(S.class==='Vanguard'?2:0))),
+    hp:Math.max(1,Math.floor((Number(b.hp)||100)*c.hp*(1+(Number(t.vitality)||0)*.06)*(1+(Number(sp.hpPct)||0)/100)+hpAdd+(setBonus.hp||0)+(sp.hp||0)+csum('hp'))),
+    mp:Math.max(1,Math.floor((Number(b.mp)||45)*c.mp*(1+(Number(t.arcana)||0)*.07)+mpAdd+(setBonus.mp||0)+(sp.mp||0)+csum('mp'))),
+    crit:Math.max(0,(Number(b.crit)||8)*c.crit+(Number(t.fortune)||0)*2+critAdd+(S.class==='Striker'?5:0)+(setBonus.crit||0)+(sp.crit||0)+csum('crit')),
+    st:Math.max(1,(Number(b.st)||30)+stAdd+(setBonus.st||0)+(sp.st||0)+csum('st')),
+    skillBonus:skillAdd+(S.class==='Arcanist'?10:0)+(setBonus.skill||0)+(sp.skill||0)+csum('skill'),
+    recoveryMult:(S.class==='Warden'?1.15:1)+(csum('recovery')/100)+(setBonus.recovery||0)/100+(sp.recovery||0)/100,
+    damageBonus:uniqueSum('bossDamage'),
+    lowHpDamageBonus:uniqueSum('lowHpDamage')+(sp.lowHpDamage||0),
+    damageReduction:Math.min(50,uniqueSum('damageReduction')),
+    guardBonus:uniqueSum('guard')
+  };
+}
+function syncVitals(){
+  const e=effective();
+  S.maxHp=e.hp; S.maxMp=e.mp; S.maxSt=e.st;
+  if(!Number.isFinite(S.hp)||S.hp<0)S.hp=e.hp;
+  if(!Number.isFinite(S.mp)||S.mp<0)S.mp=e.mp;
+  if(!Number.isFinite(S.st)||S.st<0)S.st=S.maxSt;
+  S.hp=Math.min(S.hp,e.hp); S.mp=Math.min(S.mp,e.mp); S.st=Math.min(S.st,S.maxSt);
+  S.gold=Math.max(0,Number.isFinite(S.gold)?Math.floor(S.gold):0);
+  S.materials.herb=Math.max(0,Number.isFinite(S.materials.herb)?Math.floor(S.materials.herb):0);
+  S.materials.essence=Math.max(0,Number.isFinite(S.materials.essence)?Math.floor(S.materials.essence):0);
+  S.materials.ore=Math.max(0,Number.isFinite(S.materials.ore)?Math.floor(S.materials.ore):0);
+}
+function renderCombatHud(){
+  const el=document.getElementById('combatHud'); if(!el)return;
+  const ef=effective();
+  el.innerHTML=`<div class="hudStats"><div class="hudStat">❤️ <b>${S.hp}/${ef.hp}</b><div class="bar"><div class="fill hp" style="width:${100*S.hp/ef.hp}%"></div></div></div><div class="hudStat">💧 <b>${S.mp}/${ef.mp}</b><div class="bar"><div class="fill mp" style="width:${100*S.mp/ef.mp}%"></div></div></div><div class="hudStat">⚡ <b>${S.st}/${S.maxSt}</b><div class="bar"><div class="fill st" style="width:${100*S.st/S.maxSt}%"></div></div></div></div>`;
+}
+function renderGuide(){
+  const box=document.getElementById('guideBox'); if(!box)return;
+  const cards=[
+    ['⚔️ Combat','Attack deals basic damage. Skills spend MP and sometimes Stamina. Guard reduces the next incoming hit and helps recover resources. Potions can be used during combat.'],
+    ['🌎 Exploration','Explore the current region to encounter enemies, elites, treasure, or materials. Travel to stronger regions when you meet their level requirement.'],
+    ['❤️ Stats','HP is your health, MP powers skills, and Stamina is used by exploration/combat actions. Winning a fight restores a small amount of all three.'],
+    ['⭐ Rarity','Common is basic, Uncommon is improved, Rare is powerful, Epic is high-end, and Legendary is extremely rare. Higher rarity generally means better equipment.'],
+    ['✨ Affixes & Builds','Higher-rarity equipment can roll more affixes. Affixes add focused bonuses such as Crit, HP, MP, Stamina, Defense, or skill power. Build Power is a quick estimate of your current setup.'],
+    ['🏷️ Equipment Level','Equipment has its own upgrade level. A weapon at Lv.10 does not affect another weapon at Lv.0. Blacksmith cost is based on the specific item.'],
+    ['🎒 Inventory','Use filters to find equipment or consumables. Sell Mode lets you sell eligible items individually, while Bulk Sell clears common gear/junk in one action. Equipped gear is protected.'],
+    ['🔨 Blacksmith','Upgrade your currently equipped weapon or armor. Each item keeps its own upgrade level, stats, and cost.'],
+    ['🧪 Crafting','Gather Herb, Essence, and Ore while exploring. Craft health, mana, and stamina recovery items; stronger recipes unlock with level.'],
+    ['⚡ Stamina','Stamina regenerates during combat and can be restored with Stamina Tonics or victory recovery. It also limits how often you can explore efficiently.'],
+    ['💾 Saving','Your progress is stored locally in this browser. Use Save for a manual save; autosave also runs periodically.'],
+    ['🎯 What should I do?','Explore → fight → collect loot/materials → equip or craft → upgrade at Emberhold → unlock stronger regions → defeat bosses.'],
+    ['🔥 Ember Resonance','A future signature system is planned for Emberfall. World Trials are now the repeatable build-testing challenge for each region.'],['⚔️ World Trials','Each world has its own five-room Trial. Unlock it near the end of that world, face its enemies and Guardian, and earn world-appropriate high-rarity loot.'],['🧬 Build Evolution','At Lv.10, choose one permanent specialization for your class. Matching world gear can form a 2-piece set, while boss Legendary gear can carry unique effects.'],['📈 Progression','Worlds now unlock at Lv.1, 6, 11, and 16. The V2.x level cap is Lv.20, giving each world more room for builds and progression.']
+  ];
+  box.innerHTML='<div class="guideGrid">'+cards.map(c=>`<div class="guideCard"><h4>${c[0]}</h4><p>${c[1]}</p></div>`).join('')+'</div>';
+}
+function render(){syncVitals();const ef=effective();document.getElementById('playerCard').innerHTML=`<div class="between"><b>Lv.${S.level} ${cls().icon} ${S.class}</b><span class="gold">${S.gold}g</span></div><div class="sub">${S.name}</div><div class="stat"><span>❤️ ${S.hp}/${S.maxHp}</span><div class="bar"><div class="fill hp" style="width:${100*S.hp/S.maxHp}%"></div></div><span>💧 ${S.mp}/${S.maxMp}</span><div class="bar"><div class="fill mp" style="width:${100*S.mp/S.maxMp}%"></div></div><span>⚡ ${S.st}/${S.maxSt}</span><div class="bar"><div class="fill st" style="width:${100*S.st/S.maxSt}%"></div></div><span>⭐ ${S.level>=MAX_LEVEL?'MAX LEVEL':S.xp+'/'+need()}</span><div class="bar"><div class="fill xp" style="width:${S.level>=MAX_LEVEL?100:Math.min(100,100*S.xp/need())}%"></div></div></div><div class="stats"><div class="stat"><span class="sub">Attack</span><b>${ef.atk}</b></div><div class="stat"><span class="sub">Defense</span><b>${ef.def}</b></div><div class="stat"><span class="sub">Crit</span><b>${ef.crit.toFixed(1)}%</b></div><div class="stat"><span class="sub">Skill pts</span><b>${S.skillPoints}</b></div></div>`;
+const w=S.eq.weapon,a=S.eq.armor;document.getElementById('equipCard').innerHTML=`<div class="item"><div class="grow"><b class="${w.rarity}">⚔️ ${w.name}</b><div class="sub">+${w.atk} ATK • Lv.${w.level||0} • Power ${itemPower(w)}</div>${affixMarkup(w)}${setFor(w)?'<div class="setBadge">'+setFor(w).icon+' '+setFor(w).name+' Set</div>':''}${uniqueFor(w)?'<div class="uniqueBadge">✨ '+uniqueFor(w).name+': '+uniqueFor(w).desc+'</div>':''}</div></div><div class="item"><div class="grow"><b class="${a.rarity}">🛡️ ${a.name}</b><div class="sub">+${a.def} DEF • Lv.${a.level||0} • Power ${itemPower(a)}</div>${affixMarkup(a)}${setFor(a)?'<div class="setBadge">'+setFor(a).icon+' '+setFor(a).name+' Set</div>':''}${uniqueFor(a)?'<div class="uniqueBadge">✨ '+uniqueFor(a).name+': '+uniqueFor(a).desc+'</div>':''}</div></div>`;
+const classSkillHtml='<div class="panel" style="margin-top:10px"><div class="sectionTitle"><h3>✨ Class Skills</h3><span class="gold">'+S.skillPoints+' pts</span></div><div class="classSkillGrid">'+(CLASS_SKILLS[S.class]||[]).map(sk=>{const r=classSkillRank(sk.id),locked=!!(sk.req&&classSkillRank(sk.req)<sk.reqRank),can=canBuyClassSkill(sk);return '<div class="card '+(locked?'locked':'')+'"><strong>'+sk.icon+' '+sk.name+'</strong><small>Rank '+r+'/'+sk.max+'<br>'+sk.desc+(sk.req?'<br>Requires '+(classSkillDef(sk.req)?.name||sk.req)+' Lv.'+sk.reqRank:'')+'</small><button class="smallBtn" onclick="buyClassSkill(\''+sk.id+'\')" '+((!can||locked)?'disabled':'')+'>'+(r>=sk.max?'MAX':locked?'Locked':'Unlock • '+sk.cost+' pt')+'</button></div>'}).join('')+'</div></div>';
+const sp=specializationDef(); const specHtml='<div class="panel" style="margin-top:10px"><div class="sectionTitle"><h3>🧬 Build Evolution</h3><span class="gold">'+(S.level>=10?(sp?sp.name:'Choose 1 path'):'Unlocks Lv.10')+'</span></div><div class="sub" style="margin-bottom:8px">Choose a permanent specialization at Lv.10. It shapes your build without replacing your class skills.</div>'+(sp?'<div class="card"><b>'+sp.icon+' '+sp.name+'</b><div class="buildEffect">'+sp.desc+'</div><small>Permanent specialization • '+S.class+'</small></div>':'<div class="evolutionGrid">'+(SPECIALIZATIONS[S.class]||[]).map(x=>'<div class="card"><strong>'+x.icon+' '+x.name+'</strong><small>'+x.desc+'</small><button class="smallBtn" onclick="chooseSpecialization(\''+x.id+'\')" '+(S.level<10?'disabled':'')+'>Choose</button></div>').join('')+'</div>')+'</div>';
+const activeSet=(S.eq.weapon&&S.eq.armor&&S.eq.weapon.setId&&S.eq.weapon.setId===S.eq.armor.setId)?setFor(S.eq.weapon):null; const setHtml=activeSet?'<div class="card" style="margin-top:8px"><b>'+activeSet.icon+' '+activeSet.name+' Set Active</b><div class="buildEffect">'+activeSet.bonus+'</div><small>2/2 pieces equipped</small></div>':'<div class="sub" style="margin-top:8px">Equip matching world gear in both slots to activate a 2-piece set bonus.</div>'; document.getElementById('buildCard').innerHTML='<div class="between"><span class="powerScore">⚡ Build Power '+buildPower()+'</span><span class="sub">'+buildFocus()+'</span></div><div class="classPassive"><b>'+cls().icon+' '+S.class+' • '+CLASS_PASSIVE[S.class].name+'</b><div class="sub">'+CLASS_PASSIVE[S.class].desc+'</div></div><div class="sub" style="margin-top:8px">Talent points: <b>'+S.points+'</b></div>'+setHtml+specHtml+classSkillHtml+['might','arcana','vitality','fortune'].map(x=>'<div class="item"><span>'+ (x==='might'?'⚔️':x==='arcana'?'🔮':x==='vitality'?'❤️':'🍀') +' '+x+' <b>'+S.talents[x]+'</b></span><button class="smallBtn" onclick="talent(\''+x+'\')" '+(S.points?'':'disabled')+'>+</button></div>').join('');
+document.getElementById('runCard').innerHTML=`<div class="sub">Region</div><b>${REGIONS[S.region].icon} ${S.region}</b><div class="sub" style="margin-top:7px">Run kills ${S.runKills} • run gold ${S.runGold}g</div><div class="sub">Best ${S.runBest} kills</div>`;
+renderCombatHud();renderEnemy();renderSkills();renderWorld();renderInventory();renderTown();renderDungeons();renderQuests();renderGuide();
+}
+function renderEnemy(){const b=document.getElementById('enemyBox');if(!E){b.innerHTML=`<div class="center"><div class="enemyIcon">🗺️</div><div class="enemyName">No enemy</div><p class="sub">Explore a region to start a fight.</p><button onclick="explore()">🌲 Explore</button></div>`;document.getElementById('battleState').textContent='Idle';return}b.innerHTML=`<div class="enemy"><div><div class="enemyIcon" id="enemyIcon">${E.icon}</div><div class="enemyName">${E.name}${E.boss?' 👑':''}</div><div class="enemyMeta">Lv.${E.level} • ${E.boss?'BOSS':E.elite?'ELITE':'Enemy'}${E.abilityName?' • '+E.abilityName:''}</div></div><div><div class="between"><span>HP</span><span>${E.hp}/${E.maxHp}</span></div><div class="bar"><div class="fill hp" style="width:${100*E.hp/E.maxHp}%"></div></div><div class="sub center">${E.def} DEF • ${E.atk} ATK</div></div></div>`;document.getElementById('battleState').textContent='Your turn'}
+function renderSkills(){const disabled=!E?'disabled':'';document.getElementById('skillBox').innerHTML='<div class="skillGrid">'+Object.entries(SKILLS).map(([id,s])=>`<div class="card"><strong>${s.icon} ${s.name}</strong><small>${s.desc}<br>Cost: ${s.cost} MP ${s.st?'• '+s.st+' ST':''}</small><button onclick="skill('${id}')" ${disabled}>Use</button></div>`).join('')+'</div>'}
+function renderWorld(){
+  const cur=REGIONS[S.region]||REGIONS.Emberfield;
+  const d=S.dungeon||{active:false,room:0,maxRooms:5,best:0,attempts:0,clears:0};
+  const rooms=Array.from({length:5},(_,i)=>'<div class="dungeonRoom '+(d.active&&i===d.room-1?'current':i<d.room?'done':'')+'"></div>').join('');
+  const dungeonAction=d.active?'continueDungeon()':'startDungeon()';
+  const trialUnlocked=S.level>=cur.trialLevel;
+  const dungeonLabel=d.active?'⚔️ Enter Next Room':(trialUnlocked?'🔥 Enter '+cur.trial+' • 20 ST':'🔒 Trial unlocks at Lv.'+cur.trialLevel);
+  const leave=d.active?'<button class="secondary" onclick="abandonDungeon()">Leave Trial</button>':'';
+  const trialStatus=d.active?'Room '+d.room+' / 5':'Ready to enter';
+  const dungeonHtml='<div class="dungeonPanel"><div class="dungeonHeader"><div><b>⚔️ '+cur.trial+'</b><div class="sub">A 5-room '+cur.feature.toLowerCase()+' gauntlet. Enemies inherit this world\'s power and the final room faces '+cur.trialBoss+'.</div></div><span class="trialBadge">Lv.'+cur.trialLevel+'+</span></div><div class="dungeonRooms">'+rooms+'</div><div class="between"><span class="sub">'+trialStatus+' • Best '+d.best+' rooms</span><span class="gold">Attempts '+d.attempts+'</span></div><div class="dungeonReward"><b>🏆 Trial rewards</b><small>Every room gives bonus gold/XP. Clear all 5 for a guaranteed high-rarity reward from this world and a full recovery.</small></div><button onclick="'+dungeonAction+'" '+(!trialUnlocked||E?'disabled':'')+'>'+dungeonLabel+'</button>'+leave+'</div>';
+  const regionsHtml=Object.entries(REGIONS).map(([r,v])=>'<div class="card"><strong>'+v.icon+' '+r+'</strong><small>Recommended Lv.'+v.level+'<br>Trial Lv.'+v.trialLevel+' • Power ×'+v.scale.toFixed(2)+' • '+v.feature+'<br>'+v.desc+'</small><button onclick="travel(\''+r+'\')" '+(S.level<v.level?'disabled':'')+'>'+ (S.region===r?'Current':'Travel') +'</button></div>').join('');
+  document.getElementById('worldBox').innerHTML='<div class="panel" style="margin-bottom:10px"><div class="sectionTitle"><h3>'+cur.icon+' '+S.region+'</h3><span class="gold">Lv.'+cur.level+'+</span></div><p class="sub">'+cur.desc+'</p><div class="row"><div class="card"><b>✨ Region Trait</b><small>'+cur.feature+'</small></div><div class="card"><b>🌎 Danger</b><small>Power ×'+cur.scale.toFixed(2)+'</small></div></div><p class="sub" style="margin-top:8px">'+cur.event+'</p><button onclick="explore()">🌲 Explore '+cur.icon+'</button></div>'+dungeonHtml+'<div class="lootGrid">'+regionsHtml+'</div>';
+}
+
+let inventoryFilter='all';
+function isJunk(it){ return (it.type==='weapon'||it.type==='armor') && it.rarity==='common' && Number(it.level||0)===0; }
+function toggleSellMode(){S.inventorySellMode=!S.inventorySellMode;renderInventory();}
+function sellItem(i){
+  if(!S.inventorySellMode)return;
+  const it=S.inv[i]; if(!it||it.qty<1)return;
+  normalizeGear(it);
+  if((it.type==='weapon'||it.type==='armor') && ((S.eq.weapon&&it===S.eq.weapon)||(S.eq.armor&&it===S.eq.armor))){toast('Equipped gear cannot be sold.');return}
+  const unit=Math.max(1,Math.floor(Number(it.value)||5));
+  const qty=Math.max(1,Number(it.qty)||1);
+  const gold=unit*qty;
+  S.gold+=gold;S.inv.splice(i,1);
+  log(`💰 Sold <b>${it.name}</b> for <b>${gold}g</b>.`,'good');
+  saveGame(true);render();
+}
+function bulkSell(){
+  let gold=0,count=0;
+  S.inv=S.inv.filter(it=>{
+    normalizeGear(it);
+    const eligible=(it.type==='weapon'||it.type==='armor') ? (it.rarity==='common') : isJunk(it);
+    if(!eligible)return true;
+    const qty=Math.max(1,Number(it.qty)||1);gold+=(Number(it.value)||5)*qty;count+=qty;return false;
+  });
+  if(!count){toast('Nothing eligible for bulk sell.');return}
+  S.gold+=gold;log(`📦 Bulk sold ${count} item${count>1?'s':''} for <b>${gold}g</b>.`,'good');saveGame(true);render();
+}
+function sellJunk(){bulkSell()}
+function sellCommonGear(){bulkSell()}
+function setInventoryFilter(f){inventoryFilter=f;renderInventory()}
+function renderInventory(){
+  S.inv.forEach(normalizeGear);
+  const total=S.inv.reduce((a,x)=>a+(Number(x.qty)||1),0); document.getElementById('invCount').textContent=total+' items';
+  const materials='<div class="panel" style="margin-bottom:10px"><h3>🧰 Materials</h3><div class="mat-row"><span class="mat-pill">🌿 Herb: <b>'+(S.materials.herb||0)+'</b></span><span class="mat-pill">✨ Essence: <b>'+(S.materials.essence||0)+'</b></span><span class="mat-pill">⛏️ Ore: <b>'+(S.materials.ore||0)+'</b></span></div><div class="sub">Materials are used for crafting. Keep rare materials for advanced recipes.</div></div>';
+  const filters='<div class="filterRow">'+['all','equipment','materials','consumables','junk'].map(f=>`<button class="smallBtn ${inventoryFilter===f?'on':''}" onclick="setInventoryFilter('${f}')">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>`).join('')+'</div>';
+  const sells='<div class="sellBox"><button class="'+(S.inventorySellMode?'sellMode':'')+'" onclick="toggleSellMode()">'+(S.inventorySellMode?'✕ EXIT SELL MODE':'💰 SELL')+'</button><button onclick="bulkSell()">📦 BULK SELL</button></div><div class="sub" style="margin-bottom:9px">'+(S.inventorySellMode?'Sell Mode active — tap Sell on any eligible item. Equipped gear is protected.':'Use Sell for individual items or Bulk Sell for common gear/junk.')+'</div>';
+  const matches=it=>{if(inventoryFilter==='all')return true;if(inventoryFilter==='equipment')return it.type==='weapon'||it.type==='armor';if(inventoryFilter==='materials')return it.type==='material';if(inventoryFilter==='consumables')return it.type==='potion'||it.type==='mana'||it.type==='stamina';if(inventoryFilter==='junk')return isJunk(it);return true};
+  const visible=S.inv.map((it,i)=>({it,i})).filter(x=>matches(x.it));
+  const items=visible.length?'<div class="list">'+visible.map(({it,i})=>{
+    const gear=it.type==='weapon'||it.type==='armor'; const consumable=it.type==='potion'||it.type==='mana'||it.type==='stamina';
+    const equipped=gear&&((S.eq.weapon&&it.name===S.eq.weapon.name&&it.level===S.eq.weapon.level)||(S.eq.armor&&it.name===S.eq.armor.name&&it.level===S.eq.armor.level));
+    const action=S.inventorySellMode ? (equipped?'Equipped':'Sell '+Math.max(1,Number(it.value)||5)+'g') : (gear?'Equip':(consumable?'Use':'Locked'));
+    const onclick=S.inventorySellMode ? (equipped?'':'sellItem('+i+')') : (gear?'equipItem('+i+')':(consumable?'useItem('+i+')':''));
+    const disabled=S.inventorySellMode?equipped:(!gear&&!consumable);
+    const detail=gear?` • ${it.type==='weapon'?'+'+(it.atk||0)+' ATK':'+'+(it.def||0)+' DEF'} • Lv.${it.level||0}`:(it.type==='potion'?' • heals '+it.heal+' HP':it.type==='mana'?' • restores '+it.heal+' MP':it.type==='stamina'?' • restores '+it.heal+' ST':'');
+    return `<div class="item"><div class="grow"><b class="${it.rarity}">${it.type==='weapon'?'⚔️ ':it.type==='armor'?'🛡️ ':it.type==='potion'?'🧪 ':it.type==='mana'?'💧 ':it.type==='stamina'?'⚡ ':''}${it.name}</b><div class="sub">${it.type} • x${it.qty}${detail}${gear?' • Power '+itemPower(it):''}${S.inventorySellMode?' • <span class="sellValue">'+(equipped?'EQUIPPED':(Math.max(1,Number(it.value)||5)*Math.max(1,Number(it.qty)||1))+'g total')+'</span>':''}</div>${gear?affixMarkup(it):''}</div><button class="smallBtn" onclick="${onclick}" ${disabled?'disabled':''}>${action}</button></div>`;
+  }).join('')+'</div>':'<div class="sub">No items in this category.</div>';
+  document.getElementById('inventoryBox').innerHTML=materials+filters+sells+items;
+}
+
+const RECIPES={
+  potion:{name:'Small Health Potion',icon:'🧪',req:{herb:2,essence:1},out:{id:'potion',name:'Small Potion',type:'potion',qty:1,rarity:'common',heal:45},qty:2,level:1,desc:'Restores 45 HP in combat.'},
+  ether:{name:'Mana Tonic',icon:'💧',req:{herb:2,essence:2},out:{id:'ether',name:'Mana Tonic',type:'mana',qty:1,rarity:'uncommon',heal:30},qty:1,level:1,desc:'Restores 30 MP in combat.'},
+  stamina:{name:'Stamina Tonic',icon:'⚡',req:{herb:2,essence:1},out:{id:'stamina',name:'Stamina Tonic',type:'stamina',qty:1,rarity:'uncommon',heal:25},qty:1,level:1,desc:'Restores 25 Stamina.'},
+  greater:{name:'Greater Health Potion',icon:'❤️‍🩹',req:{herb:4,essence:2,ore:1},out:{id:'greater_potion',name:'Greater Health Potion',type:'potion',qty:1,rarity:'rare',heal:100},qty:1,level:5,desc:'Restores 100 HP in combat.'}
+};
+function matName(k){return k==='herb'?'Herb':k==='essence'?'Essence':'Ore'}
+function canCraft(r){
+  if(S.level<r.level)return false;
+  return Object.entries(r.req).every(([k,v])=>(S.materials[k]||0)>=v);
+}
+function craft(id){
+  const r=RECIPES[id]; if(!r)return;
+  if(S.level<r.level){toast('Recipe locked. Reach Lv '+r.level+'.');return}
+  if(!canCraft(r)){toast('Not enough materials.');return}
+  Object.entries(r.req).forEach(([k,v])=>S.materials[k]-=v);
+  for(let i=0;i<r.qty;i++)addItem({...r.out});
+  S.crafting.crafted+=r.qty; S.achievements.crafts+=r.qty;
+  log('⚒️ Crafted '+r.qty+'x <b>'+r.name+'</b>.','good');
+  saveGame(true); render();
+}
+function renderCrafting(){
+  const mats=Object.entries(S.materials).map(([k,v])=>'<span class="mat-pill">'+matName(k)+': <b>'+v+'</b></span>').join('');
+  const cards=Object.entries(RECIPES).map(([id,r])=>{
+    const locked=S.level<r.level, enough=canCraft(r);
+    const req=Object.entries(r.req).map(([k,v])=>matName(k)+' '+(S.materials[k]||0)+'/'+v).join(' · ');
+    const button=locked?'🔒 Locked':enough?'Craft':'Need Materials';
+    return '<div class="craft-card '+(locked?'locked':'')+'"><h4>'+r.icon+' '+r.name+'</h4><p>'+r.desc+'</p><div class="req">Materials: '+req+'</div><div class="req">'+(locked?'Unlocks at Lv '+r.level:'Output: '+r.qty)+'</div><button '+((locked||!enough)?'disabled':'')+' onclick="craft(\''+id+'\')">'+button+'</button></div>';
+  }).join('');
+  return '<div class="panel" style="margin-top:10px"><h3>⚒️ Crafting & Alchemy</h3><p class="muted">Turn gathered materials into useful items. Better recipes unlock as you level up.</p><div class="mat-row">'+mats+'<span class="mat-pill">🛠️ Crafted: <b>'+S.crafting.crafted+'</b></span></div><div class="craft-grid">'+cards+'</div></div>';
+}
+
+function renderDungeons(){
+  const box=document.getElementById('dungeonBox'); if(!box)return;
+  const run=S.dungeonRun||{active:false};
+  const entries=Object.entries(DUNGEONS);
+  let activeHtml='';
+  if(run.active){
+    const d=DUNGEONS[run.id];
+    activeHtml=`<div class="dungeonRun"><div class="between"><b>⚔️ ${d.icon} ${d.name}</b><span class="gold">Room ${run.room}/${run.maxRooms}</span></div><div class="dungeonRooms">${Array.from({length:run.maxRooms},(_,i)=>'<div class="dungeonRoom '+(i<run.room-1?'done':i===run.room-1?'current':'')+'"></div>').join('')}</div><div class="sub">${d.desc}</div><div class="dungeonMod"><b>Dungeon Modifier: ${d.mod}</b><div class="sub">${d.modDesc}</div></div><button onclick="continueRealDungeon()">⚔️ Enter Room ${run.room}</button><button class="secondary" onclick="abandonRealDungeon()">Leave Dungeon</button></div>`;
+  }
+  const cards=entries.map(([id,d])=>{const unlocked=S.level>=d.level, selected=d.world===S.region, best=Math.max(0,Number((S.dungeonRun&&S.dungeonRun.bestBy&&S.dungeonRun.bestBy[id])||0));return `<div class="dungeonCard"><div class="between"><b>${d.icon} ${d.name}</b><span class="gold">Lv.${d.level}+</span></div><small>${d.desc}</small><div class="dungeonRewardGrid"><div class="dungeonStat">🏆 ${d.rooms} Rooms</div><div class="dungeonStat">💰 ${d.rewardGold}g</div><div class="dungeonStat">✨ ${d.rewardXp} XP</div></div><div class="dungeonMod">${d.mod}: <span class="sub">${d.modDesc}</span></div><div class="sub" style="margin-top:6px">Entry: ${d.cost} Stamina • Boss: ${d.boss}${selected?' • Current World':''}${best?` • Best Room ${best}`:''}</div><button onclick="startRealDungeon('${id}')" ${(!unlocked||run.active||E)?'disabled':''}>${unlocked?'Enter Dungeon':'🔒 Unlocks at Lv.'+d.level}</button></div>`}).join('');
+  box.innerHTML=activeHtml+'<div class="dungeonGrid">'+cards+'</div>';
+}
+function renderTown(){document.getElementById('townBox').innerHTML=`<div class="shopGrid"><div class="card"><strong>🧪 Potion</strong><small>Restores 45 HP.</small><button onclick="buy('potion')">Buy • 22g</button></div><div class="card"><strong>💧 Mana Tonic</strong><small>Restores 25 MP.</small><button onclick="buy('ether')">Buy • 28g</button></div><div class="card"><strong>🔨 Weapon Forge</strong><small>${S.eq.weapon.name} • Lv.${S.eq.weapon.level} → Lv.${S.eq.weapon.level+1}<br>Cost is based on this weapon's level.</small><button onclick="upgrade('weapon')">Upgrade • ${getUpgradeCost(S.eq.weapon)}g</button></div><div class="card"><strong>🛡️ Armor Forge</strong><small>${S.eq.armor.name} • Lv.${S.eq.armor.level} → Lv.${S.eq.armor.level+1}<br>Cost is based on this armor's level.</small><button onclick="upgrade('armor')">Upgrade • ${getUpgradeCost(S.eq.armor)}g</button></div><div class="card"><strong>🌿 Herb</strong><small>Alchemy ingredient.</small><button onclick="buy('herb')">Buy • 14g</button></div><div class="card"><strong>✨ Essence</strong><small>Rare crafting ingredient.</small><button onclick="buy('essence')">Buy • 30g</button></div></div>${renderCrafting()}<div class="panel" style="margin-top:10px;background:#0c1321"><b>Class Hall</b><p class="sub">Changing class is free outside combat. Your talent build remains intact.</p><div class="choice">${Object.entries(CLASS).map(([n,c])=>`<button onclick="chooseClass('${n}')"><b>${c.icon} ${n}</b><br><small>${c.desc}</small></button>`).join('')}</div></div>`}
+const QUESTS=[
+{id:'firstVictory',name:'First Victory',icon:'⚔️',desc:'Defeat your first enemy.',type:'one',goal:1,gold:35,xp:45,check:()=>S.achievements.kills>=1,flag:'firstVictory'},
+{id:'intoGrove',name:'Into the Grove',icon:'🌲',desc:'Reach Moonlit Grove.',type:'one',goal:1,gold:60,xp:80,check:()=>S.level>=6&&S.achievements.worlds.MoonlitGrove,flag:'intoGrove'},
+{id:'ashenDescent',name:'Ashen Descent',icon:'🌑',desc:'Reach Ashen Hollow.',type:'one',goal:1,gold:100,xp:140,check:()=>S.level>=11&&S.achievements.worlds.AshenHollow,flag:'ashenDescent'},
+{id:'enterSanctum',name:'Enter the Sanctum',icon:'🔥',desc:'Reach Ember Sanctum.',type:'one',goal:1,gold:160,xp:220,check:()=>S.level>=16&&S.achievements.worlds.EmberSanctum,flag:'enterSanctum'},
+{id:'upgradeFirst',name:'Blacksmith Apprentice',icon:'🔨',desc:'Upgrade equipment once.',type:'one',goal:1,gold:50,xp:60,check:()=>S.achievements.upgrades>=1,flag:'upgradeFirst'},
+{id:'craftFirst',name:'First Craft',icon:'⚒️',desc:'Craft an item.',type:'one',goal:1,gold:45,xp:55,check:()=>S.achievements.crafts>=1,flag:'craftFirst'},
+{id:'rareFind',name:'Rare Find',icon:'💎',desc:'Obtain Rare gear or better.',type:'one',goal:1,gold:80,xp:100,check:()=>S.achievements.rareGear===true,flag:'rareFind'},
+{id:'trialClear',name:'Trial Challenger',icon:'🔥',desc:'Clear a World Trial.',type:'one',goal:1,gold:120,xp:160,check:()=>S.achievements.trials>=1,flag:'trialClear'},
+{id:'slay',name:'Monster Hunter',icon:'⚔️',desc:'Defeat 10 enemies.',type:'repeat',goal:10,gold:60,xp:90},
+{id:'elite',name:'Elite Breaker',icon:'👑',desc:'Defeat 3 elites.',type:'repeat',goal:3,gold:120,xp:160},
+{id:'explore',name:'Pathfinder',icon:'🗺️',desc:'Explore 12 times.',type:'repeat',goal:12,gold:100,xp:130}
+];
+const ACHIEVEMENTS=[
+{id:'kills',cat:'Combat',name:'Monster Hunter',desc:'Defeat 100 enemies.',goal:100,field:'kills',reward:'80g'},
+{id:'elites',cat:'Combat',name:'Elite Slayer',desc:'Defeat 15 elites.',goal:15,field:'elites',reward:'120g'},
+{id:'bosses',cat:'Combat',name:'Boss Slayer',desc:'Defeat 4 bosses.',goal:4,field:'bosses',reward:'1 Class Point'},
+{id:'explores',cat:'Exploration',name:'First Expedition',desc:'Explore 50 times.',goal:50,field:'explores',reward:'100 XP'},
+{id:'worlds',cat:'Exploration',name:'World Walker',desc:'Reach all four worlds.',goal:4,field:'worlds',reward:'150g'},
+{id:'crafts',cat:'Crafting',name:'Potion Brewer',desc:'Craft 25 items.',goal:25,field:'crafts',reward:'100 XP'},
+{id:'upgrades',cat:'Equipment',name:'Master Smith',desc:'Upgrade equipment 10 times.',goal:10,field:'upgrades',reward:'150g'},
+{id:'legendary',cat:'Equipment',name:'Legendary Find',desc:'Obtain Legendary gear.',goal:1,field:'legendary',reward:'2 Class Points'},
+{id:'trials',cat:'Trials',name:'Trial Master',desc:'Clear 5 World Trials.',goal:5,field:'trials',reward:'250 XP'}
+];
+function questProgress(q){if(q.type==='repeat')return Math.max(0,Number(S.quests[q.id])||0);return q.check()?1:0}
+function claimQuest(id){const q=QUESTS.find(x=>x.id===id);if(!q)return; if(q.type==='repeat'){if((S.quests[id]||0)<q.goal)return;S.quests[id]-=q.goal}else{if(S.quests.claimed&&S.quests.claimed[id])return;if(!q.check())return;S.quests.claimed??={};S.quests.claimed[id]=true} S.gold+=q.gold;S.xp+=q.xp;log(`📜 Quest claimed: <b>${q.name}</b> • +${q.gold}g +${q.xp} XP.`,'good');xpLevelUp();saveGame(true);render()}
+function achievementValue(a){if(a.field==='worlds')return Object.keys(S.achievements.worlds||{}).length;return Number(S.achievements[a.field])||0}
+function claimAchievement(id){const a=ACHIEVEMENTS.find(x=>x.id===id);if(!a)return;S.achievements.claimed??={};if(S.achievements.claimed[id]||achievementValue(a)<a.goal)return;S.achievements.claimed[id]=true; if(a.id==='bosses'||a.id==='legendary')S.skillPoints+=a.id==='legendary'?2:1; else if(a.id==='explores'||a.id==='crafts'||a.id==='trials')S.xp+=a.id==='trials'?250:100; else S.gold+=a.id==='upgrades'?150:a.id==='worlds'?150:a.id==='elites'?120:80;log(`🏆 Achievement unlocked: <b>${a.name}</b>!`,'legend');xpLevelUp();saveGame(true);render()}
+function setQuestView(v){S.questsView=v;renderQuests()}
+function renderQuests(){
+  S.questsView=S.questsView||'quests'; const box=document.getElementById('questBox');
+  const tabs='<div class="questTabs"><button class="'+(S.questsView==='quests'?'on':'')+'" onclick="setQuestView(\'quests\')">📜 Quests</button><button class="'+(S.questsView==='achievements'?'on':'')+'" onclick="setQuestView(\'achievements\')">🏆 Achievements</button></div>';
+  if(S.questsView==='achievements'){
+    box.innerHTML=tabs+'<div class="list">'+ACHIEVEMENTS.map(a=>{const p=achievementValue(a),done=p>=a.goal,claimed=!!(S.achievements.claimed&&S.achievements.claimed[a.id]);return `<div class="card"><div class="between"><b>🏆 ${a.name}</b><span class="gold">${a.cat}</span></div><small>${a.desc}</small><div class="achProgress">${Math.min(p,a.goal)} / ${a.goal} • Reward: ${a.reward}</div><div class="progress" style="margin:7px 0"><div style="width:${Math.min(100,p/a.goal*100)}%"></div></div><button onclick="claimAchievement('${a.id}')" ${(!done||claimed)?'disabled':''}>${claimed?'✓ Claimed':done?'🎁 Claim':'In progress'}</button></div>`}).join('')+'</div>';return;
+  }
+  box.innerHTML=tabs+'<div class="list">'+QUESTS.map(q=>{const p=questProgress(q),done=p>=q.goal,claimed=q.type==='one'&&S.quests.claimed&&S.quests.claimed[q.id];return `<div class="card"><div class="between"><b>${q.icon} ${q.name}</b><span class="gold">${q.gold}g</span></div><small>${q.desc} • ${q.xp} XP</small><div class="achProgress">${q.type==='repeat'?'Repeatable':'One-time'} • ${Math.min(p,q.goal)}/${q.goal}</div><div class="progress" style="margin:7px 0"><div style="width:${Math.min(100,p/q.goal*100)}%"></div></div><button onclick="claimQuest('${q.id}')" ${(!done||claimed)?'disabled':''}>${claimed?'✓ Completed':done?'🎁 Claim':'In progress'}</button></div>`}).join('')+'</div>';
+}
+function tab(t){currentTab=t;['combat','world','inventory','town','dungeons','quests','guide'].forEach(x=>{document.getElementById(x+'Tab').classList.toggle('hide',x!==t);document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('on',x===t)})}
+function rollEnemy(){
+  const r=REGIONS[S.region]||REGIONS.Emberfield;
+  const pool=S.region==='Emberfield'?['Slime','Wolf']:S.region==='MoonlitGrove'?['Wolf','Wisp','Treant']:S.region==='AshenHollow'?['Wisp','Ashfang','CinderWraith']:['Ashfang','CinderWraith'];
+  if(S.region==='EmberSanctum'&&S.level>=10&&Math.random()<.10&&!S.bosses.EmberTitan)return makeEnemy('EmberTitan',Math.max(S.level,r.level));
+  if(S.region==='EmberSanctum'&&S.level>=14&&Math.random()<.05&&!S.bosses.AshenKing)return makeEnemy('AshenKing',Math.max(S.level,r.level+2));
+  const n=pool[Math.floor(Math.random()*pool.length)];
+  return makeEnemy(n,Math.max(r.level,S.level+Math.floor(Math.random()*3)-1));
+}
+function makeEnemy(type,lvl){
+  const d=ENEMIES[type],r=REGIONS[S.region]||REGIONS.Emberfield,lv=Math.max(d.base,lvl);
+  const levelScale=1+(lv-d.base)*.16;
+  const worldScale=r.scale||1;
+  const boss=!!d.boss;
+  const elite=!boss&&Math.random()<0.18;
+  const eliteScale=elite?1.32:1;
+  const bossScale=boss?1.35:1;
+  const scale=levelScale*worldScale*eliteScale*bossScale;
+  const abilityNames={split:'Split',howl:'Howl',spark:'Arc Spark',fortify:'Fortify',rend:'Rend',curse:'Soul Curse',inferno:'Inferno',royal:'Royal Decree'}; return {type,name:type,icon:d.icon,level:lv,maxHp:Math.max(1,Math.floor(d.hp*scale)),hp:Math.max(1,Math.floor(d.hp*scale)),atk:Math.max(1,Math.floor(d.atk*scale)),def:Math.max(0,Math.floor(d.def*scale)),xp:Math.max(1,Math.floor(d.xp*levelScale*worldScale)),gold:Math.max(1,Math.floor(d.gold*levelScale*worldScale)),boss,elite,world:S.region,ability:d.ability,abilityName:abilityNames[d.ability]||'Special',abilityUsed:false,phase:1,fortified:0,fortifyBaseDef:null}
+}
+function explore(){
+  if(E){toast('Finish the current fight first.');return}
+  S.quests.explore++; S.distance++; S.achievements.explores++; S.achievements.worlds[S.region]=true;
+  const region=S.region, roll=Math.random();
+  // Each region now has a small identity in exploration, not just bigger numbers.
+  if(region==='Emberfield' && roll<.24){const n=1+(Math.random()<.35?1:0);S.materials.herb+=n;log('🌿 The open fields provide '+n+' medicinal herb'+(n>1?'s':'')+'.','good');}
+  else if(region==='MoonlitGrove' && roll<.24){S.materials.essence++;log('🌙 Moonlight condenses into an essence shard.','rare');}
+  else if(region==='AshenHollow' && roll<.24){const n=1+(Math.random()<.25?1:0);S.materials.ore+=n;log('⛏️ You recover '+n+' piece'+(n>1?'s':'')+' of scorched ore.','good');}
+  else if(region==='EmberSanctum' && roll<.18){let g=35+S.level*9;S.gold+=g;S.runGold+=g;log('🔥 You uncover a heated vault: +'+g+' gold.','gold');toast('Sanctum treasure found!')}
+  else if(roll<.36){let g=18+S.level*7;S.gold+=g;S.runGold+=g;log('✨ You discover a hidden cache: +'+g+' gold.','gold');toast('Treasure found!')}
+  else if(roll<.44){const n=1+(Math.random()<.25?1:0);S.materials.herb+=n;log('🌿 You gather '+n+' medicinal herb'+(n>1?'s':'')+'.','good')}
+  else if(roll<.50){S.materials.essence++;log('✨ You find an essence shard.','rare')}
+  else {E=rollEnemy();turn=0;log(`⚔️ ${E.name} appears${E.elite?' — ELITE!':''}${E.boss?' — BOSS!':''}.`,'bad');renderEnemy()}
+  render();
+}
+function damage(raw,def,ignore=0){return Math.max(1,Math.floor(raw-Math.max(0,def*(1-ignore))))}
+function basicAttack(){
+  if(!E)return;
+  const ef=effective();
+  const retRank=Math.max(0,Number(S.retaliationReady)||0); let lowHp=(E.hp/E.maxHp<.50)?(1+ef.lowHpDamageBonus/100):1; let bossD=E.boss?(1+ef.damageBonus/100):1; let d=damage((ef.atk+Math.floor(Math.random()*7))*(S.statuses.curse>0?.82:1)*(1+retRank*.04)*lowHp*bossD,E.def); S.retaliationReady=0;
+  const crit=Math.random()<ef.crit/100;
+  if(crit)d=Math.floor(d*1.8);
+  E.hp=Math.max(0,E.hp-d);
+  S.st=Math.max(0,S.st-3);
+  log(`⚔️ You strike for <b>${d}</b>${crit?' CRITICAL!':''}.`,crit?'legend':'');
+  afterPlayerAction();
+}
+function skill(id){
+  if(!E)return;
+  const sk=SKILLS[id],ef=effective();
+  if(!sk){toast('Unknown skill.');return}
+  const cs=S.classSkills||{}; const manaRank=S.class==='Arcanist'?classSkillRank('manaEfficiency'):0; const mpCost=Math.max(1,Math.floor(sk.cost*(1-manaRank*.05)));
+  if(S.mp<mpCost||S.st<sk.st){toast('Not enough resources.');return}
+  S.mp-=mpCost; S.st=Math.max(0,S.st-sk.st);
+  const curseMod=S.statuses.curse>0?.82:1;
+  const skillMult=1+(ef.skillBonus/100); const lowHp=(E.hp/E.maxHp<.50)?(1+ef.lowHpDamageBonus/100):1; const bossD=E.boss?(1+ef.damageBonus/100):1; const retRank=Math.max(0,Number(S.retaliationReady)||0); const retMult=1+retRank*.04; S.retaliationReady=0; const execRank=S.class==='Striker'?classSkillRank('executioner'):0; const executeMult=(E&&E.hp/E.maxHp<.30)?(1+execRank*.08):1;
+  let d=0;
+  if(id==='slash'){d=damage(ef.atk*sk.mult*curseMod*skillMult*retMult*executeMult*lowHp*bossD,E.def); E.hp=Math.max(0,E.hp-d);}
+  if(id==='fire'){d=damage((ef.atk*sk.mult+S.level*5)*curseMod*skillMult*retMult*executeMult,E.def,.45); E.hp=Math.max(0,E.hp-d);}
+  if(id==='guard'){
+    guard=true;
+    S.retaliationReady=S.class==='Vanguard'?classSkillRank('retaliation'):0;
+    const bonus=S.class==='Vanguard'?12:8;
+    S.st=Math.min(effective().st,S.st+bonus);
+    log('🛡️ Bulwark raised. Incoming damage reduced.','good');
+    afterPlayerAction();
+    return;
+  }
+  if(id==='drain'){
+    const healRank=S.class==='Warden'?classSkillRank('vitalBloom'):0; d=damage(ef.atk*1.35*skillMult*retMult*executeMult*lowHp*bossD,E.def,.15);
+    E.hp=Math.max(0,E.hp-d);
+    const heal=Math.floor(d*.55*(1+healRank*.10));
+    S.hp=Math.min(effective().hp,S.hp+heal);
+    log(`💠 Soul Mend deals <b>${d}</b> and restores <b>${heal} HP</b>.`,'good');
+    afterPlayerAction();
+    return;
+  }
+  log(`${sk.icon} ${sk.name} deals <b>${d}</b> damage${ef.skillBonus?' • Skill power +'+ef.skillBonus+'%':''}.`,'rare');
+  afterPlayerAction();
+}
+function defend(){
+  if(!E)return;
+  guard=true;
+  S.retaliationReady=S.class==='Vanguard'?classSkillRank('retaliation'):0;
+  const ef=effective();
+  const stGain=S.class==='Vanguard'?14:12;
+  S.st=Math.min(ef.st,S.st+stGain);
+  S.mp=Math.min(ef.mp,S.mp+4);
+  log('🛡️ You guard and recover resources.','good');
+  afterPlayerAction();
+}
+function processPlayerStatuses(){
+  const status=S.statuses||{};
+  if(status.burn>0){
+    const d=Math.max(1,Math.floor(effective().hp*.035));
+    S.hp=Math.max(0,S.hp-d);
+    status.burn--;
+    log(`🔥 Burn deals <b>${d}</b> damage.`,'bad');
+  }
+  if(S.hp<=0)return false;
+  if(status.bleed>0){
+    const d=Math.max(1,Math.floor(effective().hp*.025));
+    S.hp=Math.max(0,S.hp-d);
+    status.bleed--;
+    log(`🩸 Bleed deals <b>${d}</b> damage.`,'bad');
+  }
+  if(S.hp<=0)return false;
+  if(status.curse>0)status.curse--;
+  return true;
+}
+function enemyPhaseCheck(){
+  if(!E||!E.boss)return;
+  const ratio=E.hp/Math.max(1,E.maxHp);
+  if(E.phase===1&&ratio<=.66){
+    E.phase=2;
+    E.atk=Math.floor(E.atk*1.12);
+    E.def=Math.floor(E.def*1.08);
+    log(`👑 ${E.name} enters Phase 2! Its power surges.`,'bad');
+  }
+  else if(E.phase===2&&ratio<=.33){
+    E.phase=3;
+    E.atk=Math.floor(E.atk*1.15);
+    E.def=Math.floor(E.def*1.08);
+    log(`👑 ${E.name} enters Phase 3! The battlefield trembles.`,'legend');
+  }
+}
+function enemyTurn(){
+  if(!E)return;
+  enemyPhaseCheck();
+  const ef=effective();
+  const ability=E.ability;
+  let usedAbility=false;
+  const abilityChance=E.boss?.32:E.elite?.24:.18;
+  if(ability && Math.random()<abilityChance && !E.abilityUsed){
+    E.abilityUsed=true;
+    usedAbility=true;
+    if(ability==='split'){
+      const heal=Math.max(4,Math.floor(E.maxHp*.12));
+      E.hp=Math.min(E.maxHp,E.hp+heal);
+      log(`🟢 ${E.name} uses Split and restores <b>${heal}</b> HP.`,'rare');
+    } else if(ability==='howl'){
+      E.atk=Math.floor(E.atk*1.12);
+      log(`🐺 ${E.name} howls! Its attack power rises.`,'bad');
+    } else if(ability==='spark'){
+      let d=damage(E.atk+Math.floor(Math.random()*4),ef.def);
+      if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+      S.hp=Math.max(0,S.hp-d);
+      S.mp=Math.max(0,S.mp-Math.min(8,S.mp));
+      log(`✨ ${E.name} casts Arc Spark for <b>${d}</b> damage and drains MP.`,'bad');
+    } else if(ability==='fortify'){
+      E.fortified=2;
+      E.fortifyBaseDef=E.def;
+      E.def=Math.max(E.def+2,Math.floor(E.def*1.25));
+      log(`🌳 ${E.name} Fortifies! Incoming damage is reduced.`,'bad');
+    } else if(ability==='rend'){
+      let d=damage(E.atk+Math.floor(Math.random()*6),ef.def);
+      if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+      S.hp=Math.max(0,S.hp-d);
+      S.statuses.bleed=3;
+      log(`🐗 ${E.name} uses Rend for <b>${d}</b> damage. Bleed applied.`,'bad');
+    } else if(ability==='curse'){
+      let d=damage(E.atk+Math.floor(Math.random()*6),ef.def);
+      if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+      S.hp=Math.max(0,S.hp-d);
+      S.statuses.curse=3;
+      log(`👻 ${E.name} casts Soul Curse for <b>${d}</b> damage. Your damage is weakened.`,'bad');
+    } else if(ability==='inferno'){
+      let d=damage(E.atk+Math.floor(Math.random()*10),ef.def,.10);
+      if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+      S.hp=Math.max(0,S.hp-d);
+      S.statuses.burn=3;
+      log(`🔥 ${E.name} unleashes Inferno for <b>${d}</b> damage. Burn applied.`,'bad');
+    } else if(ability==='royal'){
+      let d=damage(E.atk+Math.floor(Math.random()*10),ef.def,.08);
+      if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+      S.hp=Math.max(0,S.hp-d);
+      S.statuses.curse=2;
+      log(`👑 ${E.name} issues Royal Decree for <b>${d}</b> damage. Curse applied.`,'bad');
+    }
+  }
+  if(!usedAbility && E){
+    let d=damage(E.atk+Math.floor(Math.random()*6),ef.def);
+    if(guard){const gr=S.class==='Vanguard'?classSkillRank('heavyGuard'):0;d=Math.max(1,Math.floor(d*(S.class==='Vanguard'?Math.max(.10,.28-gr*.05):.35)));}
+    guard=false;
+    if(Math.random()<.12&&!E.boss){
+      log(`✨ ${E.name} hesitates and misses its attack.`);
+    } else {
+      S.hp=Math.max(0,S.hp-d);
+      log(`💥 ${E.name} hits you for <b>${d}</b>.`,d>20?'bad':'');
+    }
+  } else {
+    guard=false;
+  }
+  if(S.hp<=0){lose();return}
+  if(E&&E.fortified>0){
+    E.fortified--;
+    if(E.fortified===0){E.def=E.fortifyBaseDef||E.def;delete E.fortifyBaseDef;log(`🛡️ ${E.name}'s Fortify fades.`,'good');}
+  }
+  if(!processPlayerStatuses()){lose();return}
+}
+function afterPlayerAction(){
+  if(!E)return;
+  if(E.hp<=0){win();return}
+  enemyTurn();
+  if(!E)return;
+  if(S.hp<=0)return;
+  regen();
+  render();
+}
+function regen(){let ef=effective();S.st=Math.min(S.maxSt,S.st+7);S.mp=Math.min(ef.mp,S.mp+2)}
+function xpLevelUp(){while(S.level<MAX_LEVEL&&S.xp>=need()){S.xp-=need();S.level++;S.points+=3;S.skillPoints++;S.baseStats.hp+=14;S.baseStats.mp+=5;S.baseStats.st=30;S.baseStats.atk+=2;S.baseStats.def+=1;S.hp=effective().hp;S.mp=effective().mp;log(`🎉 LEVEL ${S.level}! +3 talent points • +1 skill point.`,'legend')}if(S.level>=MAX_LEVEL){S.level=MAX_LEVEL;S.xp=0;log('👑 LEVEL CAP REACHED — MAX LEVEL 20.','legend')}}
+function win(){
+  let e=E;E=null;S.runKills++;S.runGold+=e.gold;S.gold+=e.gold;S.xp+=e.xp;S.quests.slay++;if(e.elite)S.quests.elite++;S.achievements.kills++;if(e.elite)S.achievements.elites++;if(e.boss)S.achievements.bosses++;S.quests.firstVictory=true;
+  if(e.boss){S.bosses[e.type]=true;S.story++;S.gold+=e.gold;S.xp+=e.xp;log(`👑 BOSS DEFEATED: ${e.name}! Bonus rewards secured.`,'legend');toast('🏆 Boss defeated!')}
+  else log(`✅ ${e.name} defeated. +${e.xp} XP • +${e.gold}g.`,'good');
+  drop(e);
+  const ef=effective(); const hpRec=Math.max(1,Math.floor(ef.hp*.08*ef.recoveryMult)); const mpRec=Math.max(1,Math.floor(ef.mp*.08*ef.recoveryMult)); const stRec=Math.max(1,Math.floor(S.maxSt*.10*ef.recoveryMult));
+  S.hp=Math.min(ef.hp,S.hp+hpRec); S.mp=Math.min(ef.mp,S.mp+mpRec); S.st=Math.min(S.maxSt,S.st+stRec); S.statuses={burn:0,bleed:0,curse:0};
+  log(`✨ Victory recovery: +${hpRec} HP • +${mpRec} MP • +${stRec} ST.`,'good');
+  if(S.dungeonRun?.active){
+    const run=S.dungeonRun,d=DUNGEONS[run.id],clearedRoom=run.room;
+    const bonusGold=25+clearedRoom*18,bonusXp=45+clearedRoom*30;
+    S.gold+=bonusGold;S.xp+=bonusXp;
+    log(`🏰 Dungeon bonus: +${bonusGold}g • +${bonusXp} XP.`,'legend');
+    if(clearedRoom>=run.maxRooms){
+      run.active=false;run.room=0;run.clears++;run.best=Math.max(run.best,run.maxRooms);run.bestBy[run.id]=Math.max(Number(run.bestBy[run.id])||0,run.maxRooms);
+      const rewardGold=d.rewardGold,rewardXp=d.rewardXp;S.gold+=rewardGold;S.xp+=rewardXp;
+      drop({boss:true,type:d.boss,world:d.world,loot:d.loot,name:d.boss,elite:false,gold:0,xp:0});
+      if(d.id==='ForgottenMine')S.materials.ore=(S.materials.ore||0)+2;
+      if(d.id==='MoonlitRuins')S.materials.essence=(S.materials.essence||0)+2;
+      if(d.id==='AshenFortress')S.materials.ore=(S.materials.ore||0)+3;
+      if(d.id==='SanctumDepths'){S.materials.ore=(S.materials.ore||0)+3;S.materials.essence=(S.materials.essence||0)+2;}
+      log(`🏆 DUNGEON CLEARED: ${d.name}! +${rewardGold}g • +${rewardXp} XP • Boss loot secured.`,'legend');
+      toast('🏆 '+d.name+' cleared!');
+      S.hp=effective().hp;S.mp=effective().mp;S.st=S.maxSt;xpLevelUp();S.runBest=Math.max(S.runBest,S.runKills);saveGame(true);tab('dungeons');render();return;
+    }
+    run.room=clearedRoom+1;xpLevelUp();S.runBest=Math.max(S.runBest,S.runKills);saveGame(true);log(`🚪 Room ${clearedRoom} cleared. Next room: ${run.room}/${run.maxRooms}.`,'rare');beginRealDungeonEncounter();return;
+  }
+  if(S.dungeon?.active){
+    const clearedRoom=S.dungeon.room;
+    const bonusGold=20+clearedRoom*15;
+    const bonusXp=35+clearedRoom*25;
+    S.gold+=bonusGold;S.xp+=bonusXp;
+    log(`🔥 Trial bonus: +${bonusGold}g • +${bonusXp} XP.`,'legend');
+    if(clearedRoom>=S.dungeon.maxRooms){
+      S.dungeon.active=false;S.dungeon.room=0;S.dungeon.clears++;S.achievements.trials++;S.quests.trialClear=true;S.dungeon.best=Math.max(S.dungeon.best,S.dungeon.maxRooms);
+      const beforeGold=S.gold;
+      const beforeXp=S.xp;
+      drop({boss:true,type:'EmberTitan',world:S.region,loot:'epic',name:'Trial Guardian',elite:false,gold:0,xp:0});
+      S.gold+=100;S.xp+=150;
+      S.hp=effective().hp;S.mp=effective().mp;S.st=S.maxSt;
+      log('🏆 TRIAL CLEARED! +100g • +150 XP • guaranteed guardian loot.','legend');
+      toast('🏆 Emberfall Trial cleared!');
+      xpLevelUp();S.runBest=Math.max(S.runBest,S.runKills);saveGame(true);tab('world');render();return;
+    }
+    S.dungeon.room=clearedRoom+1;
+    xpLevelUp();S.runBest=Math.max(S.runBest,S.runKills);saveGame(true);
+    log(`🚪 Room ${clearedRoom} cleared. Next room: ${S.dungeon.room}/${S.dungeon.maxRooms}.`,'rare');
+    beginDungeonEncounter();
+    return;
+  }
+  xpLevelUp(); S.runBest=Math.max(S.runBest,S.runKills); saveGame(true); render();
+}
+function lose(){const wasDungeon=!!S.dungeon?.active,wasRealDungeon=!!S.dungeonRun?.active;log(wasRealDungeon?'💀 The dungeon defeats you. Your run ends and you retreat to Emberhold.':wasDungeon?'💀 The Trial defeats you. Your run ends and you retreat to Emberhold.':'💀 You collapse and retreat to Emberhold. No progress is lost, but your run ends.','bad');let ef=effective();S.hp=Math.ceil(ef.hp*.65);S.mp=Math.ceil(ef.mp*.65);S.st=S.maxSt;S.gold=Math.max(0,S.gold-Math.floor(S.gold*.05));S.runKills=0;S.runGold=0;E=null;S.statuses={burn:0,bleed:0,curse:0};if(wasDungeon){S.dungeon.active=false;S.dungeon.room=0;}if(wasRealDungeon){S.dungeonRun.active=false;S.dungeonRun.room=0;}toast(wasRealDungeon?'Dungeon failed. Back to town.':wasDungeon?'Trial failed. Back to town.':'You were defeated. Back to town.');tab('town');saveGame(true);render()}
+function startRealDungeon(id){
+  if(E){toast('Finish combat first.');return}
+  const d=DUNGEONS[id]; if(!d)return;
+  if(S.level<d.level){toast('Reach level '+d.level+' to enter '+d.name+'.');return}
+  if(S.st<d.cost){toast('You need '+d.cost+' Stamina to enter '+d.name+'.');return}
+  S.st-=d.cost;
+  const old=S.dungeonRun||{};
+  S.dungeonRun={active:true,id,room:1,maxRooms:d.rooms,attempts:(Number(old.attempts)||0)+1,clears:Number(old.clears)||0,best:Number(old.best)||0,bestBy:old.bestBy||{}};
+  log('🏰 You enter '+d.name+'. '+d.rooms+' rooms stand between you and '+d.boss+'.','legend');
+  beginRealDungeonEncounter();
+}
+function beginRealDungeonEncounter(){
+  const run=S.dungeonRun; if(!run?.active)return;
+  const d=DUNGEONS[run.id]; if(!d){run.active=false;render();return}
+  let enemy;
+  if(run.room===run.maxRooms){
+    enemy=makeEnemy(d.boss,Math.max(S.level,d.level)); enemy.boss=true; enemy.name=d.boss==='AshenKing'?'Ashen King':d.boss==='EmberTitan'?'Ember Titan':d.boss==='CinderWraith'?'Cinder Wraith':'Treant Guardian';
+  }else{
+    const oldRegion=S.region;
+    const region=d.world;
+    S.region=region;
+    enemy=rollEnemy();
+    S.region=oldRegion;
+    if(enemy.boss)enemy=makeEnemy(d.boss,Math.max(S.level,d.level));
+  }
+  const roomScale=1+(run.room-1)*0.10;
+  let power=roomScale;
+  if(d.id==='SanctumDepths')power*=1.12;
+  enemy.maxHp=Math.max(1,Math.floor(enemy.maxHp*power)); enemy.hp=enemy.maxHp; enemy.atk=Math.max(1,Math.floor(enemy.atk*power)); enemy.def=Math.max(0,Math.floor(enemy.def*power));
+  if(!enemy.boss){let eliteChance=d.id==='AshenFortress'?.40:.28;if(Math.random()<eliteChance){enemy.elite=true;enemy.maxHp=Math.floor(enemy.maxHp*1.28);enemy.hp=enemy.maxHp;enemy.atk=Math.floor(enemy.atk*1.18);enemy.def=Math.floor(enemy.def*1.12);enemy.xp=Math.floor(enemy.xp*1.45);enemy.gold=Math.floor(enemy.gold*1.4);}}
+  E=enemy;turn=0;log(`🏰 ${d.name} — Room ${run.room}: ${E.name}${E.elite?' — ELITE!':''}${E.boss?' — DUNGEON BOSS!':''}.`,'bad');tab('combat');render();
+}
+function continueRealDungeon(){
+  const run=S.dungeonRun;if(!run?.active){toast('No active dungeon.');return}if(E){toast('Finish the current room first.');return}if(run.room>run.maxRooms){toast('Dungeon already cleared.');return}beginRealDungeonEncounter();
+}
+function abandonRealDungeon(){
+  const run=S.dungeonRun;if(!run?.active)return;if(E){toast('You cannot leave during combat.');return}log('🏳️ You leave the dungeon. The run is forfeited.','');run.active=false;run.room=0;saveGame(true);tab('dungeons');render();
+}
+function startDungeon(){
+  if(E){toast('Finish combat first.');return}
+  const r=REGIONS[S.region]||REGIONS.Emberfield;
+  if(S.level<r.trialLevel){toast('Reach level '+r.trialLevel+' to enter '+r.trial+'.');return}
+  if(S.st<20){toast('You need 20 Stamina to enter the Trial.');return}
+  S.st-=20;S.achievements.trials=S.achievements.trials||0;S.quests.trialEnter=true;S.dungeon={active:true,room:1,maxRooms:5,best:Math.max(0,Number(S.dungeon?.best)||0),attempts:(Number(S.dungeon?.attempts)||0)+1,clears:Number(S.dungeon?.clears)||0};
+  log('🔥 You enter the '+r.trial+'. Five rooms stand between you and '+r.trialBoss+'.','legend');
+  beginDungeonEncounter();
+}
+function beginDungeonEncounter(){
+  if(!S.dungeon?.active)return;
+  let base;
+  if(S.dungeon.room===S.dungeon.maxRooms){
+    const r=REGIONS[S.region]||REGIONS.Emberfield;
+    base=makeEnemy(r.trialBoss,Math.max(S.level,r.trialLevel));
+    base.name=r.trialBoss==='AshenKing'?'Ashen King':r.trialBoss==='EmberTitan'?'Ember Titan':r.trialBoss==='CinderWraith'?'Cinder Wraith':'Treant Guardian';
+    base.boss=true;
+  }else{
+    base=rollEnemy();
+    if(base.boss)base=makeEnemy('Ashfang',Math.max(S.level,6));
+  }
+  const roomScale=1+(S.dungeon.room-1)*0.12;
+  const eliteChance=S.dungeon.room===S.dungeon.maxRooms?0:0.28;
+  base.maxHp=Math.max(1,Math.floor(base.maxHp*roomScale));base.hp=base.maxHp;base.atk=Math.max(1,Math.floor(base.atk*roomScale));base.def=Math.max(0,Math.floor(base.def*roomScale));
+  if(!base.boss&&Math.random()<eliteChance){base.elite=true;base.maxHp=Math.floor(base.maxHp*1.28);base.hp=base.maxHp;base.atk=Math.floor(base.atk*1.18);base.def=Math.floor(base.def*1.12);base.xp=Math.floor(base.xp*1.45);base.gold=Math.floor(base.gold*1.4);}
+  E=base;turn=0;log(`🚪 Trial Room ${S.dungeon.room}: ${E.name}${E.elite?' — ELITE!':''}${E.boss?' — GUARDIAN!':''}.`,'bad');tab('combat');render();
+}
+function continueDungeon(){
+  if(!S.dungeon?.active){startDungeon();return}
+  if(E){toast('Finish the current room first.');return}
+  if(S.dungeon.room>S.dungeon.maxRooms){toast('Trial already cleared.');return}
+  beginDungeonEncounter();
+}
+function abandonDungeon(){
+  if(!S.dungeon?.active)return;
+  if(E){toast('You cannot leave during combat.');return}
+  log('🏳️ You leave the Emberfall Trial. The run is forfeited.','');S.dungeon.active=false;S.dungeon.room=0;saveGame(true);tab('world');render();
+}
+function flee(){if(!E)return;let chance=.58+(S.class==='Striker'?.12:0);if(Math.random()<chance){log('🏃 You escaped safely.');E=null;S.statuses={burn:0,bleed:0,curse:0};render()}else{log('🏃 Escape failed!','bad');enemyTurn();render()}}
+function normalizeGear(it){
+  if(!it)return it;
+  if(it.type==='gear'){
+    const isArmor=Number(it.def)>0 && Number(it.atk||0)<=Number(it.def||0)+2;
+    it.type=isArmor?'armor':'weapon';
+    if(!it.slot)it.slot=it.type;
+  }
+  if(it.type==='weapon'||it.type==='armor'){
+    const n=Number(it.level);
+    it.level=Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
+    if(!it.slot)it.slot=it.type;
+    ensureAffixes(it);
+    if(!it.setId){
+      if(/^Iron /.test(it.name||''))it.setId='Ironbound';
+      else if(/^Grove /.test(it.name||''))it.setId='Moonveil';
+      else if(/^Ashen /.test(it.name||''))it.setId='Ashforged';
+      else if(/^Ember /.test(it.name||''))it.setId='Emberheart';
+      else if(/^Titan /.test(it.name||''))it.setId='Ashforged';
+      else if(/^King /.test(it.name||''))it.setId='Emberheart';
+    }
+  }
+  return it;
+}
+function drop(e){
+  const r=REGIONS[e.world]||REGIONS.Emberfield;
+  const materialRoll=Math.random();
+  const key=materialRoll<.55?'herb':materialRoll<.88?'essence':'ore';
+  const amount=key==='ore'?1+(e.elite||e.boss?1:0):1+(Math.random()<.25?1:0);
+  S.materials[key]=(S.materials[key]||0)+amount;
+  log(`📦 Material: ${amount} ${matName(key)}.`,'good');
+
+  const equipmentChance=e.boss?1:e.elite?.60:.34;
+  const rolls=e.boss?2:1;
+  for(let n=0;n<rolls;n++){
+    if(Math.random()>equipmentChance)continue;
+    let rarity;
+    if(e.boss)rarity=Math.random()<.35?'legend':'epic';
+    else if(r.loot==='epic')rarity=Math.random()<.15?'legend':Math.random()<.55?'epic':'rare';
+    else if(r.loot==='rare')rarity=Math.random()<.10?'epic':Math.random()<.65?'rare':'uncommon';
+    else if(r.loot==='uncommon')rarity=Math.random()<.18?'rare':'uncommon';
+    else rarity=Math.random()<.20?'uncommon':'common';
+    const blade=Math.random()<.5;
+    const base={common:2,uncommon:4,rare:7,epic:10,legend:14}[rarity];
+    const name=e.boss?(e.type==='EmberTitan'?'Titan '+(blade?'Blade':'Plate'):'King '+(blade?'Blade':'Mail')):(rarity==='legend'?'Starforged '+(blade?'Blade':'Mail'):(r.loot==='epic'?'Ember '+(blade?'Blade':'Mail'):r.loot==='rare'?'Ashen '+(blade?'Blade':'Mail'):r.loot==='uncommon'?'Grove '+(blade?'Blade':'Mail'):'Iron '+(blade?'Blade':'Mail')));
+    const setId=setIdForWorld(e.world); const uniqueId=e.boss?(e.type==='EmberTitan'?(blade?'titanBlade':'titanPlate'):(e.type==='AshenKing'?(blade?'kingBlade':'kingMail'):'')):'';
+    const it=blade?{name,type:'weapon',slot:'weapon',qty:1,rarity,value:base*14,atk:base+Math.floor(Math.random()*4),affixes:rollAffixes('weapon',rarity),setId,uniqueId:uniqueId||undefined}:{name,type:'armor',slot:'armor',qty:1,rarity,value:base*14,def:Math.max(1,Math.floor(base*.7)+Math.floor(Math.random()*3)),affixes:rollAffixes('armor',rarity),setId,uniqueId:uniqueId||undefined};
+    addItem(it); if(['rare','epic','legend'].includes(it.rarity)){S.achievements.rareGear=true;} if(it.rarity==='legend'){S.achievements.legendary++;} log(`🎁 Loot: <b class="${it.rarity}">${it.name}</b> • Power ${itemPower(it)}${affixSummary(it)?' • '+affixSummary(it):''}`,'rare');
+  }
+}
+function addItem(it){
+  normalizeGear(it);
+  let old=S.inv.find(x=>x.name===it.name&&x.type===it.type);
+  if(old&&it.type!=='weapon'&&it.type!=='armor')old.qty+=it.qty;
+  else S.inv.push(it);
+}
+function equipItem(i){
+  const it=S.inv[i];
+  if(!it||it.qty<1)return;
+  normalizeGear(it);
+  if(it.type!=='weapon'&&it.type!=='armor'){
+    toast('That item cannot be equipped.');
+    return;
+  }
+  const slot=it.type;
+  const previous=S.eq[slot];
+  S.eq[slot]={...it,qty:1,slot};
+  S.inv.splice(i,1);
+  if(previous)addItem({...previous,qty:1});
+  log(`⚔️ Equipped <b>${it.name}</b>.`,'good');
+  render();
+}
+function usePotion(){let i=S.inv.findIndex(x=>x.type==='potion'&&x.qty>0);if(i<0){toast('No potions.');return}useItem(i)}
+function useItem(i){
+  let it=S.inv[i];
+  if(!it||it.qty<1)return;
+  normalizeGear(it);
+  if(it.type==='weapon'||it.type==='armor'){equipItem(i);return}
+  if(it.type==='potion'){S.hp=Math.min(S.maxHp,S.hp+it.heal);log(`🧪 Potion restores ${it.heal} HP.`,'good')}
+  else if(it.type==='mana'){S.mp=Math.min(effective().mp,S.mp+it.heal);log(`💧 Mana tonic restores ${it.heal} MP.`,'good')}
+  else if(it.type==='stamina'){S.st=Math.min(S.maxSt,S.st+it.heal);log(`⚡ Stamina tonic restores ${it.heal} ST.`,'good')}
+  else return;
+  it.qty--;
+  if(!it.qty)S.inv.splice(i,1);
+  render();
+}
+function buy(type){let cost={potion:22,ether:28,herb:14,essence:30}[type];if(S.gold<cost){toast('Not enough gold.');return}S.gold-=cost;if(type==='potion')addItem({id:'potion',name:'Small Potion',type:'potion',qty:1,rarity:'common',heal:45});if(type==='ether')addItem({id:'ether',name:'Mana Tonic',type:'mana',qty:1,rarity:'uncommon',heal:25});if(type==='herb')S.materials.herb++;if(type==='essence')S.materials.essence++;render();toast('Purchase complete.')}
+function getUpgradeCost(item){
+  if(!item)return Infinity;
+  normalizeGear(item);
+  const level=item.level;
+  return 35+level*35;
+}
+function upgrade(type){
+  const item=type==='weapon'?S.eq.weapon:type==='armor'?S.eq.armor:null;
+  if(!item){toast('No '+type+' equipped.');return}
+  normalizeGear(item);
+  const cost=getUpgradeCost(item);
+  if(!Number.isFinite(cost)){toast('Invalid equipment upgrade data.');return}
+  if(S.gold<cost){toast('Not enough gold.');return}
+  S.gold-=cost;
+  item.level++;
+  S.achievements.upgrades++; S.quests.firstUpgrade=true;
+  if(type==='weapon')item.atk=(Number(item.atk)||0)+2;
+  else item.def=(Number(item.def)||0)+2;
+  // Keep the legacy field synchronized for old saves/UI compatibility, but never use it as the source of truth.
+  S.upgrades[type]=item.level;
+  log(`🔨 ${item.name} upgraded to Lv.${item.level}! -${cost}g`,'good');
+  saveGame(true);
+  render();
+}
+function talent(x){if(!S.points)return;S.points--;S.talents[x]++;render();toast(x+' increased.')}
+function chooseClass(n){if(E){toast('Finish combat before changing class.');return}S.class=n;S.specialization='';render();toast('Class changed to '+n+'. Choose a new specialization at Lv.10.')}
+function travel(r){if(E){toast('Finish combat first.');return}if(S.level<REGIONS[r].level){toast('Reach level '+REGIONS[r].level+' first.');return}S.region=r;S.distance=0;S.achievements.worlds[r]=true;log('🗺️ You travel to '+r+'. Recommended Lv '+REGIONS[r].level+'.','rare');tab('world');render()}
+function saveGame(silent=false){localStorage.setItem(KEY,JSON.stringify(S));if(!silent)toast('Game saved.')}
+
+function migrateState(){
+  const safeNum=(v,f)=>Number.isFinite(Number(v))?Number(v):f;
+  // v2.2 originally stored upgrade levels globally in S.upgrades. Migrate that legacy progress
+  // to the actual equipped item once, then use each gear item's own level thereafter.
+  const legacyUpgrades=S.upgrades||{};
+  const legacyWeaponLevel=Math.max(0,Math.floor(safeNum(legacyUpgrades.weapon,0)));
+  const legacyArmorLevel=Math.max(0,Math.floor(safeNum(legacyUpgrades.armor,0)));
+  S.level=Math.min(MAX_LEVEL,Math.max(1,Math.floor(safeNum(S.level,1)))); S.skillPoints=Math.max(0,Math.floor(safeNum(S.skillPoints,0))); S.points=Math.max(0,Math.floor(safeNum(S.points,0)));
+  S.xp=Math.max(0,Math.floor(safeNum(S.xp,0)));
+  S.specialization=typeof S.specialization==='string'?S.specialization:''; if(S.specialization&&!specializationDef())S.specialization='';
+  if(S.level>=MAX_LEVEL)S.xp=0;
+  const validRegions=Object.entries(REGIONS).filter(([,r])=>S.level>=r.level);
+  if(!REGIONS[S.region]||S.level<REGIONS[S.region].level)S.region=validRegions.length?validRegions[validRegions.length-1][0]:'Emberfield';
+  S.gold=Math.max(0,Math.floor(safeNum(S.gold,80)));
+  const legacyMaxSt=Math.max(1,Math.floor(safeNum(S.maxSt,30)));
+  if(S.maxHp===undefined)S.maxHp=100; if(S.maxMp===undefined)S.maxMp=45;
+  S.st=Math.max(0,Math.min(legacyMaxSt,Math.floor(safeNum(S.st,legacyMaxSt))));
+  S.talents ||= {might:0,arcana:0,vitality:0,fortune:0};
+  for(const k of ['might','arcana','vitality','fortune']) S.talents[k]=Math.max(0,Math.floor(safeNum(S.talents[k],0)));
+  S.materials ||= {herb:0,essence:0,ore:0};
+  for(const k of ['herb','essence','ore']) S.materials[k]=Math.max(0,Math.floor(safeNum(S.materials[k],0)));
+  S.crafting ||= {crafted:0}; S.crafting.crafted=Math.max(0,Math.floor(safeNum(S.crafting.crafted,0)));
+  S.inv ||= [];
+  S.inv.forEach(normalizeGear);
+  S.eq ||= {};
+  S.eq.weapon ||= {name:'Emberblade',type:'weapon',atk:3,rarity:'common',value:25};
+  S.eq.armor ||= {name:'Traveler Coat',type:'armor',def:2,rarity:'common',value:20};
+  // Existing saves: if an equipped item has no individual level yet, inherit the old global level.
+  // Inventory gear is intentionally kept at its own stored level (or Lv.0 if it predates this model).
+  if(S.eq.weapon.level===undefined || !Number.isFinite(Number(S.eq.weapon.level))) S.eq.weapon.level=legacyWeaponLevel;
+  if(S.eq.armor.level===undefined || !Number.isFinite(Number(S.eq.armor.level))) S.eq.armor.level=legacyArmorLevel;
+  normalizeGear(S.eq.weapon);
+  normalizeGear(S.eq.armor);
+  if(!S.eq.weapon.setId && S.eq.weapon.name==='Emberblade') S.eq.weapon.setId='Ironbound';
+  if(!S.eq.armor.setId && S.eq.armor.name==='Traveler Coat') S.eq.armor.setId='Ironbound';
+  S.upgrades={weapon:S.eq.weapon.level,armor:S.eq.armor.level};
+  S.quests ||= {slay:0,elite:0,explore:0}; S.dungeon ||= {active:false,room:0,maxRooms:5,best:0,attempts:0,clears:0}; S.dungeon.active=!!S.dungeon.active; S.dungeon.room=Math.max(0,Math.floor(safeNum(S.dungeon.room,0))); S.dungeon.maxRooms=5; S.dungeon.best=Math.max(0,Math.floor(safeNum(S.dungeon.best,0))); S.dungeon.attempts=Math.max(0,Math.floor(safeNum(S.dungeon.attempts,0))); S.dungeon.clears=Math.max(0,Math.floor(safeNum(S.dungeon.clears,0)));
+  S.dungeonRun ||= {active:false,id:null,room:0,maxRooms:0,attempts:0,clears:0,best:0,bestBy:{}}; S.dungeonRun.active=!!S.dungeonRun.active; S.dungeonRun.room=Math.max(0,Math.floor(safeNum(S.dungeonRun.room,0))); S.dungeonRun.attempts=Math.max(0,Math.floor(safeNum(S.dungeonRun.attempts,0))); S.dungeonRun.clears=Math.max(0,Math.floor(safeNum(S.dungeonRun.clears,0))); S.dungeonRun.best=Math.max(0,Math.floor(safeNum(S.dungeonRun.best,0))); S.dungeonRun.bestBy ||= {}; if(S.dungeonRun.active && !DUNGEONS[S.dungeonRun.id]){S.dungeonRun.active=false;S.dungeonRun.room=0;}
+  S.bosses ||= {EmberTitan:false,AshenKing:false}; S.statuses ||= {burn:0,bleed:0,curse:0};
+  S.classSkills ||= {}; S.quests ||= {}; S.quests.claimed ||= {}; S.quests.worlds ||= {}; S.achievements ||= {}; S.achievements.kills=Math.max(0,Math.floor(safeNum(S.achievements.kills,0))); S.achievements.elites=Math.max(0,Math.floor(safeNum(S.achievements.elites,0))); S.achievements.bosses=Math.max(0,Math.floor(safeNum(S.achievements.bosses,0))); S.achievements.explores=Math.max(0,Math.floor(safeNum(S.achievements.explores,0))); S.achievements.crafts=Math.max(0,Math.floor(safeNum(S.achievements.crafts,S.crafting.crafted||0))); S.achievements.upgrades=Math.max(0,Math.floor(safeNum(S.achievements.upgrades,0))); S.achievements.trials=Math.max(0,Math.floor(safeNum(S.achievements.trials,S.dungeon?.clears||0))); S.achievements.legendary=Math.max(0,Math.floor(safeNum(S.achievements.legendary,0))); S.achievements.rareGear=!!S.achievements.rareGear; S.achievements.worlds ||= {}; S.achievements.claimed ||= {}; S.inventorySellMode=!!S.inventorySellMode; S.questsView=S.questsView||'quests'; S.retaliationReady=Math.max(0,Math.floor(safeNum(S.retaliationReady,0)));
+  if(S.region)S.achievements.worlds[S.region]=true;
+  S.baseStats={hp:100+(S.level-1)*14,mp:45+(S.level-1)*5,st:30,atk:13+(S.level-1)*2,def:5+(S.level-1),crit:8};
+  const e=effective();
+  if(!Number.isFinite(S.hp)||S.hp<0||S.hp>e.hp*1.25) S.hp=e.hp;
+  else S.hp=Math.min(e.hp,S.hp);
+  if(!Number.isFinite(S.mp)||S.mp<0||S.mp>e.mp*1.25) S.mp=e.mp;
+  else S.mp=Math.min(e.mp,S.mp);
+  S.maxHp=e.hp; S.maxMp=e.mp; S.maxSt=e.st; S.st=Math.min(S.st,S.maxSt);
+  S.atk=S.baseStats.atk; S.def=S.baseStats.def; S.crit=S.baseStats.crit;
+}
+
+function loadGame(){let raw=localStorage.getItem(KEY);if(!raw){toast('No save found.');return}try{S=JSON.parse(raw);migrateState();E=null;guard=false;render();toast('Save loaded.')}catch{toast('Save data is corrupted.')}}
+function resetGame(){if(confirm('Reset Emberfall? This deletes your local save.')){localStorage.removeItem(KEY);S=defaultState();migrateState();E=null;log('🔥 A new journey begins.');render()}}
+window.addEventListener('beforeunload',()=>saveGame(true));
+migrateState();render();log('🔥 Welcome to Emberfall. Explore, build your class, hunt elites, and reach the Sanctum.','rare');
+autosaveTimer=setInterval(()=>saveGame(true),30000);
+</script>
+<style id="v30-story-style">
+#v30StoryTab .v30-hero{background:linear-gradient(135deg,rgba(90,55,25,.35),rgba(25,20,35,.7));border:1px solid rgba(255,190,90,.28);border-radius:14px;padding:16px;margin-bottom:12px}
+.v30-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v30-card{padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.025)}
+.v30-card h4{margin:0 0 6px}.v30-small{font-size:.88em;opacity:.78}.v30-locked{opacity:.55}.v30-choice{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.v30-choice button{flex:1;min-width:130px}.v30-pill{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,190,90,.25);font-size:.78em;margin:2px}.v30-complete{border-color:rgba(100,220,140,.35)}
+@media(max-width:650px){.v30-grid{grid-template-columns:1fr}.v30-choice button{min-width:100%}}
+</style>
+<script id="v30-world-story">
+(function(){
+  // V3.0 World of Emberfall: additive story/world layer. Existing systems remain authoritative.
+  S.storyV30 ||= {chapter:0,completed:{},choices:{},lore:[],factions:{Emberguard:0,Grovekeepers:0,Ashbound:0},bosses:{},claimed:{}};
+  S.storyV30.completed ||= {}; S.storyV30.choices ||= {}; S.storyV30.lore ||= [];
+  S.storyV30.factions ||= {Emberguard:0,Grovekeepers:0,Ashbound:0};
+  S.storyV30.bosses ||= {}; S.storyV30.claimed ||= {};
+  const STORY=[
+    {id:'awakening',chapter:1,level:5,title:'Chapter I — The First Ember',icon:'🔥',world:'Emberfield',desc:'Strange embers are appearing beneath Emberfield. Something ancient is stirring below the roots.',lore:'The Ember was never merely a source of power. The oldest records describe it as a seal.',boss:{name:'Cinderbound Warden',type:'Treant',hp:1.35,atk:1.18,def:1.15,xp:260,gold:180},reward:{xp:180,gold:120,skill:1},choices:[['guard','🛡️ Trust the Emberguard','Emberguard +2','Emberguard',2],['grove','🌿 Listen to the Grovekeepers','Grovekeepers +2','Grovekeepers',2]]},
+    {id:'whisper',chapter:2,level:10,title:'Chapter II — Whispers in Moonlight',icon:'🌙',world:'MoonlitGrove',desc:'The Grove remembers what the villages forgot. A voice beneath the moon calls your name.',lore:'Moonlit stones hum when the hidden seal is near. The voice promises answers, but never without a price.',boss:{name:'Moonveil Revenant',type:'CinderWraith',hp:1.55,atk:1.28,def:1.18,xp:520,gold:320},reward:{xp:320,gold:220,skill:1},choices:[['grove','🌙 Follow the moonlit voice','Grovekeepers +2','Grovekeepers',2],['ash','🔥 Burn the corrupted shrine','Ashbound +2','Ashbound',2]]},
+    {id:'fall',chapter:3,level:15,title:'Chapter III — Ashes of the Old Empire',icon:'🌑',world:'AshenHollow',desc:'The Ashen Hollow was once an empire. Its final king tried to control the Ember—and paid the price.',lore:'The empire did not fall because the Ember was weak. It fell because someone tried to make the world obey it.',boss:{name:'Ashen Revenant',type:'EmberTitan',hp:1.75,atk:1.36,def:1.22,xp:850,gold:550},reward:{xp:520,gold:380,skill:2},choices:[['guard','⚔️ Protect the remaining settlements','Emberguard +2','Emberguard',2],['ash','🜂 Study the forbidden Ember rites','Ashbound +2','Ashbound',2]]},
+    {id:'sanctum','chapter':4,level:20,title:'Chapter IV — The World Below',icon:'👑',world:'EmberSanctum',desc:'The Sanctum is not the source of the Ember. It is the lock around what lies beneath it.',lore:'Every world was built around one truth: the Emberfall seal is weakening.',boss:{name:'The Emberbound King',type:'AshenKing',hp:2.05,atk:1.48,def:1.28,xp:1500,gold:1000},reward:{xp:900,gold:700,skill:3},choices:[['guard','👑 Stand with the Emberguard','Emberguard +3','Emberguard',3],['grove','🌿 Preserve the living Ember','Grovekeepers +3','Grovekeepers',3],['ash','🔥 Take the forbidden power','Ashbound +3','Ashbound',3]]}
+  ];
+  const cur=()=>STORY.find(x=>x.chapter===S.storyV30.chapter)||STORY[0];
+  function syncChapter(){
+    let next=0;
+    for(const st of STORY){ if(S.level>=st.level) next=st.chapter; }
+    const done=S.storyV30.completed||{};
+    for(const st of STORY){ if(done[st.id]) next=Math.max(next,st.chapter); }
+    S.storyV30.chapter=Math.min(4,next);
+  }
+  function storyUnlocked(st){return S.level>=st.level && (!st.chapter||S.storyV30.chapter>=st.chapter)}
+  function storyEnemy(st){
+    const b=st.boss, base=ENEMIES[b.type]||ENEMIES.EmberTitan;
+    const r=REGIONS[S.region]||REGIONS.Emberfield;
+    return {type:b.type,name:b.name,icon:'👑',level:Math.max(st.level,S.level),maxHp:Math.max(1,Math.floor(base.hp*b.hp*(r.scale||1))),hp:Math.max(1,Math.floor(base.hp*b.hp*(r.scale||1))),atk:Math.max(1,Math.floor(base.atk*b.atk*(r.scale||1))),def:Math.max(0,Math.floor(base.def*b.def*(r.scale||1))),xp:b.xp,gold:b.gold,boss:true,elite:false,world:st.world,ability:base.ability,abilityName:'Story Ability',abilityUsed:false,phase:1,fortified:0,fortifyBaseDef:null,storyBossId:st.id};
+  }
+  function startStory(id){
+    const st=STORY.find(x=>x.id===id); if(!st)return;
+    if(E){toast('Finish the current combat first.');return}
+    if(S.level<st.level){toast('Reach level '+st.level+' first.');return}
+    if(st.chapter>1 && !S.storyV30.completed[STORY[st.chapter-2].id]){toast('Complete the previous chapter first.');return}
+    if(!S.storyV30.choices[id]){toast('Choose how you will approach this chapter first.');return}
+    if(S.storyV30.completed[id]){toast('Chapter already completed.');return}
+    S.region=st.world; S.distance=0; E=storyEnemy(st); E.storyBossId=id;
+    log('📖 '+st.title+' — '+st.boss.name+' awaits.','legend');
+    tab('combat'); render();
+  }
+  function chooseStory(id,key){
+    const st=STORY.find(x=>x.id===id); if(!st||S.storyV30.completed[id]||S.storyV30.choices[id])return;
+    const c=st.choices.find(x=>x[0]===key); if(!c)return;
+    S.storyV30.choices[id]=key; S.storyV30.factions[c[3]]=(S.storyV30.factions[c[3]]||0)+c[4];
+    S.storyV30.lore.push(st.lore); log('📖 Choice made: '+c[1]+'. '+c[2],'rare'); saveGame(true); render();
+  }
+  function claimStory(id){
+    const st=STORY.find(x=>x.id===id); if(!st||!S.storyV30.completed[id]||S.storyV30.claimed[id])return;
+    S.storyV30.claimed[id]=true; S.xp+=st.reward.xp; S.gold+=st.reward.gold; S.skillPoints+=st.reward.skill||0;
+    log('🎁 Story reward claimed: +'+st.reward.xp+' XP, +'+st.reward.gold+'g, +'+(st.reward.skill||0)+' Class Skill Points.','good'); xpLevelUp(); saveGame(true); render();
+  }
+  function renderStory(){
+    syncChapter(); const box=document.getElementById('v30StoryBox'); if(!box)return;
+    const unlocked=STORY.filter(st=>S.level>=st.level).length;
+    const cards=STORY.map(st=>{
+      const done=!!S.storyV30.completed[st.id], chosen=S.storyV30.choices[st.id], can=S.level>=st.level && (st.chapter===1 || !!S.storyV30.completed[STORY[st.chapter-2].id]);
+      let choices='';
+      if(chosen) choices='<div class="v30-small">Choice: <b>'+chosen+'</b></div>';
+      else if(can&&!done) choices='<div class="v30-choice">'+st.choices.map(c=>'<button onclick="v30Choose(\''+st.id+'\',\''+c[0]+'\')">'+c[1]+'</button>').join('')+'</div>';
+      const action=done ? (S.storyV30.claimed[st.id]?'<span class="v30-pill">✓ Reward Claimed</span>':'<button onclick="v30Claim(\''+st.id+'\')">🎁 Claim Chapter Reward</button>') : '<button onclick="v30Start(\''+st.id+'\')" '+(!can||E?'disabled':'')+'>'+(!can?'🔒 Lv.'+st.level:'⚔️ Begin Chapter')+'</button>';
+      return '<div class="v30-card '+(done?'v30-complete':'')+' '+(!can?'v30-locked':'')+'"><div class="between"><h4>'+st.icon+' '+st.title+'</h4><span class="v30-pill">Lv.'+st.level+'</span></div><div class="v30-small">'+st.world+'</div><p>'+st.desc+'</p><div class="v30-small">Boss: <b>'+st.boss.name+'</b> • Reward: '+st.reward.gold+'g / '+st.reward.xp+' XP / '+st.reward.skill+' Skill Pt</div>'+choices+'<div style="margin-top:9px">'+action+'</div></div>';
+    }).join('');
+    const f=S.storyV30.factions;
+    box.innerHTML='<div class="v30-hero"><div class="sectionTitle"><h3>🔥 The World of Emberfall</h3><span class="gold">Chapter '+S.storyV30.chapter+'/4</span></div><p>The worlds are connected by an ancient seal. Your journey is no longer only about becoming stronger — it is about deciding what Emberfall becomes.</p><div class="v30-small">Chapters unlocked: '+unlocked+'/4 • Emberguard '+f.Emberguard+' • Grovekeepers '+f.Grovekeepers+' • Ashbound '+f.Ashbound+'</div></div><div class="v30-grid">'+cards+'</div><div class="panel" style="margin-top:12px"><div class="sectionTitle"><h3>📚 Lore Archive</h3><span class="sub">'+S.storyV30.lore.length+' entries</span></div>'+(S.storyV30.lore.length?S.storyV30.lore.slice(-6).map(x=>'<div class="card" style="margin-bottom:7px">'+x+'</div>').join(''):'<div class="sub">Discover story chapters to fill the archive.</div>')+'</div>';
+  }
+  window.v30Start=startStory; window.v30Choose=chooseStory; window.v30Claim=claimStory;
+  syncChapter();
+  const oldWin=window.win;
+  if(typeof oldWin==='function'){
+    window.win=function(){
+      const storyId=E&&E.storyBossId;
+      oldWin.apply(this,arguments);
+      if(storyId){
+        const st=STORY.find(x=>x.id===storyId);
+        if(st){S.storyV30.completed[storyId]=true; S.storyV30.chapter=Math.max(S.storyV30.chapter,st.chapter); S.bosses[st.boss.type]=true; S.storyV30.lore.push(st.lore); log('📖 Chapter complete: '+st.title+'. The truth is getting closer.','legend'); saveGame(true);}
+      }
+      renderStory();
+    };
+  }
+  const oldRender=window.render;
+  window.render=function(){if(typeof oldRender==='function')oldRender.apply(this,arguments);syncChapter();renderStory();};
+  // Add Story navigation and page without disturbing the existing navigation.
+  function installNav(){
+    if(document.getElementById('tabStory'))return;
+    const tabs=document.querySelector('.tabs'); if(!tabs)return;
+    const b=document.createElement('button');b.id='tabStory';b.onclick=function(){tab('story')};b.textContent='📖 Story';tabs.appendChild(b);
+    const sec=document.createElement('section');sec.id='storyTab';sec.className='hide';sec.innerHTML='<div id="v30StoryBox"></div>';
+    const guide=document.getElementById('guideTab'); guide&&guide.parentNode.insertBefore(sec,guide);
+    const oldTab=window.tab;
+    window.tab=function(t){
+      if(t==='story'){
+        ['combat','world','inventory','town','dungeons','quests','guide'].forEach(x=>{const el=document.getElementById(x+'Tab');if(el)el.classList.add('hide');const bt=document.getElementById('tab'+x[0].toUpperCase()+x.slice(1));if(bt)bt.classList.remove('on')});
+        sec.classList.remove('hide');b.classList.add('on');renderStory();return;
+      }
+      sec.classList.add('hide');b.classList.remove('on');oldTab(t);
+    };
+    renderStory();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installNav);else installNav();
+  window.addEventListener('beforeunload',function(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}});
+})();
+</script>
+</body></html>
