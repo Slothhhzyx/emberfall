@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ASCENSION: INFINITE</title>
+<style>
+:root{--bg:#090b12;--panel:#111522;--panel2:#171c2b;--line:#293149;--text:#eef2ff;--muted:#8993ad;--accent:#7c8cff;--good:#53d69a;--bad:#ff667d;--gold:#ffd166;--cyan:#4fdcff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#18203b 0,#090b12 48%);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+button{border:0;border-radius:10px;padding:11px 13px;background:#222a40;color:var(--text);font-weight:700;cursor:pointer}button:active{transform:translateY(1px)}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}
+.app{max-width:1100px;margin:auto;padding:12px}.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.title{font-size:21px;font-weight:900;letter-spacing:.5px}.sub{font-size:11px;color:var(--muted)}
+.resources{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.res{background:var(--panel);border:1px solid var(--line);padding:7px 10px;border-radius:9px;font-size:12px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:10px}.panel{background:linear-gradient(180deg,#121726,#0f1320);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 8px 30px #0004}.wide{grid-column:1/-1}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:10px}.enemy{background:#0b0f19;border:1px solid #313950;border-radius:12px;padding:13px;text-align:center}.enemyname{font-size:20px;font-weight:900}.enemyicon{font-size:52px;margin:5px}.bar{height:12px;background:#252b3b;border-radius:99px;overflow:hidden}.fill{height:100%;transition:width .2s}.hp{background:linear-gradient(90deg,#ff536f,#ff8b70)}.xp{background:linear-gradient(90deg,#657cff,#b56cff)}.stamina{background:linear-gradient(90deg,#35c9a0,#76e5a4)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}.stat{background:var(--panel2);padding:9px;border-radius:9px}.stat b{display:block;font-size:15px}.small{font-size:11px;color:var(--muted)}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.attack{background:linear-gradient(135deg,#7057ff,#9b55d8);font-size:16px;padding:14px}.gold{color:var(--gold)}.cyan{color:var(--cyan)}.good{color:var(--good)}.bad{color:var(--bad)}
+.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:10px}.tab.active{background:var(--accent)}.tabview{display:none}.tabview.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}.card h3{margin:0 0 5px;font-size:14px}.card p{margin:4px 0;color:var(--muted);font-size:11px;line-height:1.4}
+.log{height:145px;overflow:auto;background:#080b12;border-radius:10px;padding:9px;font:12px ui-monospace,monospace}.log div{margin-bottom:4px}.loot{color:var(--gold)}.crit{color:#ff83df}
+.quest{display:flex;justify-content:space-between;gap:10px;padding:9px;background:var(--panel2);border-radius:9px;margin-bottom:7px}.quest button{padding:7px 9px}
+.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;padding:15px;z-index:10}.modal.show{display:grid}.modalbox{max-width:620px;width:100%;background:#121725;border:1px solid #39435e;border-radius:16px;padding:16px}.choice{margin:7px 0;width:100%;text-align:left}.choice strong{display:block}.choice span{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.wide{grid-column:auto}.cards{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.resources{justify-content:flex-start}.actions{grid-template-columns:1fr 1fr}.app{padding:8px}}
+
+.inventory-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.item-card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}.item-card h3{margin:0 0 4px;font-size:14px}.item-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.event-card{background:linear-gradient(135deg,#171c34,#111624);border:1px solid #49547d;border-radius:12px;padding:12px}.event-progress{height:9px;background:#252b3b;border-radius:99px;overflow:hidden;margin:8px 0}.event-fill{height:100%;background:linear-gradient(90deg,#ffbd55,#ff6f91);transition:width .2s}@media(max-width:760px){.inventory-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div><div class="title">♾ ASCENSION: INFINITE</div><div class="sub">An endless progression RPG — no level cap.</div></div>
+    <div class="resources">
+      <div class="res">🪙 <span id="gold">0</span></div><div class="res">💎 <span id="essence">0</span></div>
+      <div class="res">🔥 Ascension <span id="asc">0</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="battle">⚔ Battle</button>
+    <button class="tab" data-tab="build">🧬 Build</button>
+    <button class="tab" data-tab="gear">🗡 Gear</button>
+    <button class="tab" data-tab="inventory">🎒 Inventory</button>
+    <button class="tab" data-tab="world">🌌 World</button>
+    <button class="tab" data-tab="quests">📜 Quests</button>
+    <button class="tab" data-tab="save">💾 Save</button>
+  </nav>
+
+  <main id="battle" class="tabview active">
+    <div class="grid">
+      <section class="panel">
+        <div class="row"><div><b id="playerName">Wanderer</b> <span class="small">Lv.<span id="level">1</span></span></div><div class="small">XP <span id="xp">0</span>/<span id="xpNext">100</span></div></div>
+        <div class="bar"><div id="xpbar" class="fill xp" style="width:0%"></div></div>
+        <div class="stats">
+          <div class="stat">❤️ HP <b><span id="hp">100</span>/<span id="maxhp">100</span></b></div>
+          <div class="stat">⚔ ATK <b id="atk">8</b></div>
+          <div class="stat">🛡 DEF <b id="def">2</b></div>
+          <div class="stat">🎯 CRIT <b id="crit">5%</b></div>
+          <div class="stat">🍀 LUCK <b id="luck">0%</b></div>
+          <div class="stat">⚡ POWER <b id="power">10</b></div>
+        </div>
+        <div style="margin-top:10px" class="row"><span class="small">Stamina</span><span class="small"><span id="stam">100</span>/100</span></div>
+        <div class="bar"><div id="stambar" class="fill stamina" style="width:100%"></div></div>
+        <div class="actions">
+          <button class="attack" id="attackBtn">⚔ ATTACK</button>
+          <button id="skillBtn">✨ Skill (20 STA)</button>
+          <button id="healBtn">🧪 Heal (25 STA)</button>
+          <button id="rerollBtn">🎲 Reroll Enemy</button>
+        </div>
+      </section>
+
+      <section class="panel enemy">
+        <div class="small">CURRENT THREAT</div>
+        <div class="enemyicon" id="enemyIcon">🟢</div>
+        <div class="enemyname" id="enemyName">Slime</div>
+        <div class="small">Tier <span id="enemyTier">1</span> · Threat <span id="threat">1</span></div>
+        <div style="margin:9px 0" class="bar"><div id="enemybar" class="fill hp" style="width:100%"></div></div>
+        <div><b id="enemyHp">35</b>/<span id="enemyMaxHp">35</span> HP</div>
+        <div class="small" style="margin-top:8px">Defeat enemies to gain XP, gold and gear. Every 10 levels introduces a new world modifier.</div>
+      </section>
+
+      <section class="panel wide">
+        <div class="row"><b>Combat Log</b><button id="clearLog">Clear</button></div>
+        <div class="log" id="log"></div>
+      </section>
+    </div>
+  </main>
+
+  <main id="build" class="tabview">
+    <section class="panel">
+      <h2 style="margin-top:0">🧬 Build & Permanent Growth</h2>
+      <div class="cards" id="buildCards"></div>
+    </section>
+  </main>
+
+  <main id="gear" class="tabview">
+    <section class="panel">
+      <div class="row"><h2 style="margin:0">🗡 Equipment</h2><span class="small">Gear rolls are random, upgrades are deterministic.</span></div>
+      <div class="cards" id="gearCards"></div>
+    </section>
+  </main>
+
+  <main id="inventory" class="tabview">
+    <section class="panel">
+      <div class="row"><h2 style="margin:0">🎒 Inventory</h2><span class="small"><span id="inventoryCount">0</span> items</span></div>
+      <p class="small">Drops stay here until you equip or sell them. Upgrades belong to each individual item.</p>
+      <div id="inventoryCards" class="inventory-grid" style="margin-top:10px"></div>
+    </section>
+  </main>
+
+  <main id="world" class="tabview">
+    <section class="panel">
+      <h2 style="margin-top:0">🌌 Infinite World</h2>
+      <div id="worldInfo"></div>
+      <div id="eventPanel" style="margin-top:10px"></div>
+      <div class="cards" id="milestones"></div>
+    </section>
+  </main>
+
+  <main id="quests" class="tabview">
+    <section class="panel"><h2 style="margin-top:0">📜 Quests</h2><div id="questsList"></div></section>
+  </main>
+
+  <main id="save" class="tabview">
+    <section class="panel">
+      <h2 style="margin-top:0">💾 Save Management</h2>
+      <p class="small">The game automatically saves after important actions.</p>
+      <div class="actions">
+        <button id="saveBtn">Save Now</button><button id="exportBtn">Export Save</button>
+        <button id="importBtn">Import Save</button><button id="resetBtn">Hard Reset</button>
+      </div>
+      <textarea id="saveBox" placeholder="Exported save data appears here." style="width:100%;height:130px;margin-top:10px;background:#080b12;color:#fff;border:1px solid var(--line);border-radius:9px;padding:9px"></textarea>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox"><div class="row"><h2 style="margin:0">✨ Level Up!</h2><button id="closeModal">×</button></div><p>Choose one permanent specialization. Choices can be changed later through progression.</p><div id="choices"></div></div></div>
+
+<script>
+'use strict';
+
+const SAVE_KEY='ascension_infinite_v1';
+
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const fmt=n=>Math.floor(n).toLocaleString();
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const chance=p=>Math.random()<p;
+
+const RARITIES=[
+  {name:'Common', mult:1, color:'', weight:55},
+  {name:'Uncommon', mult:1.18, color:'', weight:25},
+  {name:'Rare', mult:1.42, color:'', weight:12},
+  {name:'Epic', mult:1.8, color:'', weight:6},
+  {name:'Legendary', mult:2.35, color:'', weight:1.7},
+  {name:'Mythic', mult:3.1, color:'', weight:.3}
+];
+
+const defaultState={
+  level:1,xp:0,gold:50,essence:0,ascensions:0,world:1,
+  hp:100,stamina:100,base:{atk:8,def:2,crit:5,luck:0,power:10},
+  upgrades:{atk:0,def:0,hp:0,crit:0,luck:0,power:0},
+  talents:{berserker:0,guardian:0,fortune:0,arcane:0},
+  gear:{weapon:null,armor:null,ring:null},
+  inventory:[],
+  kills:0,bossKills:0,questProgress:{kills:0,gold:0,gear:0},
+  event:null,eventHistory:[],
+  enemy:null,lastSave:0
+};
+
+let state=structuredClone(defaultState);
+let modalOpen=false;
+
+function xpNeeded(){return Math.floor(80*Math.pow(state.level,1.42)+20);}
+function stats(){
+  const u=state.upgrades,t=state.talents,g=state.gear;
+  let s={
+    maxhp:100+state.level*9+u.hp*35+t.guardian*30,
+    atk:8+state.level*2.4+u.atk*7+t.berserker*5,
+    def:2+state.level*.65+u.def*4+t.guardian*2,
+    crit:5+u.crit*1.5+t.berserker*1,
+    luck:u.luck*2+t.fortune*3,
+    power:10+state.level*1.5+u.power*5+t.arcane*7
+  };
+  for(const key of ['weapon','armor','ring']){
+    const item=g[key]; if(!item) continue;
+    if(key==='weapon')s.atk+=item.value;
+    if(key==='armor'){s.def+=item.value;s.maxhp+=item.value*8}
+    if(key==='ring'){s.crit+=item.value*.6;s.luck+=item.value*.8}
+  }
+  const asc=1+state.ascensions*.08;
+  Object.keys(s).forEach(k=>s[k]*=asc);
+  s.crit=clamp(s.crit,0,60); s.luck=clamp(s.luck,0,100);
+  return s;
+}
+
+function save(){
+  state.lastSave=Date.now();
+  localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+}
+function load(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(raw){
+      const parsed=JSON.parse(raw);
+      state=Object.assign(structuredClone(defaultState),parsed);
+      state.base=Object.assign(structuredClone(defaultState.base),parsed.base||{});
+      state.upgrades=Object.assign(structuredClone(defaultState.upgrades),parsed.upgrades||{});
+      state.talents=Object.assign(structuredClone(defaultState.talents),parsed.talents||{});
+      state.gear=Object.assign(structuredClone(defaultState.gear),parsed.gear||{});
+      state.inventory=Array.isArray(parsed.inventory)?parsed.inventory:[];
+      state.event=parsed.event||null;
+      state.eventHistory=Array.isArray(parsed.eventHistory)?parsed.eventHistory:[];
+      state.questProgress=Object.assign(structuredClone(defaultState.questProgress),parsed.questProgress||{});
+      for(const slot of ['weapon','armor','ring']){const item=state.gear[slot];if(item&&!item.id)item.id='legacy_'+slot+'_'+Date.now();if(item&&!item.name)item.name=(item.rarity||'Common')+' '+slot;}
+    }
+  }catch(e){localStorage.removeItem(SAVE_KEY); log('Save was corrupted; a fresh save was created.','bad');}
+}
+function log(msg,cls=''){const el=document.getElementById('log');const d=document.createElement('div');if(cls)d.className=cls;d.textContent='› '+msg;el.prepend(d);while(el.children.length>80)el.lastChild.remove();}
+function weightedRarity(){
+  let total=RARITIES.reduce((a,r)=>a+r.weight,0),x=Math.random()*total;
+  for(const r of RARITIES){x-=r.weight;if(x<=0)return r}return RARITIES[0];
+}
+function makeEnemy(){
+  const tier=Math.max(1,Math.floor((state.level-1)/10)+1);
+  const scale=Math.pow(1.105,state.level-1)*(1+state.world*.08);
+  const names=['Slime','Fangbeast','Ash Wolf','Stone Golem','Void Wisp','Blood Knight','Star Serpent','World Eater'];
+  const icons=['🟢','🐺','🔥','🪨','👻','⚔️','🐍','👁️'];
+  const idx=Math.min(names.length-1,Math.floor((tier-1)/2));
+  const boss=state.level%10===0 && chance(.28);
+  const mult=boss?3.8:1;
+  state.enemy={
+    name:boss?'ELITE '+names[idx]:names[idx],icon:icons[idx],tier,
+    maxHp:Math.floor((30+state.level*12)*scale*mult),
+    hp:0,atk:Math.floor((5+state.level*1.5)*Math.pow(1.09,state.level-1)*(boss?1.7:1)),
+    def:Math.floor(1+state.level*.55*(boss?1.3:1)),
+    boss
+  };
+  state.enemy.hp=state.enemy.maxHp;
+  render();
+}
+function damage(base,critMult=1){
+  const s=stats(), crit=chance(s.crit/100);
+  let val=Math.max(1,Math.floor(base+s.atk*.8-state.enemy.def*.55));
+  if(crit){val=Math.floor(val*(1.65+critMult*.1));log('CRITICAL HIT! '+fmt(val)+' damage.','crit')}
+  return val;
+}
+function attack(skill=false){
+  if(!state.enemy)return;
+  const s=stats();
+  if(skill){
+    if(state.stamina<20){log('Not enough stamina.','bad');return}
+    state.stamina-=20;
+  }
+  const dmg=damage(s.atk*(skill?2.25:1));
+  state.enemy.hp-=dmg;
+  log(skill?'Arcane Strike deals '+fmt(dmg)+' damage.':'You deal '+fmt(dmg)+' damage.');
+  if(state.enemy.hp<=0) defeatEnemy();
+  else enemyTurn();
+  save();render();
+}
+function enemyTurn(){
+  if(!state.enemy||state.enemy.hp<=0)return;
+  const s=stats();
+  const dmg=Math.max(1,Math.floor(state.enemy.atk-s.def*.5));
+  state.hp-=dmg;
+  log(state.enemy.name+' hits you for '+fmt(dmg)+'.',state.hp<=s.maxhp*.2?'bad':'');
+  if(state.hp<=0){
+    state.hp=Math.max(1,Math.floor(s.maxhp*.35));
+    state.gold=Math.floor(state.gold*.9);
+    state.stamina=100;
+    log('You were defeated. 10% of your gold was lost, but progression was preserved.','bad');
+    makeEnemy();
+  }
+}
+function defeatEnemy(){
+  const e=state.enemy,s=stats();
+  const xp=Math.floor((20+state.level*8)*(e.boss?4:1)*(1+s.luck/150));
+  const gold=Math.floor((8+state.level*3)*(e.boss?5:1)*(1+s.luck/100)*eventGoldMultiplier());
+  state.xp+=xp;state.gold+=gold;state.kills++;state.questProgress.kills++;
+  eventAdd('rift',1); eventAdd('treasure',gold); if(e.boss){state.bossKills++;eventAdd('hunt',2);}
+  log('Defeated '+e.name+'! +'+fmt(xp)+' XP, +'+fmt(gold)+' gold.','loot');
+  if(chance(.13+s.luck/500)||e.boss)dropGear();
+  while(state.xp>=xpNeeded()){
+    state.xp-=xpNeeded();state.level++;
+    state.hp=stats().maxhp;state.stamina=100;
+    if(state.level%10===0){state.world++;log('WORLD SHIFT: New rules and stronger enemies await.','crit')}
+    levelChoice();
+  }
+  makeEnemy();
+}
+function levelChoice(){
+  if(modalOpen)return;
+  modalOpen=true;
+  const choices=[
+    ['Berserker','Permanent +5% attack growth per rank.','berserker'],
+    ['Guardian','Permanent +30 HP and +2 DEF per rank.','guardian'],
+    ['Fortune','Permanent +3% luck per rank; improves drops.','fortune'],
+    ['Arcane','Permanent +7 power per rank; improves skills.','arcane']
+  ];
+  const box=document.getElementById('choices');box.innerHTML='';
+  choices.forEach(([a,b,k])=>{
+    const btn=document.createElement('button');btn.className='choice';
+    btn.innerHTML='<strong>'+a+'</strong><span>'+b+'</span>';
+    btn.onclick=()=>{state.talents[k]++;modalOpen=false;document.getElementById('modal').classList.remove('show');log('Talent gained: '+a+'.','loot');render();save()};
+    box.appendChild(btn);
+  });
+  document.getElementById('modal').classList.add('show');
+}
+function createGearItem(){
+  const r=weightedRarity(),slot=['weapon','armor','ring'][rand(0,2)];
+  const value=Math.max(1,Math.floor((3+state.level*1.8)*r.mult));
+  return {id:'item_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),slot,rarity:r.name,mult:r.mult,value,level:0,name:r.name+' '+slot.charAt(0).toUpperCase()+slot.slice(1)};
+}
+function dropGear(){
+  const item=createGearItem(); state.inventory.push(item); state.questProgress.gear++; eventAdd('forge',1);
+  const equipped=state.gear[item.slot]; log(item.rarity+' '+item.slot+' dropped! Added to inventory.','loot');
+  if(!equipped)log('No '+item.slot+' is equipped. Equip it from Inventory when ready.','loot');
+  else if(item.value>equipped.value)log('This drop is stronger than your equipped '+item.slot+'.','loot');
+}
+function equipItem(id){
+  const item=state.inventory.find(x=>x.id===id); if(!item){log('Item no longer exists.','bad');return;}
+  const old=state.gear[item.slot]; state.gear[item.slot]=item; state.inventory=state.inventory.filter(x=>x.id!==id); if(old)state.inventory.push(old);
+  log('Equipped '+item.name+' +'+item.level+'.','loot'); state.hp=Math.min(state.hp,stats().maxhp); save(); render();
+}
+function sellItem(id){
+  const item=state.inventory.find(x=>x.id===id); if(!item){log('Item no longer exists.','bad');return;}
+  const value=Math.max(2,Math.floor(item.value*item.mult*(4+item.level*2))); state.gold+=value; state.inventory=state.inventory.filter(x=>x.id!==id);
+  log('Sold '+item.name+' for '+fmt(value)+' gold.'); save(); render();
+}
+function upgrade(slot){
+  const item=state.gear[slot];
+  if(!item){log('No '+slot+' equipped.','bad');return}
+  const cost=Math.floor(30*Math.pow(1.42,item.level)*(1+state.level*.04));
+  if(state.gold<cost){log('Need '+fmt(cost)+' gold.','bad');return}
+  state.gold-=cost;item.level++;item.value=Math.floor(item.value*(1.08+item.mult*.01)+1);
+  log(slot+' upgraded to +'+item.level+'.');
+  save();render();
+}
+function buy(key){
+  const costs={atk:50,def:45,hp:55,crit:90,luck:120,power:100};
+  const cost=Math.floor(costs[key]*Math.pow(1.32,state.upgrades[key]));
+  if(state.gold<cost){log('Need '+fmt(cost)+' gold.','bad');return}
+  state.gold-=cost;state.upgrades[key]++;log(key.toUpperCase()+' upgraded.');
+  state.hp=Math.min(state.hp,stats().maxhp);save();render();
+}
+function heal(){
+  if(state.stamina<25){log('Not enough stamina.','bad');return}
+  state.stamina-=25;state.hp=Math.min(stats().maxhp,state.hp+Math.floor(stats().maxhp*.35));log('Potion restored health.');save();render();
+}
+function reroll(){
+  if(state.stamina<10){log('Need 10 stamina to reroll.','bad');return}
+  state.stamina-=10;makeEnemy();log('A new enemy approaches.');save();render();
+}
+function claimQuest(i){
+  const q=quests()[i];if(!q)return;
+  if(q.done||q.progress<q.goal)return;
+  state.gold+=q.reward;q.done=true;state.questProgress[q.key]=0;log('Quest claimed! +'+fmt(q.reward)+' gold.','loot');save();render();
+}
+function quests(){
+  return [
+    {name:'Hunter',key:'kills',goal:10,progress:state.questProgress.kills,reward:Math.floor(150+state.level*20),done:false},
+    {name:'Treasure',key:'gold',goal:500,progress:state.gold,reward:Math.floor(250+state.level*30),done:false},
+    {name:'Collector',key:'gear',goal:5,progress:state.questProgress.gear,reward:Math.floor(300+state.level*40),done:false}
+  ];
+}
+function eventTypes(){return [
+{id:'rift',name:'🌌 Rift Surge',desc:'Defeat enemies before the rift closes.',duration:90,goal:8,reward:450},
+{id:'treasure',name:'💰 Golden Hour',desc:'Earn gold during the event. Gold rewards are doubled.',duration:90,goal:500,reward:550},
+{id:'hunt',name:'🐺 Apex Hunt',desc:'Elite and boss kills count toward the hunt.',duration:75,goal:4,reward:650},
+{id:'forge',name:'⚒️ Blacksmith Rush',desc:'Find equipment before the forge closes.',duration:90,goal:3,reward:700}]};
+function startEvent(){if(state.event&&state.event.endAt>Date.now())return;const t=eventTypes()[rand(0,3)];state.event={id:t.id,name:t.name,desc:t.desc,goal:t.goal,progress:0,reward:Math.floor(t.reward*(1+state.level*.08)),endAt:Date.now()+t.duration*1000,claimed:false};log('WORLD EVENT: '+t.name+' — '+t.desc,'crit');save();render();}
+function eventAdd(type,amount=1){const e=state.event;if(!e||e.claimed||e.endAt<=Date.now()||e.id!==type)return;e.progress=Math.min(e.goal,e.progress+amount);if(e.progress>=e.goal){e.claimed=true;state.gold+=e.reward;state.essence+=Math.max(10,Math.floor(e.reward/30));state.eventHistory.push({name:e.name,at:Date.now()});log('EVENT COMPLETE: '+e.name+'! +'+fmt(e.reward)+' gold and bonus essence.','loot');save();render();}}
+function eventGoldMultiplier(){return state.event&&state.event.id==='treasure'&&state.event.endAt>Date.now()&&!state.event.claimed?2:1;}
+function renderEvent(){const el=document.getElementById('eventPanel'),e=state.event;if(!e||e.endAt<=Date.now()){el.innerHTML='<div class="event-card"><div class="row"><div><b>⚡ World Event</b><div class="small">Optional timed challenges give bonus rewards.</div></div><button id="eventStart">Start Event</button></div></div>';document.getElementById('eventStart').onclick=startEvent;return;}const left=Math.max(0,Math.ceil((e.endAt-Date.now())/1000)),pct=clamp(e.progress/e.goal*100,0,100);el.innerHTML='<div class="event-card"><div class="row"><div><b>'+e.name+'</b><div class="small">'+e.desc+'</div></div><b>'+left+'s</b></div><div class="event-progress"><div class="event-fill" style="width:'+pct+'%"></div></div><div class="row"><span class="small">'+e.progress+' / '+e.goal+'</span><span class="gold">Reward: '+fmt(e.reward)+' 🪙</span></div></div>';}
+
+function ascension(){
+  const req=50+state.ascensions*25;
+  if(state.level<req){log('Ascension requires level '+req+'.','bad');return}
+  if(!confirm('Ascend? Level, gold and normal upgrades reset, but you gain permanent Ascension power.'))return;
+  state.ascensions++;state.level=1;state.xp=0;state.gold=50;state.essence+=100+state.ascensions*25;
+  state.upgrades=structuredClone(defaultState.upgrades);state.talents=structuredClone(defaultState.talents);
+  state.gear=structuredClone(defaultState.gear);state.inventory=[];state.event=null;state.world=1;state.hp=100;state.stamina=100;
+  log('ASCENSION COMPLETE! Permanent multiplier increased.','crit');makeEnemy();save();render();
+}
+function render(){
+  const s=stats(),e=state.enemy;
+  document.getElementById('gold').textContent=fmt(state.gold);
+  document.getElementById('essence').textContent=fmt(state.essence);
+  document.getElementById('asc').textContent=fmt(state.ascensions);
+  document.getElementById('level').textContent=fmt(state.level);
+  document.getElementById('xp').textContent=fmt(state.xp);
+  document.getElementById('xpNext').textContent=fmt(xpNeeded());
+  document.getElementById('xpbar').style.width=clamp(state.xp/xpNeeded()*100,0,100)+'%';
+  document.getElementById('hp').textContent=fmt(state.hp);document.getElementById('maxhp').textContent=fmt(s.maxhp);
+  document.getElementById('atk').textContent=fmt(s.atk);document.getElementById('def').textContent=fmt(s.def);
+  document.getElementById('crit').textContent=s.crit.toFixed(1)+'%';document.getElementById('luck').textContent=s.luck.toFixed(1)+'%';document.getElementById('power').textContent=fmt(s.power);
+  document.getElementById('stam').textContent=fmt(state.stamina);document.getElementById('stambar').style.width=state.stamina+'%';
+  if(e){document.getElementById('enemyIcon').textContent=e.icon;document.getElementById('enemyName').textContent=e.name;document.getElementById('enemyTier').textContent=e.tier;document.getElementById('threat').textContent=fmt(e.atk);document.getElementById('enemyHp').textContent=fmt(Math.max(0,e.hp));document.getElementById('enemyMaxHp').textContent=fmt(e.maxHp);document.getElementById('enemybar').style.width=clamp(e.hp/e.maxHp*100,0,100)+'%'}
+  renderBuild();renderGear();renderInventory();renderWorld();renderQuests();renderEvent();
+}
+function renderInventory(){const el=document.getElementById('inventoryCards');document.getElementById('inventoryCount').textContent=state.inventory.length;el.innerHTML='';if(!state.inventory.length){el.innerHTML='<div class="card" style="grid-column:1/-1"><h3>Inventory is empty</h3><p>Enemy drops will stay here until you equip or sell them.</p></div>';return;}state.inventory.slice().reverse().forEach(item=>{const cur=state.gear[item.slot],diff=cur?item.value-cur.value:null,compare=diff===null?'No equipped item':diff>0?'▲ '+fmt(diff)+' stronger':diff<0?'▼ '+fmt(-diff)+' weaker':'＝ Same power',sell=Math.max(2,Math.floor(item.value*item.mult*(4+item.level*2)));const d=document.createElement('div');d.className='item-card';d.innerHTML='<h3>'+item.name+' <span class="small">['+item.slot+']</span></h3><p>'+item.rarity+' · Power '+fmt(item.value)+' · Upgrade +'+item.level+'</p><p class="small">'+compare+' · Sell '+fmt(sell)+' 🪙</p><div class="item-actions"><button class="equip">Equip</button><button class="sell">Sell</button></div>';d.querySelector('.equip').onclick=()=>equipItem(item.id);d.querySelector('.sell').onclick=()=>sellItem(item.id);el.appendChild(d);});}
+
+function renderBuild(){
+  const el=document.getElementById('buildCards');el.innerHTML='';
+  const labels={atk:'⚔ Attack',def:'🛡 Defense',hp:'❤️ Max HP',crit:'🎯 Crit',luck:'🍀 Luck',power:'✨ Power'};
+  const base={atk:50,def:45,hp:55,crit:90,luck:120,power:100};
+  Object.keys(labels).forEach(k=>{
+    const lv=state.upgrades[k],cost=Math.floor(base[k]*Math.pow(1.32,lv));
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML='<h3>'+labels[k]+'</h3><p>Rank '+lv+'</p><button>Upgrade · '+fmt(cost)+' 🪙</button>';
+    d.querySelector('button').onclick=()=>buy(k);el.appendChild(d);
+  });
+}
+function renderGear(){
+  const el=document.getElementById('gearCards');el.innerHTML='';
+  ['weapon','armor','ring'].forEach(slot=>{
+    const item=state.gear[slot],d=document.createElement('div');d.className='card';
+    if(item){
+      const cost=Math.floor(30*Math.pow(1.42,item.level)*(1+state.level*.04));
+      d.innerHTML='<h3>'+slot.toUpperCase()+' · '+item.rarity+'</h3><p>Power: '+fmt(item.value)+' · Upgrade: +'+item.level+'</p><button>Upgrade · '+fmt(cost)+' 🪙</button>';
+      d.querySelector('button').onclick=()=>upgrade(slot);
+    }else d.innerHTML='<h3>'+slot.toUpperCase()+'</h3><p>No item equipped. Defeat enemies to find gear.</p>';
+    el.appendChild(d);
+  });
+}
+function renderWorld(){
+  const req=50+state.ascensions*25;
+  document.getElementById('worldInfo').innerHTML='<div class="card"><h3>World '+state.world+'</h3><p>Every 10 levels the world shifts and enemies become significantly stronger. Your journey has no final level.</p><p>Next Ascension: Level '+req+'</p><button id="ascendBtn">🔥 Ascend</button></div>';
+  document.getElementById('ascendBtn').onclick=ascension;
+  const m=document.getElementById('milestones');m.innerHTML='';
+  [10,25,50,100,250,500,1000].forEach(l=>{
+    const reached=state.level>=l;
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML='<h3>'+ (reached?'✓':'🔒') +' Level '+fmt(l)+'</h3><p>'+ (reached?'Milestone reached.':'Reach this level to discover a new difficulty layer.')+'</p>';
+    m.appendChild(d);
+  });
+}
+function renderQuests(){
+  const el=document.getElementById('questsList');el.innerHTML='';
+  quests().forEach((q,i)=>{
+    const d=document.createElement('div');d.className='quest';
+    const p=Math.min(q.progress,q.goal);
+    d.innerHTML='<div><b>'+q.name+'</b><div class="small">'+fmt(p)+' / '+fmt(q.goal)+'</div></div><button '+(p<q.goal?'disabled':'')+'>'+ (p>=q.goal?'Claim +'+fmt(q.reward):'In Progress')+'</button>';
+    d.querySelector('button').onclick=()=>claimQuest(i);el.appendChild(d);
+  });
+}
+function bind(){
+  document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tabview').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+  document.getElementById('attackBtn').onclick=()=>attack(false);
+  document.getElementById('skillBtn').onclick=()=>attack(true);
+  document.getElementById('healBtn').onclick=heal;
+  document.getElementById('rerollBtn').onclick=reroll;
+  document.getElementById('clearLog').onclick=()=>document.getElementById('log').innerHTML='';
+  document.getElementById('closeModal').onclick=()=>{modalOpen=false;document.getElementById('modal').classList.remove('show')};
+  document.getElementById('saveBtn').onclick=()=>{save();log('Game saved.')};
+  document.getElementById('exportBtn').onclick=()=>document.getElementById('saveBox').value=btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  document.getElementById('importBtn').onclick=()=>{
+    try{state=Object.assign(structuredClone(defaultState),JSON.parse(decodeURIComponent(escape(atob(document.getElementById('saveBox').value.trim())))));state.enemy=state.enemy||null;makeEnemy();save();render();log('Save imported.','loot')}
+    catch(e){log('Invalid save data.','bad')}
+  };
+  document.getElementById('resetBtn').onclick=()=>{if(confirm('Delete this save permanently?')){localStorage.removeItem(SAVE_KEY);state=structuredClone(defaultState);makeEnemy();log('Fresh game started.');render()}};
+}
+load();state.inventory=Array.isArray(state.inventory)?state.inventory:[];state.eventHistory=Array.isArray(state.eventHistory)?state.eventHistory:[];bind();
+if(!state.enemy)makeEnemy();
+else render();
+if(!document.getElementById('log').children.length)log('Welcome, Wanderer. Your journey has no final level.','loot');
+
+setInterval(()=>{if(state.event&&state.event.endAt<=Date.now()&&!state.event.claimed){log('The '+state.event.name+' has ended.','bad');state.event=null;save();render();}renderEvent();},1000);
+
+setInterval(()=>{
+  if(state.stamina<100){state.stamina=Math.min(100,state.stamina+2);render()}
+},1000);
+setInterval(save,15000);
+</script>
+</body>
+</html>
